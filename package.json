@@ -4,6 +4,7 @@
   "description": "A LLM-powered digital assistant for VALORANT Esports team management, leveraging Amazon Bedrock's generative AI capabilities. This project provides a chat interface for scouting and recruitment, enabling users to query data on VALORANT players, analyze statistics, and build effective teams using data from Riot Games and approved community resources.",
   "main": "index.js",
   "scripts": {
+    "start": "node server/index.js",
     "test": "npm test"
   },
   "repository": {
@@ -51,5 +52,10 @@
   "bugs": {
     "url": "https://github.com/Kvnbbg/StreamSprout/issues"
   },
-  "homepage": "https://github.com/Kvnbbg/StreamSprout#readme"
+  "homepage": "https://github.com/Kvnbbg/StreamSprout#readme",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.1"
+  }
 }
