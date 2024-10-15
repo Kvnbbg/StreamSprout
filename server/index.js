@@ -2,6 +2,8 @@
 const express = require('express');
 const { Pool } = require('pg'); // PostgreSQL client for Node.js
 const cors = require('cors'); // Middleware to enable CORS
+const bodyParser = require('body-parser'); // Middleware to parse request bodies
+const axios = require('axios'); // For making HTTP requests
 
 // Create an Express application
 const app = express();
@@ -9,7 +11,8 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
-app.use(express.json()); // Parse JSON bodies
+app.use(bodyParser.json()); // Parse JSON bodies
+app.use(express.static('public')); // Serve static files
 
 // PostgreSQL connection setup
 const pool = new Pool({
@@ -65,6 +68,45 @@ app.post('/players', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+// Function to call Amazon Bedrock API
+const getResponseFromLLM = async (question) => {
+    try {
+        const response = await axios.post('YOUR_BEDROCK_API_ENDPOINT', {
+            prompt: question,
+            max_tokens: 150,
+        }, {
+            headers: {
+                'Authorization': `Bearer YOUR_API_KEY` // Replace with your actual API key
+            }
+        });
+        return response.data; // Adjust according to the API response structure
+    } catch (error) {
+        console.error('Error calling LLM:', error);
+        return { answer: 'I am unable to answer that right now.' };
+    }
+};
+
+// Route to handle question submissions
+app.post('/ask', async (req, res) => {
+    const { question } = req.body;
+    const answer = await getResponseFromLLM(question);
+    res.json({ answer });
+});
+
+app.get('/search-players', async (req, res) => {
+    const { name } = req.query;
+    const result = await pool.query('SELECT * FROM players WHERE name ILIKE $1', [`%${name}%`]);
+    res.status(200).json(result.rows);
+});
+
+
+app.post('/build-team', async (req, res) => {
+    const { role, agent } = req.body;
+    const result = await pool.query('SELECT * FROM players WHERE role = $1 AND agent = $2', [role, agent]);
+    res.status(200).json(result.rows);
+});
+
 
 // Start the server
 app.listen(PORT, () => {
