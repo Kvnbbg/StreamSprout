@@ -5,7 +5,7 @@
 ## 🖼️ Screenshots & Release Status
 
 [Updates](https://devpost.com/software/streamsprout#updates)
-[Deployement](https://devpost.com/software/streamsprout#deployement)
+[Try it out]([https://devpost.com/software/streamsprout#deployement](https://kvnbbg.github.io/StreamSprout/))
 
 ## 🖼️ Description
 
