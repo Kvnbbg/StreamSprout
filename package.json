@@ -1,0 +1,55 @@
+{
+  "name": "streamsprout",
+  "version": "1.0.0",
+  "description": "A LLM-powered digital assistant for VALORANT Esports team management, leveraging Amazon Bedrock's generative AI capabilities. This project provides a chat interface for scouting and recruitment, enabling users to query data on VALORANT players, analyze statistics, and build effective teams using data from Riot Games and approved community resources.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kvnbbg/StreamSprout.git"
+  },
+  "keywords": [
+    "VALORANT",
+    "Esports",
+    "Digital",
+    "Assistant",
+    "LLM",
+    "(Large",
+    "Language",
+    "Model)",
+    "Amazon",
+    "Bedrock",
+    "Data",
+    "Science",
+    "Team",
+    "Management",
+    "Scouting",
+    "Recruitment",
+    "AI-Powered",
+    "Chat",
+    "Interface",
+    "Information",
+    "Retrieval",
+    "Player",
+    "Analysis",
+    "Riot",
+    "Games",
+    "Real-Time",
+    "Data",
+    "JavaScript",
+    "Node.js",
+    "Express.js",
+    "AWS",
+    "Integration",
+    "Generative",
+    "AI."
+  ],
+  "author": "Kevin Marville",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kvnbbg/StreamSprout/issues"
+  },
+  "homepage": "https://github.com/Kvnbbg/StreamSprout#readme"
+}
