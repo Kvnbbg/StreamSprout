@@ -2,6 +2,13 @@
 
 **Empower Your Streams with StreamSprout: The Ultimate Data-Driven Toolkit for Streamers and Content Creators**
 
+## 🖼️ Screenshots & Release Status
+
+[Updates](https://devpost.com/software/streamsprout#updates)
+[Deployement](https://devpost.com/software/streamsprout#deployement)
+
+## 🖼️ Description
+
 ![StreamSprout Image](image.jpg)
 
 [![Latest Release](https://img.shields.io/github/v/release/Kvnbbg/StreamSprout)](https://github.com/Kvnbbg/StreamSprout/releases)
@@ -81,7 +88,7 @@ This project is licensed under the MIT License. See the [`LICENSE`](LICENSE) fil
 
 ## 📞 Support & Collab
 
-![Kevin Marville Image](collaborator-image-1.jpg) !
+![Kevin Marville Image](collaborator-image-1.jpg)
 
 https://www.linkedin.com/in/kevin-marville/
 
