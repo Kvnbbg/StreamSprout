@@ -14,7 +14,8 @@ const PORT = process.env.PORT || 5000; // Port configuration
 
 // Middleware configuration
 app.use(cors()); // Enable CORS for all routes
-app.use(bodyParser.json()); // Parse JSON bodies in incoming requests
+app.use(express.json()); // Parse JSON bodies in incoming requests
+app.use(bodyParser.json()); // Additional JSON body parser
 app.use(express.static('public')); // Serve static files from the 'public' directory
 
 // PostgreSQL connection setup using environment variables
@@ -26,117 +27,131 @@ const pool = new Pool({
     port: process.env.DB_PORT || 5432, // Database port
 });
 
-// Route to serve the main HTML file
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html')); // Send index.html from public directory
-});
+// Serve the main HTML file
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../public/index.html')));
+
+// Database query helper function
+const queryDatabase = async (query, params) => {
+    try {
+        const result = await pool.query(query, params);
+        return result.rows;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
 
 // Route to get all players
 app.get('/players', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM players'); // Query to fetch all players
-        res.status(200).json(result.rows); // Return player data as JSON
+        const players = await queryDatabase('SELECT * FROM players'); // Fetch all players
+        res.status(200).json(players);
     } catch (error) {
-        console.error('Error fetching players:', error); // Log error details
-        res.status(500).json({ error: 'Internal Server Error', details: error.message }); // Return error response
+        console.error('Error fetching players:', error.message);
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });
 
 // Route to get a player by ID
 app.get('/players/:id', async (req, res) => {
-    const playerId = req.params.id; // Extract player ID from request parameters
+    const playerId = req.params.id;
     try {
-        const result = await pool.query('SELECT * FROM players WHERE id = $1', [playerId]); // Query to fetch player by ID
-        if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'Player not found' }); // Handle case where player is not found
-        }
-        res.status(200).json(result.rows[0]); // Return the found player
+        const players = await queryDatabase('SELECT * FROM players WHERE id = $1', [playerId]);
+        if (players.length === 0) return res.status(404).json({ error: 'Player not found' });
+        res.status(200).json(players[0]);
     } catch (error) {
-        console.error('Error fetching player:', error); // Log error details
-        res.status(500).json({ error: 'Internal Server Error', details: error.message }); // Return error response
+        console.error('Error fetching player:', error.message);
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });
 
 // Route to add a new player
 app.post('/players', async (req, res) => {
-    const { name, role, rank, agent } = req.body; // Destructure player details from request body
+    const { name, role, rank, agent } = req.body;
     try {
-        const result = await pool.query(
+        const players = await queryDatabase(
             'INSERT INTO players (name, role, rank, agent) VALUES ($1, $2, $3, $4) RETURNING *',
-            [name, role, rank, agent] // Insert player into the database
+            [name, role, rank, agent]
         );
-        res.status(201).json(result.rows[0]); // Return the newly created player
+        res.status(201).json(players[0]);
     } catch (error) {
-        console.error('Error adding player:', error); // Log error details
-        res.status(500).json({ error: 'Internal Server Error', details: error.message }); // Return error response
+        console.error('Error adding player:', error.message);
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });
 
-// Function to call the Amazon Bedrock API for LLM response
-const getResponseFromLLM = async (question) => {
-    const apiKey = process.env.BEDROCK_API_KEY; // Retrieve API key from environment variables
-    const endpoint = process.env.BEDROCK_API_ENDPOINT; // Retrieve API endpoint from environment variables
+// Amazon Bedrock API configuration
+const apiKey = process.env.BEDROCK_API_KEY; 
+const endpoint = process.env.BEDROCK_API_ENDPOINT; 
 
+// Function to call the LLM API
+const getTeamComposition = async (prompt) => {
     try {
-        const response = await axios.post(endpoint, {
-            prompt: question,
-            max_tokens: 150,
-        }, {
-            headers: {
-                'Authorization': `Bearer ${apiKey}` // Set authorization header
-            }
+        const { data } = await axios.post(endpoint, { prompt, max_tokens: 300 }, {
+            headers: { 'Authorization': `Bearer ${apiKey}` },
         });
-        return response.data; // Return the response data
+        return data; 
     } catch (error) {
-        console.error('Error calling LLM:', error); // Log error details
-        return { answer: 'I am unable to answer that right now.', error: error.message }; // Handle API error
+        console.error('Error while calling LLM API:', error.message);
+        throw new Error('Could not retrieve team composition.');
     }
 };
 
-// Route to handle question submissions to LLM
-app.post('/ask', async (req, res) => {
-    const { question } = req.body; // Extract question from request body
+// Route to create a team composition
+app.post('/create-team', async (req, res) => {
+    const prompts = {
+        "Professional Team Submission": "Build a team using only players from VCT International. Assign roles to each player and explain why this composition would be effective in a competitive match.",
+        "Semi-Professional Team Submission": "Build a team using only players from VCT Challengers. Assign roles to each player and explain why this composition would be effective in a competitive match.",
+        "Game Changers Team Submission": "Build a team using only players from VCT Game Changers. Assign roles to each player and explain why this composition would be effective in a competitive match.",
+        "Mixed-Gender Team Submission": "Build a team that includes at least two players from an underrepresented group, such as the Game Changers program. Define roles and discuss the advantages of this inclusive team structure.",
+        "Cross-Regional Team Submission": "Build a team with players from at least three different regions. Assign each player a role and explain the benefits of this diverse composition.",
+        "Rising Star Team Submission": "Build a team that includes at least two semi-professional players, such as from VCT Challengers or VCT Game Changers. Define roles and discuss details of how these players were chosen.",
+    };
+
+    const { type } = req.body;
+    const prompt = prompts[type];
+
+    if (!prompt) return res.status(400).json({ error: 'Invalid team type' });
+
     try {
-        const answer = await getResponseFromLLM(question); // Call the LLM function
-        res.json({ answer }); // Return the answer
+        const teamComposition = await getTeamComposition(prompt);
+        res.json(teamComposition);
     } catch (error) {
-        console.error('Error processing question:', error); // Log error details
-        res.status(500).json({ error: 'Failed to process your question', details: error.message }); // Return error response
+        res.status(500).json({ error: 'Error retrieving team composition' });
     }
 });
 
 // Route to search for players by name
 app.get('/search-players', async (req, res) => {
-    const { name } = req.query; // Extract name query parameter
+    const { name } = req.query; 
     try {
-        const result = await pool.query('SELECT * FROM players WHERE name ILIKE $1', [`%${name}%`]); // Query to search players by name
-        res.status(200).json(result.rows); // Return found players
+        const players = await queryDatabase('SELECT * FROM players WHERE name ILIKE $1', [`%${name}%`]);
+        res.status(200).json(players);
     } catch (error) {
-        console.error('Error searching players:', error); // Log error details
-        res.status(500).json({ error: 'Internal Server Error', details: error.message }); // Return error response
+        console.error('Error searching players:', error.message);
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });
 
 // Route to build a team based on role and agent
 app.post('/build-team', async (req, res) => {
-    const { role, agent } = req.body; // Extract role and agent from request body
+    const { role, agent } = req.body; 
     try {
-        const result = await pool.query('SELECT * FROM players WHERE role = $1 AND agent = $2', [role, agent]); // Query to find players matching role and agent
-        res.status(200).json(result.rows); // Return found players
+        const players = await queryDatabase('SELECT * FROM players WHERE role = $1 AND agent = $2', [role, agent]);
+        res.status(200).json(players);
     } catch (error) {
-        console.error('Error building team:', error); // Log error details
-        res.status(500).json({ error: 'Internal Server Error', details: error.message }); // Return error response
+        console.error('Error building team:', error.message);
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });
 
 // Start the server and listen for incoming requests
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`); // Log server start message
+    console.log(`Server is running on http://localhost:${PORT}`); 
 });
 
 // Handle graceful shutdown to close database connection
 process.on('SIGINT', async () => {
-    console.log('Shutting down server...'); // Log shutdown message
-    await pool.end(); // Close PostgreSQL connection
-    process.exit(); // Exit the process
+    console.log('Shutting down server...'); 
+    await pool.end(); 
+    process.exit(); 
 });
