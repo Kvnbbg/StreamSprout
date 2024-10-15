@@ -1,0 +1,217 @@
+<!-- This file is for DEMO with github page while the AWS Lambda server is in building -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORANT Esports Assistant!</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Basic body styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #4A90E2, #8E44AD); /* Background gradient */
+            height: 100vh;
+            overflow: hidden;
+            color: white; /* Text color */
+        }
+
+        /* Sticky header styling */
+        .sticky-header {
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* Button styling */
+        .trigger-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .trigger-btn:hover {
+            background-color: #ddd;
+        }
+
+        /* Credit section styling */
+        .credit {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            text-align: center;
+        }
+
+        .credit a {
+            color: #0093b1;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .credit a:hover {
+            text-decoration: underline;
+        }
+
+        /* Weather selector styling */
+        .weather-selector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #fff;
+        }
+
+        /* Rain effect styling */
+        .rain-container {
+            position: relative;
+            width: 100vmin;
+            height: 100vmin;
+            overflow: hidden;
+        }
+
+        .raindrop {
+            position: absolute;
+            bottom: 100%;
+            background: #00f;
+            opacity: 0.7;
+            width: 2px;
+            height: 10px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Chatbox container styling */
+        #chat-box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overlay: hidden;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+        }
+
+        #input-box {
+            width: 100%;
+        }
+
+        /* Custom drop styling for rain effect */
+        .drop {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(220deg, #affbff 10%, #0093b1 100%);
+            border-radius: 50% 0% 50% 50%;
+            box-shadow: inset 10px -5px 2px 3px rgba(0, 0, 0, 0.1), inset -15px -5px 2px 5px rgba(255, 255, 255, 0.1);
+            transform: rotate(-45deg);
+            animation: dropAnimation 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="sticky-header">
+        <h1>VALORANT Esports Assistant</h1>
+    </div>
+    
+    <div class="rain-container"></div> <!-- Container for rain effect -->
+    
+    <div id="chat-box"></div> <!-- Chat box for user interaction -->
+    
+    <input id="input-box" type="text" placeholder="Ask a question..." />
+    <button id="send-button" class="trigger-btn">Send</button>
+    
+    <div class="credit">
+        &copy; 2024 Stream Sprout. Developed by <a href="https://github.com/Kvnbbg">Kvnbbg</a>. All rights reserved.
+    </div>
+    
+    <script>
+        // Document ready function for jQuery
+        $(document).ready(function() {
+            // Event listener for send button
+            $('#send-button').click(function() {
+                const question = $('#input-box').val();
+                $('#chat-box').append(`<div>User: ${question}</div>`);
+                $('#input-box').val('');
+
+                // Send question to server via POST request
+                $.post('/ask', { question: question }, function(response) {
+                    $('#chat-box').append(`<div>Assistant: ${response.answer}</div>`);
+                    $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight); // Scroll to bottom
+                });
+            });
+        });
+
+        // Rain effect function
+        function engageCombat() {
+            const rainContainer = document.querySelector('.rain-container');
+            const raindrops = rainContainer.children.length;
+
+            if (raindrops === 0) {
+                for (let i = 0; i < 100; i++) {
+                    const drop = document.createElement('div');
+                    drop.classList.add('raindrop');
+                    drop.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
+                    drop.style.animationDuration = (Math.random() * 1 + 0.5) + 's'; // Random fall duration
+                    drop.style.animationDelay = Math.random() * 2 + 's'; // Random delay before falling
+                    rainContainer.appendChild(drop);
+                }
+            } else {
+                rainContainer.innerHTML = ''; // Remove raindrops if they already exist
+            }
+        }
+
+        // Call engageCombat on page load to start the rain effect
+        $(document).ready(function() {
+            engageCombat();
+        });
+
+        // Function to populate chat box with initial content
+        function populateChatBox() {
+            $('#chat-box').append(`
+                <div>User: What are some best practices for CSS?</div>
+                <div>Assistant: Here are some best practices for writing clean and efficient CSS:</div>
+                <ul>
+                    <li><strong>Use a CSS Reset:</strong> Start with a CSS reset to ensure consistency across browsers.</li>
+                    <li><strong>Organize Your Styles:</strong> Use a logical structure for your CSS files.</li>
+                    <li><strong>Use Classes Over IDs:</strong> Prefer classes for styling.</li>
+                    <li><strong>Utilize Flexbox and Grid:</strong> Use modern layout techniques.</li>
+                    <li><strong>Minimize CSS File Size:</strong> Remove unused styles.</li>
+                </ul>
+                <div>User: What resources do you recommend for learning JavaScript?</div>
+                <div>Assistant: Here are some excellent resources for learning JavaScript:</div>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide">MDN JavaScript Guide</a></li>
+                    <li><a href="https://www.freecodecamp.org/">FreeCodeCamp</a></li>
+                    <li><a href="https://eloquentjavascript.net/">Eloquent JavaScript</a></li>
+                    <li><strong>Practice on LeetCode:</strong> Solve coding challenges.</li>
+                </ul>
+                <div>User: Can you explain the concept of closures in JavaScript?</div>
+                <div>Assistant: Closures allow a function to remember its lexical scope...</div>
+                <pre><code>function makeCounter() { let count = 0; return function() { count += 1; return count; }; }</code></pre>
+                <div>User: What is the difference between "let", "const", and "var" in JavaScript?</div>
+                <div>Assistant: Here's a brief overview:</div>
+                <ul>
+                    <li><strong>var:</strong> Function-scoped.</li>
+                    <li><strong>let:</strong> Block-scoped.</li>
+                    <li><strong>const:</strong> Block-scoped for constants.</li>
+                </ul>
+            `);
+        }
+
+        // Populate chat box with initial content
+        populateChatBox();
+    </script>
+</body>
+</html>
