@@ -61,7 +61,7 @@
 ### Development Stack
 
 - **Frontend**: Built with React, using Redux for state management to handle dynamic data flows.
-- **Backend**: Developed with Node.js and Express, with MongoDB serving as the primary database.
+- **Backend**: Developed with Node.js and Express, with PostgreSQL serving as the primary database.
 - **AI Integration**: Amazon Bedrock is used for generative AI capabilities, providing advanced data analysis and conversational AI.
 - **Esports Data Integration**: Direct API connections to Riot Games for real-time VALORANT esports statistics and data.
 
@@ -79,10 +79,11 @@ We welcome your contributions to enhance StreamSprout! Here’s how you can get 
 
 This project is licensed under the MIT License. See the [`LICENSE`](LICENSE) file for more details.
 
-## 📞 Contact & Support
+## 📞 Support & Collab
 
-- **Email**: [kvnbbg@support.io](mailto:kvnbbg@support.io)
-- **Twitter**: [@StreamSprout](https://twitter.com/StreamSprout)
-- **Website**: [StreamSprout.io](https://StreamSprout.io)
+![Kevin Marville Image](collaborator-image-1.jpg) !
+
+https://www.linkedin.com/in/kevin-marville/
+
 
 Feel free to reach out with any questions, feedback, or collaboration requests! We’re excited to help you grow your streaming community.
