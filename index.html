@@ -1,335 +1,475 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VALORANT Esports Assistant</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        /* General body styling with VR parallax background */
-        body {
-            font-family: 'Cascadia', sans-serif;
-            background: radial-gradient(circle at center, #4A90E2, #8E44AD);
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            color: white;
-            overflow: hidden;
-            perspective: 1000px; /* Enables a VR-like 3D perspective */
-            background-position: center;
-            background-size: 200% 200%;
-            animation: backgroundShift 10s ease-in-out infinite; /* Subtle VR-like background movement */
-        }
-
-        @keyframes backgroundShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Sticky header with smooth animations and shadows */
-        .sticky-header {
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 15px;
-            position: sticky;
-            top: 0;
-            text-align: center;
-            font-size: 1.5rem;
-            border-bottom: 2px solid #ccc;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* 3D shadow effect */
-            z-index: 3;
-            transform-style: preserve-3d;
-            transform: translateZ(10px); /* Slight depth for VR-like feel */
-            animation: slideDown 1s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-50%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* Rain effect with dynamic parallax depth */
-        .rain-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-            perspective: 1000px;
-        }
-
-        .raindrop {
-            position: absolute;
-            bottom: 100%;
-            background: rgba(0, 162, 255, 0.5);
-            width: 2px;
-            height: 14px;
-            animation: fall linear infinite;
-            transform: translateZ(0);
-            animation-duration: calc(1.5s + 1s * var(--speed)); /* Dynamic speed for VR depth */
-        }
-
-        @keyframes fall {
-            to { transform: translateY(100vh); }
-        }
-
-        /* Chatbox with immersive scaling effect */
-        #chat-box {
-            border: 1px solid #ccc;
-            border-radius: 15px;
-            padding: 20px;
-            height: 300px;
-            overflow-y: scroll;
-            background-color: rgba(255, 255, 255, 0.2);
-            width: 90%;
-            max-width: 600px;
-            margin: 20px auto;
-            z-index: 2;
-            animation: fadeInUp 1.5s ease;
-            transform-style: preserve-3d;
-            transform: translateZ(30px) scale(1.05); /* Slight VR depth and scale effect */
-        }
-
-        @keyframes fadeInUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* Input box with smooth animations */
-        #input-box {
-            width: 90%;
-            margin: 10px auto 20px auto; /* Adjusted margins for better spacing */
-            text-align: center;
-        }
-
-        #input-box p {
-            font-size: 12px;
-            color: #888;
-        }
-
-        /* Button styling with 3D hover effects */
-        .trigger-btn {
-            position: absolute;
-            bottom: 10%;
-            transform: translateX(-50%);
-            padding: 12px 28px;
-            background-color: #fff;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1rem;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-            z-index: 2;
-            transform-style: preserve-3d;
-            transform: translateZ(30px);
-            display: block; /* Ensure it takes the full width */
-            margin: 0 auto; /* Center button */
-        }
-
-        .trigger-btn:hover {
-            background-color: #ddd;
-            transform: translateY(-10px) scale(1.1); /* Hover for VR-like depth */
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5); /* 3D depth on hover */
-        }
-
-        /* Vault with a gamified 3D flip effect */
-        #vault {
-            width: 180px;
-            height: 180px;
-            background-color: #333;
-            border: 3px solid black;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 28px;
-            margin: 50px auto; /* Adjusted margin for better spacing */
-            transition: transform 1s ease-in-out, box-shadow 0.3s ease;
-            perspective: 1000px;
-            z-index: 2;
-            animation: vaultPulse 2.5s infinite;
-            transform-style: preserve-3d;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        @keyframes vaultPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .vault-open {
-            transform: rotateY(180deg);
-            background-color: #FFD700;
-            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.5); /* Gold shadow on open */
-        }
-
-        .vault p {
-            color: #fff;
-            font-size: 12px;
-            align-items: baseline;
-        }
-
-        .vault p::after {
-            content: 'Click...';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            font-size: 12px;
-        }
-
-        .vault p:hover {
-            color: #FFD700;
-        }
-
-        /* Footer credit with soft glow */
-        .credit {
-            position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #fff;
-            text-align: center;
-            font-size: 1rem;
-            z-index: 2;
-            animation: fadeIn 1.5s ease-in-out;
-            opacity: 0.9;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Soft glowing text */
-        }
-
-        footer {
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: auto;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-            z-index: 2;
-            animation: fadeIn 1.5s ease-in-out;
-            opacity: 0.9;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Responsive design for wide screens */
-        @media (min-width: 1024px) {
-            body {
-                background-size: cover;
-            }
-
-            #chat-box {
-                width: 70%;
-            }
-
-            .sticky-header {
-                font-size: 2rem;
-            }
-        }
-
-        /* Responsive design for small screens */
-        @media (max-width: 600px) {
-            .trigger-btn {
-                font-size: 0.8rem;
-                padding: 10px 16px;
-            }
-
-            #chat-box {
-                height: 250px; /* Reduced height for small screens */
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <!-- Use HTTPS and include basic Content Security Policy meta tags if needed -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://code.jquery.com; style-src 'self' 'unsafe-inline'; script-src 'self' https://code.jquery.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VALORANT Esports Assistant PRO</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    /* Enhanced VR-ready styles */
+    :root {
+      --vr-active: 0; /* Toggle variable for VR effects */
+    }
+    body {
+      font-family: 'Cascadia', sans-serif;
+      background: radial-gradient(circle at center, #4A90E2, #8E44AD);
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: white;
+      overflow: hidden;
+      perspective: calc(1000px + (1000 * var(--vr-active)));
+      transform-style: preserve-3d;
+    }
+    /* VR Simulation Layer */
+    .vr-simulator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    /* Gamification Elements */
+    .xp-bar {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 200px;
+      height: 20px;
+      background: #333;
+      border-radius: 10px;
+      overflow: hidden;
+      z-index: 100;
+    }
+    .xp-progress {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #FFD700, #FFA500);
+      transition: width 0.5s ease;
+    }
+    .achievement-badge {
+      position: fixed;
+      bottom: 20px;
+      right: -200px;
+      background: #2ecc71;
+      padding: 10px 20px;
+      border-radius: 15px;
+      transition: right 0.5s ease;
+      z-index: 100;
+    }
+    /* Simulation Panel */
+    .simulation-panel {
+      position: fixed;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.7);
+      padding: 20px;
+      border-radius: 15px;
+      display: none;
+      z-index: 100;
+    }
+    /* VR Toggle */
+    .vr-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #2ecc71;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    .vr-toggle.warning {
+      background: #e74c3c;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    /* Sticky header */
+    .sticky-header {
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 15px;
+      position: sticky;
+      top: 0;
+      text-align: center;
+      font-size: 1.5rem;
+      border-bottom: 2px solid #ccc;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      z-index: 3;
+      transform-style: preserve-3d;
+      transform: translateZ(10px);
+    }
+    /* Rain effect */
+    .rain-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      perspective: 1000px;
+    }
+    .raindrop {
+      position: absolute;
+      bottom: 100%;
+      background: rgba(0, 162, 255, 0.5);
+      width: 2px;
+      height: 14px;
+      animation: fall linear infinite;
+      transform: translateZ(0);
+      animation-duration: calc(1.5s + 1s * var(--speed));
+    }
+    @keyframes fall {
+      to { transform: translateY(100vh); }
+    }
+    /* Chatbox */
+    #chat-box {
+      border: 1px solid #ccc;
+      border-radius: 15px;
+      padding: 20px;
+      height: 300px;
+      overflow-y: scroll;
+      background-color: rgba(255, 255, 255, 0.2);
+      width: 90%;
+      max-width: 600px;
+      margin: 20px auto;
+      z-index: 2;
+      transform-style: preserve-3d;
+      transform: translateZ(30px) scale(1.05);
+    }
+    /* Input box */
+    #input-box {
+      width: 90%;
+      margin: 10px auto 20px auto;
+      text-align: center;
+    }
+    #input-box p {
+      font-size: 12px;
+      color: #888;
+    }
+    /* Trigger button */
+    .trigger-btn {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 28px;
+      background-color: #fff;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      z-index: 2;
+      transform-style: preserve-3d;
+      display: block;
+      margin: 0 auto;
+    }
+    .trigger-btn:hover {
+      background-color: #ddd;
+      transform: translateY(-10px) scale(1.1);
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+    }
+    /* Vault */
+    #vault {
+      width: 180px;
+      height: 180px;
+      background-color: #333;
+      border: 3px solid black;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 28px;
+      margin: 50px auto;
+      transition: transform 1s ease-in-out, box-shadow 0.3s ease;
+      perspective: 1000px;
+      z-index: 2;
+      animation: vaultPulse 2.5s infinite;
+      transform-style: preserve-3d;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    @keyframes vaultPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .vault-open {
+      transform: rotateY(180deg);
+      background-color: #FFD700;
+      box-shadow: 0 10px 20px rgba(255, 215, 0, 0.5);
+    }
+    .vault p {
+      color: #fff;
+      font-size: 12px;
+      align-items: baseline;
+    }
+    .vault p::after {
+      content: 'Click...';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 12px;
+    }
+    .vault p:hover {
+      color: #FFD700;
+    }
+    /* Footer */
+    .credit {
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      text-align: center;
+      font-size: 1rem;
+      z-index: 2;
+    }
+    footer {
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      z-index: 2;
+    }
+    /* Responsive Design */
+    @media (min-width: 1024px) {
+      body { background-size: cover; }
+      #chat-box { width: 70%; }
+      .sticky-header { font-size: 2rem; }
+    }
+    @media (max-width: 600px) {
+      .trigger-btn { font-size: 0.8rem; padding: 10px 16px; }
+      #chat-box { height: 250px; }
+    }
+  </style>
 </head>
 <body>
-    <header class="sticky-header">VALORANT Esports Assistant</header>
-    <div class="rain-container">
-        <!-- Generate rain drops dynamically -->
-        <script>
-            function createRaindrop() {
-                const drop = document.createElement('div');
-                drop.className = 'raindrop';
-                drop.style.left = Math.random() * 100 + 'vw';
-                drop.style.animationDuration = Math.random() * 2 + 1 + 's'; // Random duration
-                drop.style.setProperty('--speed', Math.random()); // Random speed
-                document.querySelector('.rain-container').appendChild(drop);
-                setTimeout(() => drop.remove(), 3000); // Remove drop after falling
-            }
-            setInterval(createRaindrop, 200); // Create drops every 200ms
-        </script>
-    </div>
-    <div id="vault" class="vault">
-        <p>Vault</p>
-    </div>
-    <div id="chat-box">
-        <div id="chat-log"></div>
-        <div id="input-box">
-            <input type="text" id="user-input" placeholder="Type your message...">
-            <p>Press Enter to send</p>
-        </div>
-    </div>
-    <button class="trigger-btn" id="chat-trigger">Ask AI</button>
-    <br>
-    <br>
-    <footer class="credit">Created with ❤️ for VALORANT enthusiasts</footer>
-
+  <!-- VR Simulation Warning -->
+  <div class="vr-simulator">
+    <h2>VR Simulation Active</h2>
+    <p>Real VR integration coming soon!</p>
+    <button onclick="toggleVR()">Exit Simulation</button>
+  </div>
+  
+  <!-- Gamification UI -->
+  <div class="xp-bar">
+    <div class="xp-progress" id="xp-progress"></div>
+  </div>
+  <div class="achievement-badge" id="achievement-badge">New Achievement Unlocked!</div>
+  
+  <!-- Simulation Panel -->
+  <div class="simulation-panel" id="simulation-panel">
+    <h3>Live Match Simulation</h3>
+    <div id="match-status">Loading...</div>
+    <button onclick="generateMatchSimulation()">Simulate Match</button>
+  </div>
+  
+  <!-- VR Toggle -->
+  <div class="vr-toggle" id="vr-toggle" onclick="toggleVR()">VR Mode: OFF</div>
+  
+  <!-- Main Header -->
+  <header class="sticky-header">VALORANT Esports Assistant PRO</header>
+  
+  <!-- Rain Container -->
+  <div class="rain-container">
     <script>
-        // Chat functionality
-        const chatBox = $('#chat-box');
-        const chatLog = $('#chat-log');
-        const userInput = $('#user-input');
-
-        $('#chat-trigger').on('click', function() {
-            chatBox.toggle();
-            userInput.focus();
-        });
-
-        userInput.on('keypress', function(event) {
-            if (event.which === 13 && userInput.val().trim() !== '') { // Enter key pressed
-                const userMessage = userInput.val().trim();
-                chatLog.append('<div>User: ' + userMessage + '</div>');
-                userInput.val(''); // Clear input
-                // Simple bot response
-                setTimeout(() => {
-                    chatLog.append('<div>Bot: ' + respondToMessage(userMessage) + '</div>');
-                    chatLog.scrollTop(chatLog[0].scrollHeight); // Auto-scroll
-                }, 500);
-            }
-        });
-
-        function respondToMessage(message) {
-            // Simple responses for demo purposes
-            const responses = {
-                "hello": "Hello there!",
-                "how are you?": "I'm just a bot, but I'm doing great!",
-                "help": "What can I assist you with?",
-                "default": "I'm not sure how to respond to that."
-            };
-            return responses[message.toLowerCase()] || responses["default"];
-        }
-
-        // Vault functionality
-        const vault = $('#vault');
-        vault.on('click', function() {
-            vault.toggleClass('vault-open');
-        });
+      function createRaindrop() {
+        const drop = document.createElement('div');
+        drop.className = 'raindrop';
+        drop.style.left = Math.random() * 100 + 'vw';
+        drop.style.animationDuration = Math.random() * 2 + 1 + 's';
+        drop.style.setProperty('--speed', Math.random());
+        document.querySelector('.rain-container').appendChild(drop);
+        setTimeout(() => drop.remove(), 3000);
+      }
+      setInterval(createRaindrop, 200);
     </script>
+  </div>
+  
+  <!-- Vault -->
+  <div id="vault" class="vault">
+    <p>Esports Vault</p>
+  </div>
+  
+  <!-- Chat Box -->
+  <div id="chat-box">
+    <div id="chat-log"></div>
+    <div id="input-box">
+      <input type="text" id="user-input" placeholder="Type your message...">
+      <p>Press Enter to send</p>
+    </div>
+  </div>
+  
+  <!-- Chat Trigger Button -->
+  <button class="trigger-btn" id="chat-trigger">Ask AI</button>
+  
+  <!-- Footer Credits -->
+  <footer class="credit">
+    Powered by <a href="https://github.com/Kvnbbg/StreamSprout" target="_blank">StreamSprout</a> | 
+    VR Integration: <a href="https://github.com/Kvnbbg/Vision-Week-Virtual-Exploration" target="_blank">Vision Week</a>
+  </footer>
+  
+  <script>
+    /*****************
+     * Gamification *
+     *****************/
+    let xp = 0;
+    let level = 1;
+    function addXP(amount) {
+      xp += amount;
+      $('#xp-progress').css('width', (xp % 100) + '%');
+      if (xp >= level * 100) {
+        level++;
+        showAchievement(`Level Up! Now Level ${level}`);
+      }
+    }
+    function showAchievement(text) {
+      const badge = $('#achievement-badge');
+      badge.text(text).css('right', '20px');
+      setTimeout(() => badge.css('right', '-200px'), 3000);
+    }
+    
+    /************
+     * VR System *
+     ************/
+    let vrEnabled = false;
+    function toggleVR() {
+      vrEnabled = !vrEnabled;
+      document.documentElement.style.setProperty('--vr-active', vrEnabled ? 1 : 0);
+      $('#vr-toggle').text(`VR Mode: ${vrEnabled ? 'ON' : 'OFF'}`);
+      $('.vr-simulator').toggle(vrEnabled);
+      if (vrEnabled) {
+        $('#vr-toggle').addClass('warning');
+        setTimeout(() => {
+          if (vrEnabled) alert('Warning: Full VR integration still in development!');
+        }, 1000);
+      } else {
+        $('#vr-toggle').removeClass('warning');
+      }
+    }
+    
+    /****************************
+     * Simulation Match System  *
+     ****************************/
+    const teams = ['Sentinels', 'LOUD', 'Fnatic', 'DRX'];
+    const mapPool = ['Bind', 'Ascent', 'Split', 'Lotus'];
+    function generateMatchSimulation() {
+      const team1 = teams[Math.floor(Math.random() * teams.length)];
+      const team2 = teams.filter(t => t !== team1)[Math.floor(Math.random() * (teams.length - 1))];
+      const map = mapPool[Math.floor(Math.random() * mapPool.length)];
+      const score = `${Math.floor(Math.random() * 13)}-${Math.floor(Math.random() * 13)}`;
+      $('#match-status').html(`
+        <p>Live Match: ${team1} vs ${team2}</p>
+        <p>Map: ${map}</p>
+        <p>Score: ${score}</p>
+      `);
+      addXP(10);
+    }
+    
+    /*******************************
+     * Secure Chat API Integration *
+     *******************************/
+    // Toggle chat box visibility
+    const chatBox = $('#chat-box');
+    const chatLog = $('#chat-log');
+    const userInput = $('#user-input');
+    $('#chat-trigger').on('click', function() {
+      chatBox.toggle();
+      userInput.focus();
+    });
+    // Send chat message on Enter key press
+    userInput.on('keypress', function(event) {
+      if (event.which === 13 && userInput.val().trim() !== '') {
+        const userMessage = userInput.val().trim();
+        userInput.val('');
+        chatLog.append('<div>User: ' + userMessage + '</div>');
+        chatLog.scrollTop(chatLog[0].scrollHeight);
+        sendMessageToAPI(userMessage);
+      }
+    });
+    
+    // Function to send a message securely to the Java API for TensorFlow LLM
+    function sendMessageToAPI(message) {
+      // Display temporary loading message
+      const tempId = 'temp-' + Date.now();
+      chatLog.append('<div id="' + tempId + '">Bot: Processing...</div>');
+      chatLog.scrollTop(chatLog[0].scrollHeight);
+      $.ajax({
+        url: 'https://yourdomain.com/api/llm', // Use your HTTPS endpoint here
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ message: message }),
+        // Optionally add headers for CSRF tokens or authentication here
+        success: function(response) {
+          // Remove the temporary loading message
+          $('#' + tempId).remove();
+          // Assume the API returns a JSON object with a "response" field
+          chatLog.append('<div>Bot: ' + response.response + '</div>');
+          chatLog.scrollTop(chatLog[0].scrollHeight);
+          addXP(2);
+        },
+        error: function(xhr, status, error) {
+          $('#' + tempId).remove();
+          chatLog.append('<div>Bot: Sorry, an error occurred while processing your request.</div>');
+          chatLog.scrollTop(chatLog[0].scrollHeight);
+        }
+      });
+    }
+    
+    /***********************
+     * Vault Interactivity *
+     ***********************/
+    $('#vault').on('click', function() {
+      $(this).toggleClass('vault-open');
+      addXP(5);
+      showAchievement('Vault Explorer Unlocked!');
+    });
+    
+    /**********************************
+     * Toggle Simulation Panel (Key: S) *
+     **********************************/
+    $(document).keypress(function(e) {
+      if (e.which === 115) { // 'S' key toggles simulation panel
+        $('#simulation-panel').toggle();
+      }
+    });
+    
+    /***********************
+     * Initialization      *
+     ***********************/
+    generateMatchSimulation();
+    setTimeout(() => showAchievement('Welcome to VALORANT Assistant PRO!'), 1000);
+  </script>
 </body>
 </html>
