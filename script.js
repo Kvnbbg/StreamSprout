@@ -127,3 +127,25 @@
      ***********************/
     generateMatchSimulation();
     setTimeout(() => showAchievement('Welcome to VALORANT Assistant PRO!'), 1000);
+
+document.addEventListener('touchstart', function(e) {
+  // Add touch ripple effects
+  const touch = e.touches[0];
+  const ripple = document.createElement('div');
+  ripple.className = 'touch-ripple';
+  ripple.style.left = `${touch.pageX}px`;
+  ripple.style.top = `${touch.pageY}px`;
+  document.body.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+});
+
+// Add input device detection
+document.body.addEventListener('mousemove', function detectPointer() {
+  document.body.classList.add('fine-pointer');
+  document.body.removeEventListener('mousemove', detectPointer);
+});
+
+document.body.addEventListener('touchstart', function detectTouch() {
+  document.body.classList.add('coarse-pointer');
+  document.body.removeEventListener('touchstart', detectTouch);
+});
