@@ -1,0 +1,696 @@
+:root {
+  --vr-active: 0;
+  --base-size: 1vmin;
+  --responsive-padding: clamp(10px, 3vmin, 20px);
+}
+
+/* Enhanced Mobile-First Base Styles */
+body {
+  font-family: 'Cascadia', sans-serif, system-ui;
+  background: radial-gradient(circle at center, #4A90E2, #8E44AD);
+  min-height: 100dvh;
+  margin: 0;
+  padding: var(--responsive-padding);
+  display: flex;
+  flex-direction: column;
+  color: white;
+  perspective: calc(1000px + (1000 * var(--vr-active)));
+  transform-style: preserve-3d;
+  overflow-x: hidden;
+  touch-action: manipulation;
+  background-size: 200% 200%;
+  background-position: center;
+  animation: backgroundShift 10s ease-in-out infinite;
+}
+
+/* Dynamic Scaling Elements */
+.sticky-header {
+  font-size: clamp(1.25rem, 4vmin, 2rem);
+  padding: clamp(8px, 2vmin, 15px);
+}
+
+#chat-box {
+  height: clamp(250px, 55vh, 400px);
+  width: min(90%, 600px);
+  font-size: clamp(14px, 2vmin, 18px);
+}
+
+/* Enhanced Touch Targets */
+.trigger-btn, #vault {
+  min-width: 44px;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+/* Mobile-Optimized Layout */
+@media (max-width: 600px) and (orientation: portrait) {
+  body {
+    padding: 2vmin;
+    background-size: 300% 300%;
+  }
+
+  #vault {
+    width: clamp(120px, 30vmin, 180px);
+    height: clamp(120px, 30vmin, 180px);
+    margin: 5vmin auto;
+  }
+
+  .simulation-panel {
+    inset: auto 0 0 0;
+    width: 100%;
+    transform: none;
+    border-radius: 15px 15px 0 0;
+  }
+}
+
+/* Landscape Mobile Optimization */
+@media (max-height: 500px) and (orientation: landscape) {
+  #chat-box {
+    height: 40vh;
+    margin: 1vmin auto;
+  }
+  
+  .trigger-btn {
+    bottom: 5vh;
+  }
+}
+
+/* Enhanced VR Effects */
+.vr-simulator {
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.vr-active {
+  .element {
+    transform: translateZ(calc(10px * var(--vr-active)));
+  }
+}
+
+/* Performance Optimizations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Dynamic Contrast Adjustment */
+@media (prefers-contrast: high) {
+  body {
+    background: #1a1a1a;
+    color: #fff;
+  }
+}
+
+/* Advanced Input Handling */
+#user-input {
+  font-size: clamp(16px, 3vmin, 20px);
+  padding: 0.8em;
+  min-height: 44px;
+}
+
+/* Enhanced Fluid Typography */
+h1, h2, h3 {
+  line-height: 1.2;
+  max-width: 80ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Adaptive Spacing System */
+.stack > * + * {
+  margin-top: clamp(1rem, 5vmin, 2rem);
+}
+
+/* Improved Depth Management */
+.z-layer {
+  transform-style: preserve-3d;
+  
+  @for $i from 1 through 5 {
+    &--#{$i} {
+      transform: translateZ(#{$i * 10}px);
+    }
+  }
+}
+
+/* Dynamic Aspect Ratios */
+.vault {
+  aspect-ratio: 1;
+}
+
+/* Enhanced Rain Performance */
+.rain-container {
+  will-change: transform;
+  contain: strict;
+}
+
+.raindrop {
+  will-change: transform;
+  contain: strict;
+}
+
+/* Progressive Enhancement */
+@supports (height: 100dvh) {
+  body {
+    height: 100dvh;
+  }
+}
+.touch-ripple {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  from { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  to { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+}
+
+.fine-pointer button {
+  transition: all 0.2s ease;
+}
+
+.coarse-pointer button {
+  padding: 12px;
+  min-width: 48px;
+}
+/* CSS TO BE MANAGE BELOW */ 
+ */
+        body {
+            font-family: 'Cascadia', sans-serif;
+            background: radial-gradient(circle at center, #4A90E2, #8E44AD);
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: white;
+            overflow: hidden;
+            perspective: 1000px; /* Enables a VR-like 3D perspective */
+            background-position: center;
+            background-size: 200% 200%;
+            animation: backgroundShift 10s ease-in-out infinite; /* Subtle VR-like background movement */
+        }
+
+        @keyframes backgroundShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Sticky header with smooth animations and shadows */
+        .sticky-header {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            text-align: center;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #ccc;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* 3D shadow effect */
+            z-index: 3;
+            transform-style: preserve-3d;
+            transform: translateZ(10px); /* Slight depth for VR-like feel */
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Rain effect with dynamic parallax depth */
+        .rain-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            perspective: 1000px;
+        }
+
+        .raindrop {
+            position: absolute;
+            bottom: 100%;
+            background: rgba(0, 162, 255, 0.5);
+            width: 2px;
+            height: 14px;
+            animation: fall linear infinite;
+            transform: translateZ(0);
+            animation-duration: calc(1.5s + 1s * var(--speed)); /* Dynamic speed for VR depth */
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+
+        /* Chatbox with immersive scaling effect */
+        #chat-box {
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            padding: 20px;
+            height: 300px;
+            overflow-y: scroll;
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            z-index: 2;
+            animation: fadeInUp 1.5s ease;
+            transform-style: preserve-3d;
+            transform: translateZ(30px) scale(1.05); /* Slight VR depth and scale effect */
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Input box with smooth animations */
+        #input-box {
+            width: 90%;
+            margin: 10px auto 20px auto; /* Adjusted margins for better spacing */
+            text-align: center;
+        }
+
+        #input-box p {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* Button styling with 3D hover effects */
+        .trigger-btn {
+            position: absolute;
+            bottom: 10%;
+            transform: translateX(-50%);
+            padding: 12px 28px;
+            background-color: #fff;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            z-index: 2;
+            transform-style: preserve-3d;
+            transform: translateZ(30px);
+            display: block; /* Ensure it takes the full width */
+            margin: 0 auto; /* Center button */
+        }
+
+        .trigger-btn:hover {
+            background-color: #ddd;
+            transform: translateY(-10px) scale(1.1); /* Hover for VR-like depth */
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5); /* 3D depth on hover */
+        }
+
+        /* Vault with a gamified 3D flip effect */
+        #vault {
+            width: 180px;
+            height: 180px;
+            background-color: #333;
+            border: 3px solid black;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 28px;
+            margin: 50px auto; /* Adjusted margin for better spacing */
+            transition: transform 1s ease-in-out, box-shadow 0.3s ease;
+            perspective: 1000px;
+            z-index: 2;
+            animation: vaultPulse 2.5s infinite;
+            transform-style: preserve-3d;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes vaultPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .vault-open {
+            transform: rotateY(180deg);
+            background-color: #FFD700;
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.5); /* Gold shadow on open */
+        }
+
+        .vault p {
+            color: #fff;
+            font-size: 12px;
+            align-items: baseline;
+        }
+
+        .vault p::after {
+            content: 'Click...';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 12px;
+        }
+
+        .vault p:hover {
+            color: #FFD700;
+        }
+
+        /* Footer credit with soft glow */
+        .credit {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            text-align: center;
+            font-size: 1rem;
+            z-index: 2;
+            animation: fadeIn 1.5s ease-in-out;
+            opacity: 0.9;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Soft glowing text */
+        }
+
+        footer {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            z-index: 2;
+            animation: fadeIn 1.5s ease-in-out;
+            opacity: 0.9;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive design for wide screens */
+        @media (min-width: 1024px) {
+            body {
+                background-size: cover;
+            }
+
+            #chat-box {
+                width: 70%;
+            }
+
+            .sticky-header {
+                font-size: 2rem;
+            }
+        }
+
+        /* Responsive design for small screens */
+        @media (max-width: 600px) {
+            .trigger-btn {
+                font-size: 0.8rem;
+                padding: 10px 16px;
+            }
+
+            #chat-box {
+                height: 250px; /* Reduced height for small screens */
+            }
+        }
+    /* Enhanced VR-ready styles */
+    :root {
+      --vr-active: 0; /* Toggle variable for VR effects */
+    }
+    body {
+      font-family: 'Cascadia', sans-serif;
+      background: radial-gradient(circle at center, #4A90E2, #8E44AD);
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: white;
+      overflow: hidden;
+      perspective: calc(1000px + (1000 * var(--vr-active)));
+      transform-style: preserve-3d;
+    }
+    /* VR Simulation Layer */
+    .vr-simulator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    /* Gamification Elements */
+    .xp-bar {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 200px;
+      height: 20px;
+      background: #333;
+      border-radius: 10px;
+      overflow: hidden;
+      z-index: 100;
+    }
+    .xp-progress {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #FFD700, #FFA500);
+      transition: width 0.5s ease;
+    }
+    .achievement-badge {
+      position: fixed;
+      bottom: 20px;
+      right: -200px;
+      background: #2ecc71;
+      padding: 10px 20px;
+      border-radius: 15px;
+      transition: right 0.5s ease;
+      z-index: 100;
+    }
+    /* Simulation Panel */
+    .simulation-panel {
+      position: fixed;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.7);
+      padding: 20px;
+      border-radius: 15px;
+      display: none;
+      z-index: 100;
+    }
+    /* VR Toggle */
+    .vr-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #2ecc71;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    .vr-toggle.warning {
+      background: #e74c3c;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    /* Sticky header */
+    .sticky-header {
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 15px;
+      position: sticky;
+      top: 0;
+      text-align: center;
+      font-size: 1.5rem;
+      border-bottom: 2px solid #ccc;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      z-index: 3;
+      transform-style: preserve-3d;
+      transform: translateZ(10px);
+    }
+    /* Rain effect */
+    .rain-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      perspective: 1000px;
+    }
+    .raindrop {
+      position: absolute;
+      bottom: 100%;
+      background: rgba(0, 162, 255, 0.5);
+      width: 2px;
+      height: 14px;
+      animation: fall linear infinite;
+      transform: translateZ(0);
+      animation-duration: calc(1.5s + 1s * var(--speed));
+    }
+    @keyframes fall {
+      to { transform: translateY(100vh); }
+    }
+    /* Chatbox */
+    #chat-box {
+      border: 1px solid #ccc;
+      border-radius: 15px;
+      padding: 20px;
+      height: 300px;
+      overflow-y: scroll;
+      background-color: rgba(255, 255, 255, 0.2);
+      width: 90%;
+      max-width: 600px;
+      margin: 20px auto;
+      z-index: 2;
+      transform-style: preserve-3d;
+      transform: translateZ(30px) scale(1.05);
+    }
+    /* Input box */
+    #input-box {
+      width: 90%;
+      margin: 10px auto 20px auto;
+      text-align: center;
+    }
+    #input-box p {
+      font-size: 12px;
+      color: #888;
+    }
+    /* Trigger button */
+    .trigger-btn {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 28px;
+      background-color: #fff;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      z-index: 2;
+      transform-style: preserve-3d;
+      display: block;
+      margin: 0 auto;
+    }
+    .trigger-btn:hover {
+      background-color: #ddd;
+      transform: translateY(-10px) scale(1.1);
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+    }
+    /* Vault */
+    #vault {
+      width: 180px;
+      height: 180px;
+      background-color: #333;
+      border: 3px solid black;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 28px;
+      margin: 50px auto;
+      transition: transform 1s ease-in-out, box-shadow 0.3s ease;
+      perspective: 1000px;
+      z-index: 2;
+      animation: vaultPulse 2.5s infinite;
+      transform-style: preserve-3d;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    @keyframes vaultPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .vault-open {
+      transform: rotateY(180deg);
+      background-color: #FFD700;
+      box-shadow: 0 10px 20px rgba(255, 215, 0, 0.5);
+    }
+    .vault p {
+      color: #fff;
+      font-size: 12px;
+      align-items: baseline;
+    }
+    .vault p::after {
+      content: 'Click...';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 12px;
+    }
+    .vault p:hover {
+      color: #FFD700;
+    }
+    /* Footer */
+    .credit {
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      text-align: center;
+      font-size: 1rem;
+      z-index: 2;
+    }
+    footer {
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      z-index: 2;
+    }
+    /* Responsive Design */
+    @media (min-width: 1024px) {
+      body { background-size: cover; }
+      #chat-box { width: 70%; }
+      .sticky-header { font-size: 2rem; }
+    }
+    @media (max-width: 600px) {
+      .trigger-btn { font-size: 0.8rem; padding: 10px 16px; }
+      #chat-box { height: 250px; }
+    }
