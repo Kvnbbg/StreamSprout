@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="StreamSprout - AI-powered SEO optimization and VR-ready web experiences">
+    <meta name="keywords" content="SEO, AI content, VR web, real-time analytics, web development">
+    <title>StreamSprout | AI-Optimized Web Platform</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 3s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Preline UI -->
+    <script src="https://cdn.jsdelivr.net/npm/@preline/preline@2.0.0/dist/preline.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .vr-toggle {
+            transition: all 0.3s ease;
+        }
+        .vr-toggle.active {
+            background-color: #0ea5e9;
+            color: white;
+        }
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        @media (max-width: 768px) {
+            .mobile-stack {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-seedling text-primary-500 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-900 dark:text-white">StreamSprout</span>
+                    </div>
+                </div>
+                <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
+                    <a href="#features" class="text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium">Features</a>
+                    <a href="#solutions" class="text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium">Solutions</a>
+                    <a href="#pricing" class="text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium">Pricing</a>
+                    <a href="#contact" class="text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    <button id="theme-toggle" class="p-2 rounded-full focus:outline-none">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+                    <button id="vr-toggle" class="vr-toggle px-4 py-2 border border-primary-500 text-primary-500 rounded-md text-sm font-medium">
+                        <i class="fas fa-vr-cardboard mr-2"></i>VR Mode
+                    </button>
+                </div>
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 dark:hover:bg-gray-700">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#features" class="text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 block px-3 py-2 rounded-md text-base font-medium">Features</a>
+                <a href="#solutions" class="text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 block px-3 py-2 rounded-md text-base font-medium">Solutions</a>
+                <a href="#pricing" class="text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 block px-3 py-2 rounded-md text-base font-medium">Pricing</a>
+                <a href="#contact" class="text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 block px-3 py-2 rounded-md text-base font-medium">Contact</a>
+                <div class="flex space-x-4 px-3 py-2">
+                    <button id="theme-toggle-mobile" class="p-2 rounded-full focus:outline-none">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+                    <button id="vr-toggle-mobile" class="vr-toggle px-4 py-2 border border-primary-500 text-primary-500 rounded-md text-sm font-medium">
+                        <i class="fas fa-vr-cardboard mr-2"></i>VR Mode
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-primary-500 to-primary-700 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="md:flex items-center justify-between">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">AI-Optimized Web Experiences</h1>
+                    <p class="text-xl mb-8">StreamSprout combines SEO automation, real-time analytics, and VR-ready interfaces to grow your digital presence.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#contact" class="bg-white text-primary-600 hover:bg-gray-100 px-6 py-3 rounded-md text-lg font-semibold text-center transition duration-300">Get Started</a>
+                        <a href="#features" class="border-2 border-white text-white hover:bg-white hover:text-primary-600 px-6 py-3 rounded-md text-lg font-semibold text-center transition duration-300">Learn More</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 relative">
+                    <div class="relative w-full h-64 md:h-96 bg-white/20 rounded-xl overflow-hidden backdrop-blur-sm">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i class="fas fa-seedling text-6xl md:text-8xl text-white/30 animate-spin-slow"></i>
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="bg-white/10 rounded-full w-48 h-48 md:w-64 md:h-64 flex items-center justify-center">
+                                <div class="bg-white/10 rounded-full w-32 h-32 md:w-48 md:h-48 flex items-center justify-center">
+                                    <div class="bg-white/10 rounded-full w-16 h-16 md:w-24 md:h-24 flex items-center justify-center">
+                                        <i class="fas fa-chart-line text-white text-2xl md:text-4xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- XP Progress Bar -->
+    <div class="bg-gray-200 dark:bg-gray-800 h-4">
+        <div id="xp-progress" class="progress-bar bg-gradient-to-r from-green-400 to-blue-500 h-full w-0"></div>
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Powerful Features</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">Everything you need to build, optimize, and grow your online presence</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card-hover bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-md transition-all duration-300">
+                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-robot text-primary-600 dark:text-primary-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">AI Content Generation</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Automatically generate SEO-optimized content tailored to your audience with our advanced AI models.</p>
+                </div>
+                
+                <div class="card-hover bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-md transition-all duration-300">
+                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-pie text-primary-600 dark:text-primary-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Real-time Analytics</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Track performance metrics in real-time with our comprehensive analytics dashboard.</p>
+                </div>
+                
+                <div class="card-hover bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-md transition-all duration-300">
+                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-vr-cardboard text-primary-600 dark:text-primary-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">VR-Ready Interfaces</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Toggle between standard and VR modes for immersive user experiences.</p>
+                </div>
+                
+                <div class="card-hover bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-md transition-all duration-300">
+                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-primary-600 dark:text-primary-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Responsive Design</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Perfectly optimized for all devices from mobile to desktop to VR headsets.</p>
+                </div>
+                
+                <div class="card-hover bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-md transition-all duration-300">
+                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-bolt text-primary-600 dark:text-primary-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Rapid Deployment</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Get your site live in minutes with our intuitive design tools and templates.</p>
+                </div>
+                
+                <div class="card-hover bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-md transition-all duration-300">
+                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-primary-600 dark:text-primary-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Enterprise Security</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Bank-grade security protocols to protect your data and your customers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VR Simulation Section -->
+    <section id="vr-demo" class="py-20 bg-gray-100 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="md:flex items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Immersive VR Experience</h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-6">Toggle VR mode to experience your website in a fully immersive 3D environment. Our technology automatically adapts your content for virtual reality.</p>
+                    <div class="bg-yellow-100 dark:bg-yellow-900/30 border-l-4 border-yellow-500 dark:border-yellow-400 p-4 mb-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-triangle text-yellow-500 dark:text-yellow-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700 dark:text-yellow-300">
+                                    <strong>VR Development Mode</strong> - Some features may be limited in the browser preview. For full VR experience, use a compatible headset.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="vr-demo-button" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-md text-lg font-semibold transition duration-300 flex items-center">
+                        <i class="fas fa-vr-cardboard mr-2"></i> Try VR Demo
+                    </button>
+                </div>
+                <div class="md:w-1/2 relative">
+                    <div class="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-xl">
+                        <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-600 relative">
+                            <div id="vr-preview" class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center p-8">
+                                    <i class="fas fa-vr-cardboard text-6xl text-gray-400 mb-4"></i>
+                                    <h3 class="text-xl font-bold text-gray-700 dark:text-gray-200 mb-2">VR Mode Preview</h3>
+                                    <p class="text-gray-500 dark:text-gray-400">Click the button to activate VR simulation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Chat Demo -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center
