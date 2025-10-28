@@ -84,17 +84,43 @@ app.post('/players', async (req, res) => {
 const apiKey = process.env.BEDROCK_API_KEY; 
 const endpoint = process.env.BEDROCK_API_ENDPOINT; 
 
-// Function to call the LLM API
-const getTeamComposition = async (prompt) => {
-    try {
-        const { data } = await axios.post(endpoint, { prompt, max_tokens: 300 }, {
-            headers: { 'Authorization': `Bearer ${apiKey}` },
-        });
-        return data; 
-    } catch (error) {
-        console.error('Error while calling LLM API:', error.message);
-        throw new Error('Could not retrieve team composition.');
+// Shared helper for Bedrock LLM calls
+const callBedrockLLM = async (prompt, { maxTokens = 300 } = {}) => {
+    if (!prompt) {
+        throw new Error('A prompt is required to query the LLM API.');
     }
+
+    if (!endpoint || !apiKey) {
+        throw new Error('LLM API credentials are not configured.');
+    }
+
+    try {
+        const { data } = await axios.post(
+            endpoint,
+            { prompt, max_tokens: maxTokens },
+            { headers: { Authorization: `Bearer ${apiKey}` } }
+        );
+
+        if (!data) {
+            throw new Error('The LLM API returned an empty response.');
+        }
+
+        return data;
+    } catch (error) {
+        const message = error.response?.data?.error || error.message;
+        console.error('Error while calling LLM API:', message);
+        throw new Error(message);
+    }
+};
+
+// Function to call the LLM API for team compositions
+const getTeamComposition = async (prompt) => callBedrockLLM(prompt, { maxTokens: 300 });
+
+// Function to call the LLM API for general questions
+const getResponseFromLLM = async (prompt) => {
+    const data = await callBedrockLLM(prompt, { maxTokens: 200 });
+    const answer = data?.answer ?? data?.result ?? data?.outputText;
+    return typeof answer === 'string' ? answer : JSON.stringify(data);
 };
 
 // Route to create a team composition
@@ -120,10 +146,13 @@ app.post('/create-team', async (req, res) => {
 
 // Route to handle question submissions to LLM
 app.post('/ask', async (req, res) => {
-    const { question } = req.body; 
+    const { question } = req.body;
+    if (!question) {
+        return res.status(400).json({ error: 'Question is required' });
+    }
     try {
-        const answer = await getResponseFromLLM(question); 
-        res.json({ answer }); 
+        const answer = await getResponseFromLLM(question);
+        res.json({ answer });
     } catch (error) {
         console.error('Error processing question:', error.message);
         res.status(500).json({ error: 'Failed to process your question', details: error.message });
