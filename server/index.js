@@ -8,12 +8,10 @@ const cors = require('cors'); // Middleware to enable Cross-Origin Resource Shar
 const bodyParser = require('body-parser'); // Middleware to parse request bodies
 const axios = require('axios'); // Library for making HTTP requests
 const path = require('path'); // Module for handling file paths
-
+const rateLimit = require('express-rate-limit'); // Middleware to rate limit requests
 // Create an Express application
 const app = express();
 const PORT = process.env.PORT || 5000; // Port configuration
-
-// Middleware configuration
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse JSON bodies in incoming requests
 app.use(bodyParser.json()); // Additional JSON body parser
@@ -28,8 +26,8 @@ const pool = new Pool({
     port: process.env.DB_PORT || 5432, // Database port
 });
 
-// Serve the main HTML file
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../public/index.html')));
+// Serve the main HTML file with rate limiting
+app.get('/', indexLimiter, (req, res) => res.sendFile(path.join(__dirname, '../public/index.html')));
 
 // Database query helper function
 const queryDatabase = async (query, params) => {
