@@ -255,12 +255,27 @@ find a better way <!DOCTYPE html>
     });
 
     // AI Chat Simulation
+    // Helper function to escape HTML
+    function escapeHTML(str) {
+      return str.replace(/[&<>"'/]/g, function (char) {
+        switch (char) {
+          case "&": return "&amp;";
+          case "<": return "&lt;";
+          case ">": return "&gt;";
+          case '"': return "&quot;";
+          case "'": return "&#39;";
+          case "/": return "&#x2F;";
+          default: return char;
+        }
+      });
+    }
     document.getElementById('chat-send').addEventListener('click', () => {
       const input = document.getElementById('chat-input').value;
       const resp = document.getElementById('chat-response');
       resp.innerHTML = '<p>Analyzing... <i class="fas fa-spinner fa-spin"></i></p>';
       setTimeout(() => {
-        resp.innerHTML = `<p>Here's some SEO tips for: <strong>${input}</strong></p><ul class="list-disc list-inside"><li>Use relevant keywords.</li><li>Optimize meta descriptions.</li><li>Ensure mobile-friendliness.</li></ul>`;
+        const safeInput = escapeHTML(input);
+        resp.innerHTML = `<p>Here's some SEO tips for: <strong>${safeInput}</strong></p><ul class="list-disc list-inside"><li>Use relevant keywords.</li><li>Optimize meta descriptions.</li><li>Ensure mobile-friendliness.</li></ul>`;
       }, 1000);
     });
   </script>
