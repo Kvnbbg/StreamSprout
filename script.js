@@ -70,7 +70,7 @@
       if (event.which === 13 && userInput.val().trim() !== '') {
         const userMessage = userInput.val().trim();
         userInput.val('');
-        chatLog.append('<div>User: ' + userMessage + '</div>');
+        chatLog.append($('<div>').text('User: ' + userMessage));
         chatLog.scrollTop(chatLog[0].scrollHeight);
         sendMessageToAPI(userMessage);
       }
