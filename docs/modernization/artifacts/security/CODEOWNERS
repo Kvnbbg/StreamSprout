@@ -1,0 +1,22 @@
+# Assign ownership to enforce expert review coverage.
+# Format: file-pattern  owner1  owner2
+
+# Backend Java services
+TensorFlowLlmApplication.java      @streamsprout/platform-ml  @streamsprout/security
+POM.xml                            @streamsprout/platform-ml  @streamsprout-build
+
+# Node/Express API
+server/**                          @streamsprout/backend      @streamsprout-security
+package.json                       @streamsprout/backend      @streamsprout-devx
+
+# Front-end assets
+public/**                          @streamsprout/frontend
+styles.css                         @streamsprout/frontend
+
+# Data & ML notebooks/scripts
+ai.py                              @streamsprout/ml-research  @streamsprout-security
+
+# Infrastructure & modernization artifacts
+Dockerfile                         @streamsprout-devops
+valor_db/**                        @streamsprout-data
+docs/modernization/**             @streamsprout-architecture
