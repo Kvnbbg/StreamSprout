@@ -9,6 +9,11 @@ const bodyParser = require('body-parser'); // Middleware to parse request bodies
 const axios = require('axios'); // Library for making HTTP requests
 const path = require('path'); // Module for handling file paths
 const rateLimit = require('express-rate-limit'); // Middleware to rate limit requests
+// Rate limiter for index route: max 100 requests per 15 minutes
+const indexLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
 // Create an Express application
 const app = express();
 const PORT = process.env.PORT || 5000; // Port configuration
