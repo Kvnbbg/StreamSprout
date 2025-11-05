@@ -1,0 +1,122 @@
+name: StreamSprout CI
+
+on:
+  push:
+    branches: ["main", "release/*"]
+  pull_request:
+    branches: ["main", "release/*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  security-events: write
+
+jobs:
+  node-backend:
+    name: Node API Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Static analysis
+        run: npx eslint .
+        continue-on-error: true
+      - name: Unit tests & type checks
+        run: |
+          npm run lint --if-present
+          npm test --if-present
+          node --check server/index.js
+
+  java-backend:
+    name: Spring Boot Build Verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+      - name: Maven verify
+        run: mvn -B -DskipTests=false verify
+
+  python-tooling:
+    name: Python Toolchain Hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies if present
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install --quiet ruff
+      - name: Lint scripts
+        run: ruff check ai.py
+
+  security:
+    name: Security & Supply-Chain
+    runs-on: ubuntu-latest
+    needs: [node-backend, java-backend, python-tooling]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Dependency review
+        uses: actions/dependency-review-action@v4
+      - name: Node audit
+        run: npm audit --audit-level=moderate
+      - name: Maven vulnerability scan
+        run: |
+          mvn -B org.owasp:dependency-check-maven:check -DskipTests
+      - name: Upload dependency-check report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: target/dependency-check-report.html
+
+  container-image:
+    name: Build & Push API Container
+    runs-on: ubuntu-latest
+    needs: [security]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: true
+      - name: Build image
+        run: |
+          docker build -t ${{ github.repository }}:ci -f Dockerfile .
+      - name: Push image
+        run: |
+          docker tag ${{ github.repository }}:ci ${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:${{ github.sha }}
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:${{ github.sha }}
+
+  deploy-preview:
+    name: Ephemeral Preview
+    runs-on: ubuntu-latest
+    needs: [container-image]
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy to preview environment
+        run: |
+          echo "Deploy placeholder - integrate with AWS Proton / Copilot or Render"
