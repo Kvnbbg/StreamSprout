@@ -46,32 +46,41 @@
 3. **Setup Configuration**:
    - Create a `.env` file in the root directory with the following environment variables:
      ```
-     AWS_ACCESS_KEY_ID=your_access_key
-     AWS_SECRET_ACCESS_KEY=your_secret_key
-     DATABASE_URL=your_database_url
-     API_KEY_RIOT_GAMES=your_riot_games_api_key
+     # PostgreSQL (either provide DATABASE_URL or the individual DB_* fields below)
+     DATABASE_URL=postgres://user:password@localhost:5432/valort_db
+     DB_USER=your_username
+     DB_PASSWORD=your_password
+     DB_HOST=localhost
+     DB_NAME=valort_db
+     DB_PORT=5432
+
+     # Amazon Bedrock proxy credentials
+     BEDROCK_API_KEY=your_bedrock_api_key
+     BEDROCK_API_ENDPOINT=https://your-bedrock-endpoint
      ```
 
 ### Running the Application
 
-- **Frontend**:
-  ```bash
-  cd client
-  npm start
-  ```
+```bash
+npm start
+```
 
-- **Backend**:
-  ```bash
-  cd server
-  npm start
-  ```
+The Express server serves the static UI from `public/` and exposes the API routes
+documented in `server/index.js`.
+
+## 📦 Project Layout (clarifying the stack)
+
+- **Backend (Node/Express)**: `server/index.js` connects to PostgreSQL and exposes `/players`, `/ask`,
+  and related routes.
+- **Frontend (static HTML/CSS/JS)**: `public/index.html` plus `styles.css` and `script.js`.
+- **Java/Spring sample (not wired to build)**: `POM.xml` and `TensorFlowLlmApplication.java` are
+  experimental artifacts and are not used by the Node server.
 
 ### Development Stack
 
-- **Frontend**: Built with React, using Redux for state management to handle dynamic data flows.
-- **Backend**: Developed with Node.js and Express, with PostgreSQL serving as the primary database.
-- **AI Integration**: Amazon Bedrock is used for generative AI capabilities, providing advanced data analysis and conversational AI.
-- **Esports Data Integration**: Direct API connections to Riot Games for real-time VALORANT esports statistics and data.
+- **Frontend**: Static HTML/CSS/JavaScript served from `public/`.
+- **Backend**: Node.js + Express with PostgreSQL.
+- **AI Integration**: Amazon Bedrock proxy endpoint for LLM responses.
 
 ## 🤝 Contributing
 

@@ -23,13 +23,18 @@ app.use(bodyParser.json()); // Additional JSON body parser
 app.use(express.static('public')); // Serve static files from the 'public' directory
 
 // PostgreSQL connection setup using environment variables
-const pool = new Pool({
-    user: process.env.DB_USER || 'your_username', // Database username
-    host: process.env.DB_HOST || 'localhost', // Database host
-    database: process.env.DB_NAME || 'valort_db', // Database name
-    password: process.env.DB_PASSWORD || 'your_password', // Database password
-    port: process.env.DB_PORT || 5432, // Database port
-});
+const connectionString = process.env.DATABASE_URL;
+const pool = new Pool(
+    connectionString
+        ? { connectionString }
+        : {
+              user: process.env.DB_USER || 'your_username', // Database username
+              host: process.env.DB_HOST || 'localhost', // Database host
+              database: process.env.DB_NAME || 'valort_db', // Database name
+              password: process.env.DB_PASSWORD || 'your_password', // Database password
+              port: process.env.DB_PORT || 5432, // Database port
+          }
+);
 
 // Serve the main HTML file with rate limiting
 app.get('/', indexLimiter, (req, res) => res.sendFile(path.join(__dirname, '../public/index.html')));
@@ -40,8 +45,14 @@ const queryDatabase = async (query, params) => {
         const result = await pool.query(query, params);
         return result.rows;
     } catch (error) {
+        console.error('Database query failed:', error.message);
         throw new Error(error.message);
     }
+};
+
+const requireFields = (fields, source) => {
+    const missing = fields.filter((field) => !source?.[field]);
+    return missing.length ? missing : null;
 };
 
 // Route to get all players
@@ -71,6 +82,10 @@ app.get('/players/:id', async (req, res) => {
 // Route to add a new player
 app.post('/players', async (req, res) => {
     const { name, role, rank, agent } = req.body; 
+    const missing = requireFields(['name', 'role', 'rank', 'agent'], req.body);
+    if (missing) {
+        return res.status(400).json({ error: `Missing required fields: ${missing.join(', ')}` });
+    }
     try {
         const newPlayer = await queryDatabase(
             'INSERT INTO players (name, role, rank, agent) VALUES ($1, $2, $3, $4) RETURNING *',
@@ -150,7 +165,7 @@ app.post('/create-team', async (req, res) => {
 // Route to handle question submissions to LLM
 app.post('/ask', async (req, res) => {
     const { question } = req.body;
-    if (!question) {
+    if (!question || !question.trim()) {
         return res.status(400).json({ error: 'Question is required' });
     }
     try {
@@ -165,6 +180,9 @@ app.post('/ask', async (req, res) => {
 // Function to search for players by name
 app.get('/search-players', async (req, res) => {
     const { name } = req.query; 
+    if (!name) {
+        return res.status(400).json({ error: 'Name query parameter is required' });
+    }
     try {
         const players = await queryDatabase('SELECT * FROM players WHERE name ILIKE $1', [`%${name}%`]);
         res.status(200).json(players);
@@ -177,6 +195,10 @@ app.get('/search-players', async (req, res) => {
 // Route to build a team based on role and agent
 app.post('/build-team', async (req, res) => {
     const { role, agent } = req.body; 
+    const missing = requireFields(['role', 'agent'], req.body);
+    if (missing) {
+        return res.status(400).json({ error: `Missing required fields: ${missing.join(', ')}` });
+    }
     try {
         const players = await queryDatabase('SELECT * FROM players WHERE role = $1 AND agent = $2', [role, agent]);
         res.status(200).json(players);
