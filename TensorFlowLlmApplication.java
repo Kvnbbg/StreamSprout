@@ -1,5 +1,8 @@
 package com.example.tensorflowllm;
 
+// NOTE: This Spring Boot/TensorFlow sample is not wired into the Node/Express
+// runtime in this repository. It remains as a standalone experiment.
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
