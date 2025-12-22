@@ -1,335 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VALORANT Esports Assistant</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        /* General body styling with VR parallax background */
-        body {
-            font-family: 'Cascadia', sans-serif;
-            background: radial-gradient(circle at center, #4A90E2, #8E44AD);
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            color: white;
-            overflow: hidden;
-            perspective: 1000px; /* Enables a VR-like 3D perspective */
-            background-position: center;
-            background-size: 200% 200%;
-            animation: backgroundShift 10s ease-in-out infinite; /* Subtle VR-like background movement */
-        }
-
-        @keyframes backgroundShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Sticky header with smooth animations and shadows */
-        .sticky-header {
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 15px;
-            position: sticky;
-            top: 0;
-            text-align: center;
-            font-size: 1.5rem;
-            border-bottom: 2px solid #ccc;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* 3D shadow effect */
-            z-index: 3;
-            transform-style: preserve-3d;
-            transform: translateZ(10px); /* Slight depth for VR-like feel */
-            animation: slideDown 1s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-50%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* Rain effect with dynamic parallax depth */
-        .rain-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-            perspective: 1000px;
-        }
-
-        .raindrop {
-            position: absolute;
-            bottom: 100%;
-            background: rgba(0, 162, 255, 0.5);
-            width: 2px;
-            height: 14px;
-            animation: fall linear infinite;
-            transform: translateZ(0);
-            animation-duration: calc(1.5s + 1s * var(--speed)); /* Dynamic speed for VR depth */
-        }
-
-        @keyframes fall {
-            to { transform: translateY(100vh); }
-        }
-
-        /* Chatbox with immersive scaling effect */
-        #chat-box {
-            border: 1px solid #ccc;
-            border-radius: 15px;
-            padding: 20px;
-            height: 300px;
-            overflow-y: scroll;
-            background-color: rgba(255, 255, 255, 0.2);
-            width: 90%;
-            max-width: 600px;
-            margin: 20px auto;
-            z-index: 2;
-            animation: fadeInUp 1.5s ease;
-            transform-style: preserve-3d;
-            transform: translateZ(30px) scale(1.05); /* Slight VR depth and scale effect */
-        }
-
-        @keyframes fadeInUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* Input box with smooth animations */
-        #input-box {
-            width: 90%;
-            margin: 10px auto 20px auto; /* Adjusted margins for better spacing */
-            text-align: center;
-        }
-
-        #input-box p {
-            font-size: 12px;
-            color: #888;
-        }
-
-        /* Button styling with 3D hover effects */
-        .trigger-btn {
-            position: absolute;
-            bottom: 10%;
-            transform: translateX(-50%);
-            padding: 12px 28px;
-            background-color: #fff;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1rem;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-            z-index: 2;
-            transform-style: preserve-3d;
-            transform: translateZ(30px);
-            display: block; /* Ensure it takes the full width */
-            margin: 0 auto; /* Center button */
-        }
-
-        .trigger-btn:hover {
-            background-color: #ddd;
-            transform: translateY(-10px) scale(1.1); /* Hover for VR-like depth */
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5); /* 3D depth on hover */
-        }
-
-        /* Vault with a gamified 3D flip effect */
-        #vault {
-            width: 180px;
-            height: 180px;
-            background-color: #333;
-            border: 3px solid black;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 28px;
-            margin: 50px auto; /* Adjusted margin for better spacing */
-            transition: transform 1s ease-in-out, box-shadow 0.3s ease;
-            perspective: 1000px;
-            z-index: 2;
-            animation: vaultPulse 2.5s infinite;
-            transform-style: preserve-3d;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        @keyframes vaultPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .vault-open {
-            transform: rotateY(180deg);
-            background-color: #FFD700;
-            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.5); /* Gold shadow on open */
-        }
-
-        .vault p {
-            color: #fff;
-            font-size: 12px;
-            align-items: baseline;
-        }
-
-        .vault p::after {
-            content: 'Click...';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            font-size: 12px;
-        }
-
-        .vault p:hover {
-            color: #FFD700;
-        }
-
-        /* Footer credit with soft glow */
-        .credit {
-            position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #fff;
-            text-align: center;
-            font-size: 1rem;
-            z-index: 2;
-            animation: fadeIn 1.5s ease-in-out;
-            opacity: 0.9;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Soft glowing text */
-        }
-
-        footer {
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: auto;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-            z-index: 2;
-            animation: fadeIn 1.5s ease-in-out;
-            opacity: 0.9;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Responsive design for wide screens */
-        @media (min-width: 1024px) {
-            body {
-                background-size: cover;
-            }
-
-            #chat-box {
-                width: 70%;
-            }
-
-            .sticky-header {
-                font-size: 2rem;
-            }
-        }
-
-        /* Responsive design for small screens */
-        @media (max-width: 600px) {
-            .trigger-btn {
-                font-size: 0.8rem;
-                padding: 10px 16px;
-            }
-
-            #chat-box {
-                height: 250px; /* Reduced height for small screens */
-            }
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StreamSprout | VALORANT Ops & AI Assistant</title>
+    <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-    <header class="sticky-header">VALORANT Esports Assistant</header>
-    <div class="rain-container">
-        <!-- Generate rain drops dynamically -->
-        <script>
-            function createRaindrop() {
-                const drop = document.createElement('div');
-                drop.className = 'raindrop';
-                drop.style.left = Math.random() * 100 + 'vw';
-                drop.style.animationDuration = Math.random() * 2 + 1 + 's'; // Random duration
-                drop.style.setProperty('--speed', Math.random()); // Random speed
-                document.querySelector('.rain-container').appendChild(drop);
-                setTimeout(() => drop.remove(), 3000); // Remove drop after falling
-            }
-            setInterval(createRaindrop, 200); // Create drops every 200ms
-        </script>
+    <div class="app">
+        <header class="app-header">
+            <div class="brand">
+                <div class="brand-mark">SS</div>
+                <div>
+                    <p class="eyebrow">VALORANT esports ops</p>
+                    <h1>StreamSprout Command Desk</h1>
+                </div>
+            </div>
+            <nav class="status-strip" aria-live="polite">
+                <span class="status-pill" id="api-status">Checking API...</span>
+                <span class="status-pill" id="sync-status">Syncing roster...</span>
+                <span class="status-pill" id="last-updated">Last updated: --</span>
+            </nav>
+        </header>
+
+        <main class="app-main">
+            <section class="hero">
+                <div>
+                    <h2>Manage your roster, scout smarter, and ask the AI for instant strategy.</h2>
+                    <p>
+                        StreamSprout brings VALORANT esports analytics, roster management, and LLM-assisted scouting into
+                        one clean workflow. Track your players, filter by role or agent, and brief leadership with
+                        credible AI insights.
+                    </p>
+                </div>
+                <div class="hero-card">
+                    <h3>Today’s focus</h3>
+                    <ul>
+                        <li>Roster health and agent coverage</li>
+                        <li>Role balance for upcoming scrims</li>
+                        <li>AI briefs for match preparation</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="grid">
+                <article class="card">
+                    <header>
+                        <h3>Roster overview</h3>
+                        <p class="muted">Search by name to pull a player profile instantly.</p>
+                    </header>
+                    <div class="field">
+                        <label for="search">Search players</label>
+                        <input id="search" type="text" placeholder="e.g. Jett, Sage, TenZ" />
+                    </div>
+                    <div id="roster-state" class="state">Loading roster...</div>
+                    <ul id="roster-list" class="roster-list" aria-live="polite"></ul>
+                </article>
+
+                <article class="card">
+                    <header>
+                        <h3>Add a player</h3>
+                        <p class="muted">Keep the roster accurate with structured entries.</p>
+                    </header>
+                    <form id="player-form" class="form-grid">
+                        <div class="field">
+                            <label for="player-name">Player name</label>
+                            <input id="player-name" type="text" required />
+                        </div>
+                        <div class="field">
+                            <label for="player-role">Role</label>
+                            <input id="player-role" type="text" required />
+                        </div>
+                        <div class="field">
+                            <label for="player-rank">Rank</label>
+                            <input id="player-rank" type="text" required />
+                        </div>
+                        <div class="field">
+                            <label for="player-agent">Signature agent</label>
+                            <input id="player-agent" type="text" required />
+                        </div>
+                        <button type="submit" class="primary">Save to roster</button>
+                        <p id="player-feedback" class="feedback" role="status"></p>
+                    </form>
+                </article>
+
+                <article class="card">
+                    <header>
+                        <h3>AI strategy assistant</h3>
+                        <p class="muted">Ask about scouting, comps, or match prep.</p>
+                    </header>
+                    <div class="chat">
+                        <div id="chat-log" class="chat-log" aria-live="polite"></div>
+                        <form id="ask-form" class="chat-input">
+                            <input id="ask-input" type="text" placeholder="Ask the assistant..." required />
+                            <button type="submit" class="primary">Ask AI</button>
+                        </form>
+                        <p id="ask-feedback" class="feedback" role="status"></p>
+                    </div>
+                </article>
+            </section>
+
+            <section class="card analytics">
+                <header>
+                    <h3>Analytics snapshot</h3>
+                    <p class="muted">Live rollup of roster data for quick executive briefs.</p>
+                </header>
+                <div class="analytics-grid">
+                    <div>
+                        <p class="metric-label">Total players tracked</p>
+                        <p class="metric" id="metric-total">--</p>
+                    </div>
+                    <div>
+                        <p class="metric-label">Top role</p>
+                        <p class="metric" id="metric-role">--</p>
+                    </div>
+                    <div>
+                        <p class="metric-label">Most played agent</p>
+                        <p class="metric" id="metric-agent">--</p>
+                    </div>
+                </div>
+                <p class="muted" id="analytics-footnote">Roster analytics update automatically.</p>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            Built for VALORANT esports ops. Static UI served from <code>public/</code> with Express API routes
+            powering roster and AI workflows.
+        </footer>
     </div>
-    <div id="vault" class="vault">
-        <p>Vault</p>
-    </div>
-    <div id="chat-box">
-        <div id="chat-log"></div>
-        <div id="input-box">
-            <input type="text" id="user-input" placeholder="Type your message...">
-            <p>Press Enter to send</p>
-        </div>
-    </div>
-    <button class="trigger-btn" id="chat-trigger">Ask AI</button>
-    <br>
-    <br>
-    <footer class="credit">Created with ❤️ for VALORANT enthusiasts</footer>
 
-    <script>
-        // Chat functionality
-        const chatBox = $('#chat-box');
-        const chatLog = $('#chat-log');
-        const userInput = $('#user-input');
-
-        $('#chat-trigger').on('click', function() {
-            chatBox.toggle();
-            userInput.focus();
-        });
-
-        userInput.on('keypress', function(event) {
-            if (event.which === 13 && userInput.val().trim() !== '') { // Enter key pressed
-                const userMessage = userInput.val().trim();
-                chatLog.append('<div>User: ' + userMessage + '</div>');
-                userInput.val(''); // Clear input
-                // Simple bot response
-                setTimeout(() => {
-                    chatLog.append('<div>Bot: ' + respondToMessage(userMessage) + '</div>');
-                    chatLog.scrollTop(chatLog[0].scrollHeight); // Auto-scroll
-                }, 500);
-            }
-        });
-
-        function respondToMessage(message) {
-            // Simple responses for demo purposes
-            const responses = {
-                "hello": "Hello there!",
-                "how are you?": "I'm just a bot, but I'm doing great!",
-                "help": "What can I assist you with?",
-                "default": "I'm not sure how to respond to that."
-            };
-            return responses[message.toLowerCase()] || responses["default"];
-        }
-
-        // Vault functionality
-        const vault = $('#vault');
-        vault.on('click', function() {
-            vault.toggleClass('vault-open');
-        });
-    </script>
+    <script src="/script.js"></script>
 </body>
 </html>

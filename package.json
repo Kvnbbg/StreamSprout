@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "test": "node --check server/index.js"
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
@@ -59,7 +59,6 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
-    "pg": "^8.13.0",
-    "express-rate-limit": "^8.1.0"
+    "pg": "^8.13.0"
   }
 }
