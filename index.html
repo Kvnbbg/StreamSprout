@@ -223,6 +223,80 @@ find a better way <!DOCTYPE html>
     </div>
   </section>
 
+  <!-- Blog Section -->
+  <section id="blog" class="py-20 bg-gray-100 dark:bg-gray-800">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Dernier post LinkedIn</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-300">Insights sur le Vibe Coding, le DRY et la façon de guider l&apos;IA.</p>
+      </div>
+      <article class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 md:p-12 space-y-6">
+        <p class="text-lg font-semibold text-gray-900 dark:text-white">Hello LinkedIn 👋</p>
+        <p class="text-gray-700 dark:text-gray-300">
+          Quand on demande à l&apos;IA de builder une app feature par feature, il y a un truc vicieux qui arrive : elle
+          génère du code qui se répète partout. Pourquoi ? Parce qu&apos;on lui demande des choses et elle n&apos;a pas forcément
+          en tête l&apos;architecture globale au moment de répondre. Résultat : la même logique se retrouve copiée-collée dans
+          10 fichiers différents. Propre ça ? Pas vraiment 😅.
+        </p>
+        <div class="border-l-4 border-primary-500 pl-6 text-gray-700 dark:text-gray-300">
+          <p class="text-lg font-semibold text-gray-900 dark:text-white mb-2">DRY : Don&apos;t Repeat Yourself 👇</p>
+          <p>
+            Le concept est simple : chaque morceau de logique doit exister une seule fois dans le code. Une fonction, un
+            composant, un module — réutilisé partout au lieu d&apos;être dupliqué.
+          </p>
+        </div>
+        <p class="text-gray-700 dark:text-gray-300">
+          Pourquoi c&apos;est critique en Vibe Coding ? Si l&apos;IA a généré la connexion aux API en tant qu&apos;utilisateur connu
+          dans 8 fichiers différents, le jour où on veut changer un paramètre de cette connexion, elle doit corriger 8
+          endroits. Et s&apos;il y a des cafouillages et qu&apos;elle en rate un ? Bug en prod 💥.
+        </p>
+        <div>
+          <p class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Pourquoi le DRY change tout :</p>
+          <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+            <li><strong>1️⃣ Modularité 🧱</strong> Le DRY force l&apos;IA à créer des composants indépendants. C&apos;est beaucoup
+              plus robuste et facile à tester.</li>
+            <li><strong>2️⃣ Scalabilité 📈</strong> Un code propre et compact est plus facile à faire évoluer sans que
+              l&apos;IA ne se perde dans son propre contexte (et on sait qu&apos;elle sature vite).</li>
+            <li><strong>3️⃣ Économie de Tokens 💰</strong> Moins de répétitions = moins de lignes à &quot;lire&quot; pour l&apos;IA à
+              chaque itération. Plus efficace et plus rapide.</li>
+          </ul>
+        </div>
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 space-y-4">
+          <p class="text-lg font-semibold text-gray-900 dark:text-white">👉 Comment piloter l&apos;IA pour rester DRY ?</p>
+          <div>
+            <p class="font-semibold text-gray-900 dark:text-white">🚧 Étape 1 : Le Guardrail de dev</p>
+            <p class="text-gray-700 dark:text-gray-300">
+              Le prompt : &quot;Je veux ajouter [Feature X]. Consigne stricte : Avant d&apos;écrire du nouveau code, vérifie si
+              une logique existante peut être réutilisée.&quot;
+            </p>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-900 dark:text-white">🔍 Étape 2 : L&apos;Audit DRY</p>
+            <p class="text-gray-700 dark:text-gray-300">
+              Le prompt : &quot;Analyse le code que tu viens de faire. Liste toutes les fonctions qui partagent des
+              structures similaires ailleurs dans le code. Ne modifie rien, fais juste l&apos;inventaire.&quot;
+            </p>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-900 dark:text-white">🛠️ Étape 3 : La Refactorisation</p>
+            <p class="text-gray-700 dark:text-gray-300">
+              Le prompt : &quot;Refactorise le code en créant des fonctions utilitaires. Applique strictement le principe
+              DRY. Je veux une source de vérité unique pour chaque élément.&quot;
+            </p>
+          </div>
+        </div>
+        <p class="text-gray-700 dark:text-gray-300">
+          Le truc de ouf c&apos;est que l&apos;IA est excellente pour détecter les répétitions, mais c&apos;est à nous de donner la
+          direction.
+        </p>
+        <p class="text-gray-700 dark:text-gray-300">
+          Perso, je me suis pas mal cassé les dents, maintenant, je demande systématiquement un audit DRY avant de valider
+          une étape, ça évite de se retrouver avec un code bordélique.
+        </p>
+      </article>
+    </div>
+  </section>
+
   <!-- Scripts -->
   <script>
     // Theme Toggle
