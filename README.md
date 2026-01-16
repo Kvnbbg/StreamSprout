@@ -17,6 +17,7 @@
 - `public/` → static HTML/CSS/JavaScript frontend.
 - `valor_db` → PostgreSQL schema for the `players` table.
 - `src/`, `POM.xml`, `TensorFlowLlmApplication.java` → experimental Java/Spring artifacts (not part of the Node build).
+- `docs/modernization/payments-blueprint.md` → payments + ledger + profitability blueprint.
 
 ## Local Development
 
