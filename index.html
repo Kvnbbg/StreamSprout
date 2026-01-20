@@ -1,4 +1,4 @@
-find a better way <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
@@ -52,6 +52,82 @@ find a better way <!DOCTYPE html>
     :root {
       color-scheme: light dark;
       --glow-color: rgba(56, 189, 248, 0.35);
+      --surface-light: #f8fafc;
+      --surface-dark: rgba(15, 23, 42, 0.82);
+      --stroke-light: rgba(148, 163, 184, 0.35);
+      --stroke-dark: rgba(148, 163, 184, 0.2);
+      --shadow-soft: 0 20px 45px -30px rgba(15, 23, 42, 0.45);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.18), transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(99, 102, 241, 0.18), transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.12), transparent 45%);
+      pointer-events: none;
+      z-index: -2;
+    }
+    .section-shell {
+      position: relative;
+      overflow: hidden;
+    }
+    .section-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.25;
+      pointer-events: none;
+      mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 70%);
+    }
+    .glass-surface {
+      background: var(--surface-light);
+      border: 1px solid var(--stroke-light);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+    }
+    .dark .glass-surface {
+      background: var(--surface-dark);
+      border-color: var(--stroke-dark);
+      box-shadow: 0 24px 50px -32px rgba(15, 23, 42, 0.75);
+    }
+    .card-surface {
+      background: var(--surface-light);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      box-shadow: var(--shadow-soft);
+    }
+    .dark .card-surface {
+      background: rgba(15, 23, 42, 0.7);
+      border-color: var(--stroke-dark);
+      box-shadow: 0 20px 40px -32px rgba(15, 23, 42, 0.7);
+    }
+    .btn-primary {
+      background: linear-gradient(120deg, #0ea5e9, #6366f1);
+      color: white;
+      box-shadow: 0 14px 30px -20px rgba(14, 165, 233, 0.8);
+    }
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+    .btn-primary.is-success {
+      background: linear-gradient(120deg, #10b981, #22c55e);
+      box-shadow: 0 14px 30px -20px rgba(16, 185, 129, 0.8);
+    }
+    .btn-outline {
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      color: white;
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+    }
+    .pill {
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.28);
     }
     .reveal {
       opacity: 0;
@@ -106,6 +182,15 @@ find a better way <!DOCTYPE html>
       outline: 2px solid rgba(14, 165, 233, 0.8);
       outline-offset: 2px;
     }
+    .nav-glass {
+      backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, 0.85);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    }
+    .dark .nav-glass {
+      background: rgba(15, 23, 42, 0.85);
+      border-bottom-color: rgba(148, 163, 184, 0.2);
+    }
     @keyframes shimmer {
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
@@ -130,7 +215,7 @@ find a better way <!DOCTYPE html>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col">
   <div class="scroll-progress fixed top-0 left-0 h-1 bg-primary-400 z-50" id="scroll-progress"></div>
   <!-- Navigation -->
-  <nav class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+  <nav class="nav-glass sticky top-0 z-50 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <div class="flex items-center">
@@ -181,18 +266,19 @@ find a better way <!DOCTYPE html>
   </nav>
 
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-r from-primary-500 to-primary-700 text-white py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between">
+  <section class="section-shell relative bg-gradient-to-r from-primary-500 to-primary-700 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-10">
       <div class="md:w-1/2 mb-10 md:mb-0 reveal">
+        <span class="pill text-xs uppercase tracking-[0.2em] px-4 py-2 inline-flex mb-6">Quantum-ready growth</span>
         <h1 class="text-4xl md:text-5xl font-bold mb-6">AI-Optimized Web Experiences</h1>
-        <p class="text-xl mb-8">StreamSprout combines SEO automation, real-time analytics, and VR-ready interfaces to grow your digital presence.</p>
+        <p class="text-xl mb-8 max-w-xl">StreamSprout combines SEO automation, real-time analytics, and VR-ready interfaces to grow your digital presence.</p>
         <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-          <a href="#contact" class="bg-white text-primary-600 hover:bg-gray-100 px-6 py-3 rounded-md text-lg font-semibold transition duration-300 text-center focus-ring">Get Started</a>
-          <a href="#features" class="border-2 border-white text-white hover:bg-white hover:text-primary-600 px-6 py-3 rounded-md text-lg font-semibold transition duration-300 text-center focus-ring">Learn More</a>
+          <a href="#contact" class="btn-primary px-6 py-3 rounded-md text-lg font-semibold transition duration-300 text-center focus-ring">Get Started</a>
+          <a href="#features" class="btn-outline px-6 py-3 rounded-md text-lg font-semibold transition duration-300 text-center focus-ring">Learn More</a>
         </div>
       </div>
       <div class="md:w-1/2 relative reveal">
-        <div class="relative w-full h-64 md:h-96 bg-white/20 rounded-xl overflow-hidden backdrop-blur-sm shimmer">
+        <div class="relative w-full h-64 md:h-96 rounded-2xl overflow-hidden backdrop-blur-sm shimmer glass-surface">
           <div class="absolute inset-0 flex items-center justify-center">
             <i class="fas fa-seedling text-6xl md:text-8xl text-white/30 animate-spin-slow"></i>
           </div>
@@ -214,22 +300,22 @@ find a better way <!DOCTYPE html>
   <section class="py-16 bg-white dark:bg-gray-900 reveal">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-md interactive-card">
+        <div class="card-surface rounded-xl p-6 interactive-card">
           <p class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400">Active Workflows</p>
           <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2" data-counter="1200">0</p>
           <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Automations running daily</p>
         </div>
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-md interactive-card">
+        <div class="card-surface rounded-xl p-6 interactive-card">
           <p class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400">SEO Uplift</p>
           <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2" data-counter="86">0</p>
           <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Avg. traffic increase</p>
         </div>
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-md interactive-card">
+        <div class="card-surface rounded-xl p-6 interactive-card">
           <p class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400">AI Insights</p>
           <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2" data-counter="420">0</p>
           <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Recommendations per week</p>
         </div>
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-md interactive-card">
+        <div class="card-surface rounded-xl p-6 interactive-card">
           <p class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400">Uptime</p>
           <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2" data-counter="99">0</p>
           <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Reliable daily usage</p>
@@ -253,8 +339,8 @@ find a better way <!DOCTYPE html>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Feature Cards -->
         <template id="feature-card">
-          <div class="card-hover bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-md transition-transform duration-300 hover:-translate-y-2">
-            <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mb-6">
+          <div class="card-surface rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-2">
+            <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mb-6 glow-ring">
               <i class="fas fa-ICON text-primary-600 dark:text-primary-400 text-2xl"></i>
             </div>
             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">TITLE</h3>
@@ -286,16 +372,16 @@ find a better way <!DOCTYPE html>
   </section>
 
   <!-- Solutions Section -->
-  <section id="solutions" class="py-20 bg-gray-50 dark:bg-gray-800 reveal">
+  <section id="solutions" class="py-20 bg-gray-50 dark:bg-gray-800 reveal section-shell">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Solutions Tailored to Your Team</h2>
         <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">Choose your focus and explore the workflows, automations, and VR-ready experiences built for daily use.</p>
       </div>
       <div class="flex flex-wrap justify-center gap-4 mb-10">
-        <button class="solution-tab bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full shadow-md focus-ring active" data-solution="growth">Growth Teams</button>
-        <button class="solution-tab bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full shadow-md focus-ring" data-solution="commerce">Commerce</button>
-        <button class="solution-tab bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full shadow-md focus-ring" data-solution="agency">Agencies</button>
+        <button class="solution-tab card-surface text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full focus-ring active" data-solution="growth">Growth Teams</button>
+        <button class="solution-tab card-surface text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full focus-ring" data-solution="commerce">Commerce</button>
+        <button class="solution-tab card-surface text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full focus-ring" data-solution="agency">Agencies</button>
       </div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         <div class="space-y-6">
@@ -327,7 +413,7 @@ find a better way <!DOCTYPE html>
             </ul>
           </div>
         </div>
-        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8 space-y-6 glow-ring">
+        <div class="glass-surface rounded-2xl p-8 space-y-6 glow-ring">
           <div class="flex items-center justify-between">
             <span class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400">Live Workflow</span>
             <span class="text-xs bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300 px-3 py-1 rounded-full">Interactive</span>
@@ -363,7 +449,7 @@ find a better way <!DOCTYPE html>
               </div>
             </div>
           </div>
-          <button class="solution-action bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-md font-semibold transition focus-ring">Activate workflow</button>
+          <button class="solution-action btn-primary px-6 py-3 rounded-md font-semibold transition focus-ring">Activate workflow</button>
         </div>
       </div>
     </div>
@@ -384,7 +470,7 @@ find a better way <!DOCTYPE html>
         </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl shadow-lg p-8 interactive-card">
+        <div class="card-surface rounded-2xl p-8 interactive-card">
           <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Starter</h3>
           <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">For emerging teams launching AI-SEO.</p>
           <div class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
@@ -395,9 +481,9 @@ find a better way <!DOCTYPE html>
             <li><i class="fas fa-check text-primary-500 mr-2"></i>Weekly analytics digest</li>
             <li><i class="fas fa-check text-primary-500 mr-2"></i>VR preview access</li>
           </ul>
-          <button class="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-md font-semibold transition focus-ring">Start Starter</button>
+          <button class="w-full btn-primary py-3 rounded-md font-semibold transition focus-ring">Start Starter</button>
         </div>
-        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8 border border-primary-200 dark:border-primary-800 interactive-card">
+        <div class="glass-surface rounded-2xl p-8 border border-primary-200 dark:border-primary-800 interactive-card">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Growth</h3>
             <span class="text-xs uppercase tracking-wide bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full">Popular</span>
@@ -412,9 +498,9 @@ find a better way <!DOCTYPE html>
             <li><i class="fas fa-check text-primary-500 mr-2"></i>Realtime alerts</li>
             <li><i class="fas fa-check text-primary-500 mr-2"></i>Team collaboration hub</li>
           </ul>
-          <button class="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-md font-semibold transition focus-ring">Choose Growth</button>
+          <button class="w-full btn-primary py-3 rounded-md font-semibold transition focus-ring">Choose Growth</button>
         </div>
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl shadow-lg p-8 interactive-card">
+        <div class="card-surface rounded-2xl p-8 interactive-card">
           <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Enterprise</h3>
           <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">For organizations delivering at scale.</p>
           <div class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
@@ -425,26 +511,26 @@ find a better way <!DOCTYPE html>
             <li><i class="fas fa-check text-primary-500 mr-2"></i>Custom integrations</li>
             <li><i class="fas fa-check text-primary-500 mr-2"></i>VR onboarding workshops</li>
           </ul>
-          <button class="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-md font-semibold transition focus-ring">Talk to Sales</button>
+          <button class="w-full btn-primary py-3 rounded-md font-semibold transition focus-ring">Talk to Sales</button>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="py-20 bg-gray-100 dark:bg-gray-800 reveal">
+  <section id="contact" class="py-20 bg-gray-100 dark:bg-gray-800 reveal section-shell">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
         <div class="space-y-6">
           <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Ready for daily usage?</h2>
           <p class="text-xl text-gray-600 dark:text-gray-300">Let’s build a frictionless launch plan. Share your goals and our team will respond with a tailored rollout within 24 hours.</p>
-          <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md space-y-4">
+          <div class="glass-surface rounded-xl p-6 space-y-4">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm text-gray-500 dark:text-gray-400">Direct line</p>
                 <p class="text-lg font-semibold text-gray-900 dark:text-white">hello@streamsprout.ai</p>
               </div>
-              <button id="copy-email" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-md focus-ring">Copy</button>
+              <button id="copy-email" class="btn-primary px-4 py-2 rounded-md focus-ring">Copy</button>
             </div>
             <div class="flex items-center justify-between">
               <div>
@@ -455,7 +541,7 @@ find a better way <!DOCTYPE html>
             </div>
           </div>
         </div>
-        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8">
+        <div class="glass-surface rounded-2xl p-8">
           <form class="space-y-5">
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="name">Name</label>
@@ -469,7 +555,7 @@ find a better way <!DOCTYPE html>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="message">What do you want to improve?</label>
               <textarea id="message" rows="4" class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus-ring" placeholder="Tell us about your goals."></textarea>
             </div>
-            <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-md font-semibold transition focus-ring">Send request</button>
+            <button type="submit" class="w-full btn-primary py-3 rounded-md font-semibold transition focus-ring">Send request</button>
             <p class="text-xs text-gray-500 dark:text-gray-400">By submitting, you agree to our privacy policy.</p>
           </form>
         </div>
@@ -494,7 +580,7 @@ find a better way <!DOCTYPE html>
         </button>
       </div>
       <div class="md:w-1/2">
-        <div class="bg-white dark:bg-gray-700 rounded-xl shadow-xl overflow-hidden">
+        <div class="glass-surface rounded-xl overflow-hidden">
           <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-600 relative flex items-center justify-center">
             <div id="vr-preview" class="text-center p-8 space-y-4">
               <div class="vr-preview-idle">
@@ -529,7 +615,7 @@ find a better way <!DOCTYPE html>
             <button class="chat-suggestion bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm focus-ring">VR onboarding</button>
             <button class="chat-suggestion bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm focus-ring">Weekly report</button>
           </div>
-          <button id="chat-send" class="mt-4 bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-md text-lg font-semibold transition duration-300">Send</button>
+          <button id="chat-send" class="mt-4 btn-primary px-6 py-3 rounded-md text-lg font-semibold transition duration-300">Send</button>
         </div>
       </div>
       <div id="chat-response" class="mt-6 text-left prose dark:prose-invert max-w-2xl mx-auto"></div>
@@ -537,13 +623,13 @@ find a better way <!DOCTYPE html>
   </section>
 
   <!-- Blog Section -->
-  <section id="blog" class="py-20 bg-gray-100 dark:bg-gray-800 reveal">
+  <section id="blog" class="py-20 bg-gray-100 dark:bg-gray-800 reveal section-shell">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Dernier post LinkedIn</h2>
         <p class="text-lg text-gray-600 dark:text-gray-300">Insights sur le Vibe Coding, le DRY et la façon de guider l&apos;IA.</p>
       </div>
-      <article class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 md:p-12 space-y-6">
+      <article class="glass-surface rounded-2xl p-8 md:p-12 space-y-6">
         <p class="text-lg font-semibold text-gray-900 dark:text-white">Hello LinkedIn 👋</p>
         <p class="text-gray-700 dark:text-gray-300">
           Quand on demande à l&apos;IA de builder une app feature par feature, il y a un truc vicieux qui arrive : elle
@@ -574,7 +660,7 @@ find a better way <!DOCTYPE html>
               chaque itération. Plus efficace et plus rapide.</li>
           </ul>
         </div>
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 space-y-4">
+        <div class="card-surface rounded-xl p-6 space-y-4">
           <p class="text-lg font-semibold text-gray-900 dark:text-white">👉 Comment piloter l&apos;IA pour rester DRY ?</p>
           <div>
             <p class="font-semibold text-gray-900 dark:text-white">🚧 Étape 1 : Le Guardrail de dev</p>
@@ -727,10 +813,10 @@ find a better way <!DOCTYPE html>
     if (solutionAction) {
       solutionAction.addEventListener('click', () => {
         solutionAction.textContent = 'Workflow activated';
-        solutionAction.classList.add('bg-emerald-500');
+        solutionAction.classList.add('is-success');
         setTimeout(() => {
           solutionAction.textContent = 'Activate workflow';
-          solutionAction.classList.remove('bg-emerald-500');
+          solutionAction.classList.remove('is-success');
         }, 2000);
       });
     }
