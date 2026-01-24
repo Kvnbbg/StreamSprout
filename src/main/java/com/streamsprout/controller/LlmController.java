@@ -11,6 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class LlmController {
 
     private static final String DEFAULT_RESPONSE_MESSAGE = "Share a bit more about your team goals or map.";
+    private static final String RESPONSE_KEY = "response";
     private static final List<String> RESPONSE_TEMPLATES = List.of(
         "Based on current meta, I recommend...",
         "Pro players are favoring %s this week",
@@ -29,11 +30,11 @@ public class LlmController {
     @PostMapping
     public Map<String, String> handleMessage(@RequestBody(required = false) Map<String, String> request) {
         if (request == null || request.isEmpty()) {
-            return Map.of("response", DEFAULT_RESPONSE_MESSAGE);
+            return Map.of(RESPONSE_KEY, DEFAULT_RESPONSE_MESSAGE);
         }
 
         String response = generateResponse();
-        return Map.of("response", response);
+        return Map.of(RESPONSE_KEY, response);
     }
 
     private String generateResponse() {
