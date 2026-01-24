@@ -35,7 +35,7 @@
           keyframes: {
             float: {
               '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-10px)' },
+              '50%': { transform: 'translateY(-0.625rem)' },
             }
           }
         }
@@ -58,6 +58,23 @@
       --stroke-dark: rgba(148, 163, 184, 0.2);
       --shadow-soft: 0 20px 45px -30px rgba(15, 23, 42, 0.45);
     }
+    html {
+      font-size: 100%;
+    }
+    body {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .safe-area {
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+    .safe-area-top {
+      padding-top: env(safe-area-inset-top);
+    }
+    .safe-area-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
     body::before {
       content: "";
       position: fixed;
@@ -78,7 +95,7 @@
       position: absolute;
       inset: 0;
       background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px);
-      background-size: 28px 28px;
+      background-size: 1.75rem 1.75rem;
       opacity: 0.25;
       pointer-events: none;
       mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 70%);
@@ -131,7 +148,7 @@
     }
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(1.5rem);
       transition: opacity 0.8s ease, transform 0.8s ease;
     }
     .reveal.in-view {
@@ -145,7 +162,7 @@
     .glow-ring::after {
       content: "";
       position: absolute;
-      inset: -16px;
+      inset: -1rem;
       border-radius: 999px;
       background: radial-gradient(circle, var(--glow-color), transparent 70%);
       opacity: 0;
@@ -180,7 +197,21 @@
     }
     .focus-ring:focus-visible {
       outline: 2px solid rgba(14, 165, 233, 0.8);
-      outline-offset: 2px;
+      outline-offset: 0.125rem;
+    }
+    .tap-target {
+      min-height: 2.75rem;
+      min-width: 2.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-link-active {
+      color: #0ea5e9;
+      background: rgba(14, 165, 233, 0.12);
+    }
+    .tap-input {
+      min-height: 2.75rem;
     }
     .nav-glass {
       backdrop-filter: blur(18px);
@@ -199,6 +230,13 @@
       0%, 100% { transform: scale(1); opacity: 0.9; }
       50% { transform: scale(1.05); opacity: 1; }
     }
+    @media (max-width: 768px) {
+      .text-sm,
+      .text-xs {
+        font-size: 1rem;
+        line-height: 1.5rem;
+      }
+    }
     @media (prefers-reduced-motion: reduce) {
       .reveal,
       .shimmer,
@@ -212,10 +250,10 @@
     }
   </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col safe-area safe-area-bottom">
   <div class="scroll-progress fixed top-0 left-0 h-1 bg-primary-400 z-50" id="scroll-progress"></div>
   <!-- Navigation -->
-  <nav class="nav-glass sticky top-0 z-50 shadow-md">
+  <nav class="nav-glass sticky top-0 z-50 shadow-md safe-area-top">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <div class="flex items-center">
@@ -225,20 +263,20 @@
           </div>
         </div>
         <div class="hidden md:flex md:items-center md:space-x-8">
-          <a href="#features" class="px-3 py-2 text-sm font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Features</a>
-          <a href="#solutions" class="px-3 py-2 text-sm font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Solutions</a>
-          <a href="#pricing" class="px-3 py-2 text-sm font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Pricing</a>
-          <a href="#contact" class="px-3 py-2 text-sm font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Contact</a>
-          <button id="theme-toggle" class="p-2 rounded-full focus:outline-none">
+          <a href="#features" data-nav-link class="nav-link tap-target px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Features</a>
+          <a href="#solutions" data-nav-link class="nav-link tap-target px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Solutions</a>
+          <a href="#pricing" data-nav-link class="nav-link tap-target px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Pricing</a>
+          <a href="#contact" data-nav-link class="nav-link tap-target px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Contact</a>
+          <button id="theme-toggle" class="tap-target rounded-full focus:outline-none focus-ring" aria-label="Toggle dark mode">
             <i class="fas fa-moon dark:hidden"></i>
             <i class="fas fa-sun hidden dark:inline"></i>
           </button>
-          <button id="vr-toggle" class="vr-toggle px-4 py-2 text-sm font-medium border border-primary-500 text-primary-500 rounded-md transition">
+          <button id="vr-toggle" class="vr-toggle tap-target text-base font-medium border border-primary-500 text-primary-500 rounded-md transition">
             <i class="fas fa-vr-cardboard mr-2"></i>VR Mode
           </button>
         </div>
         <div class="flex items-center md:hidden">
-          <button id="mobile-menu-button" class="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500">
+          <button id="mobile-menu-button" class="tap-target rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500" aria-controls="mobile-menu" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
             <i class="fas fa-bars text-xl"></i>
           </button>
@@ -246,24 +284,25 @@
       </div>
     </div>
     <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden md:hidden">
-      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-        <a href="#features" class="block px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Features</a>
-        <a href="#solutions" class="block px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Solutions</a>
-        <a href="#pricing" class="block px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Pricing</a>
-        <a href="#contact" class="block px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Contact</a>
-        <div class="flex space-x-4 px-3 py-2">
-          <button id="theme-toggle-mobile" class="p-2 rounded-full focus:outline-none">
+    <div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 top-16 z-50 bg-white/95 dark:bg-gray-900/95 shadow-lg border-t border-gray-200 dark:border-gray-800 safe-area-bottom" aria-hidden="true">
+      <div class="px-4 pt-2 pb-4 space-y-2 sm:px-6">
+        <a href="#features" data-nav-link class="nav-link tap-target w-full justify-start px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Features</a>
+        <a href="#solutions" data-nav-link class="nav-link tap-target w-full justify-start px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Solutions</a>
+        <a href="#pricing" data-nav-link class="nav-link tap-target w-full justify-start px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Pricing</a>
+        <a href="#contact" data-nav-link class="nav-link tap-target w-full justify-start px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Contact</a>
+        <div class="flex flex-wrap gap-3 px-1 py-2">
+          <button id="theme-toggle-mobile" class="tap-target rounded-full focus:outline-none focus-ring" aria-label="Toggle dark mode">
             <i class="fas fa-moon dark:hidden"></i>
             <i class="fas fa-sun hidden dark:inline"></i>
           </button>
-          <button id="vr-toggle-mobile" class="vr-toggle px-4 py-2 text-sm font-medium border border-primary-500 text-primary-500 rounded-md transition">
+          <button id="vr-toggle-mobile" class="vr-toggle tap-target text-base font-medium border border-primary-500 text-primary-500 rounded-md transition">
             <i class="fas fa-vr-cardboard mr-2"></i>VR Mode
           </button>
         </div>
       </div>
     </div>
   </nav>
+  <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/40 hidden md:hidden z-40" aria-hidden="true"></div>
 
   <!-- Hero Section -->
   <section class="section-shell relative bg-gradient-to-r from-primary-500 to-primary-700 text-white py-20">
@@ -273,8 +312,8 @@
         <h1 class="text-4xl md:text-5xl font-bold mb-6">AI-Optimized Web Experiences</h1>
         <p class="text-xl mb-8 max-w-xl">StreamSprout combines SEO automation, real-time analytics, and VR-ready interfaces to grow your digital presence.</p>
         <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-          <a href="#contact" class="btn-primary px-6 py-3 rounded-md text-lg font-semibold transition duration-300 text-center focus-ring">Get Started</a>
-          <a href="#features" class="btn-outline px-6 py-3 rounded-md text-lg font-semibold transition duration-300 text-center focus-ring">Learn More</a>
+          <a href="#contact" class="btn-primary tap-target px-6 py-3 rounded-md text-lg font-semibold transition duration-300 text-center focus-ring">Get Started</a>
+          <a href="#features" class="btn-outline tap-target px-6 py-3 rounded-md text-lg font-semibold transition duration-300 text-center focus-ring">Learn More</a>
         </div>
       </div>
       <div class="md:w-1/2 relative reveal">
@@ -379,9 +418,9 @@
         <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">Choose your focus and explore the workflows, automations, and VR-ready experiences built for daily use.</p>
       </div>
       <div class="flex flex-wrap justify-center gap-4 mb-10">
-        <button class="solution-tab card-surface text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full focus-ring active" data-solution="growth">Growth Teams</button>
-        <button class="solution-tab card-surface text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full focus-ring" data-solution="commerce">Commerce</button>
-        <button class="solution-tab card-surface text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full focus-ring" data-solution="agency">Agencies</button>
+        <button class="solution-tab tap-target card-surface text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full focus-ring active" data-solution="growth">Growth Teams</button>
+        <button class="solution-tab tap-target card-surface text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full focus-ring" data-solution="commerce">Commerce</button>
+        <button class="solution-tab tap-target card-surface text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full focus-ring" data-solution="agency">Agencies</button>
       </div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         <div class="space-y-6">
@@ -449,7 +488,7 @@
               </div>
             </div>
           </div>
-          <button class="solution-action btn-primary px-6 py-3 rounded-md font-semibold transition focus-ring">Activate workflow</button>
+          <button class="solution-action btn-primary tap-target px-6 py-3 rounded-md font-semibold transition focus-ring">Activate workflow</button>
         </div>
       </div>
     </div>
@@ -463,7 +502,7 @@
         <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Switch between monthly and annual billing to see the optimized plan that fits your growth.</p>
         <div class="flex items-center justify-center mt-6 gap-4">
           <span class="text-sm font-medium text-gray-600 dark:text-gray-300">Monthly</span>
-          <button id="pricing-toggle" class="relative inline-flex h-8 w-16 items-center rounded-full bg-primary-200 dark:bg-primary-900/40 transition focus-ring" aria-pressed="false">
+          <button id="pricing-toggle" class="relative inline-flex tap-target h-8 w-16 items-center rounded-full bg-primary-200 dark:bg-primary-900/40 transition focus-ring" aria-pressed="false">
             <span class="inline-block h-6 w-6 transform rounded-full bg-white shadow transition translate-x-1" id="pricing-toggle-dot"></span>
           </button>
           <span class="text-sm font-medium text-gray-600 dark:text-gray-300">Annual <span class="text-primary-500">(save 15%)</span></span>
@@ -481,7 +520,7 @@
             <li><i class="fas fa-check text-primary-500 mr-2"></i>Weekly analytics digest</li>
             <li><i class="fas fa-check text-primary-500 mr-2"></i>VR preview access</li>
           </ul>
-          <button class="w-full btn-primary py-3 rounded-md font-semibold transition focus-ring">Start Starter</button>
+          <button class="w-full btn-primary tap-target py-3 rounded-md font-semibold transition focus-ring">Start Starter</button>
         </div>
         <div class="glass-surface rounded-2xl p-8 border border-primary-200 dark:border-primary-800 interactive-card">
           <div class="flex items-center justify-between mb-4">
@@ -498,7 +537,7 @@
             <li><i class="fas fa-check text-primary-500 mr-2"></i>Realtime alerts</li>
             <li><i class="fas fa-check text-primary-500 mr-2"></i>Team collaboration hub</li>
           </ul>
-          <button class="w-full btn-primary py-3 rounded-md font-semibold transition focus-ring">Choose Growth</button>
+          <button class="w-full btn-primary tap-target py-3 rounded-md font-semibold transition focus-ring">Choose Growth</button>
         </div>
         <div class="card-surface rounded-2xl p-8 interactive-card">
           <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Enterprise</h3>
@@ -511,7 +550,7 @@
             <li><i class="fas fa-check text-primary-500 mr-2"></i>Custom integrations</li>
             <li><i class="fas fa-check text-primary-500 mr-2"></i>VR onboarding workshops</li>
           </ul>
-          <button class="w-full btn-primary py-3 rounded-md font-semibold transition focus-ring">Talk to Sales</button>
+          <button class="w-full btn-primary tap-target py-3 rounded-md font-semibold transition focus-ring">Talk to Sales</button>
         </div>
       </div>
     </div>
@@ -530,7 +569,7 @@
                 <p class="text-sm text-gray-500 dark:text-gray-400">Direct line</p>
                 <p class="text-lg font-semibold text-gray-900 dark:text-white">hello@streamsprout.ai</p>
               </div>
-              <button id="copy-email" class="btn-primary px-4 py-2 rounded-md focus-ring">Copy</button>
+              <button id="copy-email" class="btn-primary tap-target px-4 py-2 rounded-md focus-ring">Copy</button>
             </div>
             <div class="flex items-center justify-between">
               <div>
@@ -545,17 +584,17 @@
           <form class="space-y-5">
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="name">Name</label>
-              <input id="name" type="text" class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus-ring" placeholder="Jane Doe" required />
+              <input id="name" type="text" class="w-full tap-input px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus-ring" placeholder="Jane Doe" required />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="email">Work Email</label>
-              <input id="email" type="email" class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus-ring" placeholder="jane@company.com" required />
+              <input id="email" type="email" class="w-full tap-input px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus-ring" placeholder="jane@company.com" required />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="message">What do you want to improve?</label>
               <textarea id="message" rows="4" class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus-ring" placeholder="Tell us about your goals."></textarea>
             </div>
-            <button type="submit" class="w-full btn-primary py-3 rounded-md font-semibold transition focus-ring">Send request</button>
+            <button type="submit" class="w-full btn-primary tap-target py-3 rounded-md font-semibold transition focus-ring">Send request</button>
             <p class="text-xs text-gray-500 dark:text-gray-400">By submitting, you agree to our privacy policy.</p>
           </form>
         </div>
@@ -575,7 +614,7 @@
             <p class="ml-3 text-sm text-yellow-700 dark:text-yellow-300"><strong>VR Development Mode</strong> - Some features may be limited in the browser preview. Use a headset for full VR.</p>
           </div>
         </div>
-        <button id="vr-demo-button" class="flex items-center bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-md text-lg font-semibold transition duration-300">
+        <button id="vr-demo-button" class="flex items-center tap-target bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-md text-lg font-semibold transition duration-300">
           <i class="fas fa-vr-cardboard mr-2"></i> Try VR Demo
         </button>
       </div>
@@ -611,11 +650,11 @@
         <div class="w-full max-w-lg">
           <textarea id="chat-input" rows="4" class="w-full p-4 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500" placeholder="Ask me anything..."></textarea>
           <div class="flex flex-wrap gap-2 mt-4" id="chat-suggestions">
-            <button class="chat-suggestion bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm focus-ring">Top SEO fixes</button>
-            <button class="chat-suggestion bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm focus-ring">VR onboarding</button>
-            <button class="chat-suggestion bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm focus-ring">Weekly report</button>
+            <button class="chat-suggestion tap-target bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm focus-ring">Top SEO fixes</button>
+            <button class="chat-suggestion tap-target bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm focus-ring">VR onboarding</button>
+            <button class="chat-suggestion tap-target bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm focus-ring">Weekly report</button>
           </div>
-          <button id="chat-send" class="mt-4 btn-primary px-6 py-3 rounded-md text-lg font-semibold transition duration-300">Send</button>
+          <button id="chat-send" class="mt-4 btn-primary tap-target px-6 py-3 rounded-md text-lg font-semibold transition duration-300">Send</button>
         </div>
       </div>
       <div id="chat-response" class="mt-6 text-left prose dark:prose-invert max-w-2xl mx-auto"></div>
@@ -720,8 +759,56 @@
     });
 
     // Mobile Menu
-    $('#mobile-menu-button').addEventListener('click', () => {
-      $('#mobile-menu').classList.toggle('hidden');
+    const mobileMenuButton = $('#mobile-menu-button');
+    const mobileMenu = $('#mobile-menu');
+    const mobileMenuOverlay = $('#mobile-menu-overlay');
+
+    const setMobileMenuState = (isOpen) => {
+      mobileMenu.classList.toggle('hidden', !isOpen);
+      mobileMenuOverlay.classList.toggle('hidden', !isOpen);
+      mobileMenuButton.setAttribute('aria-expanded', String(isOpen));
+      mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+      mobileMenuOverlay.setAttribute('aria-hidden', String(!isOpen));
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    };
+
+    const closeMobileMenu = () => setMobileMenuState(false);
+
+    mobileMenuButton.addEventListener('click', () => {
+      const shouldOpen = mobileMenu.classList.contains('hidden');
+      setMobileMenuState(shouldOpen);
+    });
+
+    mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeMobileMenu();
+    });
+
+    // Active nav states
+    const navLinks = $$('[data-nav-link]');
+    const setActiveNav = (link) => {
+      navLinks.forEach(item => {
+        item.classList.remove('nav-link-active');
+        item.removeAttribute('aria-current');
+      });
+      if (link) {
+        link.classList.add('nav-link-active');
+        link.setAttribute('aria-current', 'page');
+      }
+    };
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        setActiveNav(link);
+        closeMobileMenu();
+      });
+    });
+
+    const initialActive = navLinks.find(link => link.getAttribute('href') === window.location.hash) || navLinks[0];
+    setActiveNav(initialActive);
+    window.addEventListener('hashchange', () => {
+      const activeFromHash = navLinks.find(link => link.getAttribute('href') === window.location.hash);
+      if (activeFromHash) setActiveNav(activeFromHash);
     });
 
     // Scroll Progress
@@ -908,36 +995,36 @@
       <div>
         <h5 class="font-bold mb-4">Company</h5>
         <ul class="space-y-2">
-          <li><a href="#about" class="hover:text-primary-500">About Us</a></li>
-          <li><a href="#careers" class="hover:text-primary-500">Careers</a></li>
-          <li><a href="#blog" class="hover:text-primary-500">Blog</a></li>
-          <li><a href="#contact" class="hover:text-primary-500">Contact</a></li>
+          <li><a href="#about" class="tap-target hover:text-primary-500">About Us</a></li>
+          <li><a href="#careers" class="tap-target hover:text-primary-500">Careers</a></li>
+          <li><a href="#blog" class="tap-target hover:text-primary-500">Blog</a></li>
+          <li><a href="#contact" class="tap-target hover:text-primary-500">Contact</a></li>
         </ul>
       </div>
       <div>
         <h5 class="font-bold mb-4">Resources</h5>
         <ul class="space-y-2">
-          <li><a href="#docs" class="hover:text-primary-500">Documentation</a></li>
-          <li><a href="#api" class="hover:text-primary-500">API Reference</a></li>
-          <li><a href="#support" class="hover:text-primary-500">Support</a></li>
-          <li><a href="#privacy" class="hover:text-primary-500">Privacy Policy</a></li>
+          <li><a href="#docs" class="tap-target hover:text-primary-500">Documentation</a></li>
+          <li><a href="#api" class="tap-target hover:text-primary-500">API Reference</a></li>
+          <li><a href="#support" class="tap-target hover:text-primary-500">Support</a></li>
+          <li><a href="#privacy" class="tap-target hover:text-primary-500">Privacy Policy</a></li>
         </ul>
       </div>
       <div>
         <h5 class="font-bold mb-4">Follow Us</h5>
         <div class="flex space-x-4">
-          <a href="#" class="hover:text-primary-500"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="hover:text-primary-500"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="hover:text-primary-500"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="hover:text-primary-500"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="tap-target hover:text-primary-500"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="tap-target hover:text-primary-500"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="tap-target hover:text-primary-500"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="tap-target hover:text-primary-500"><i class="fab fa-linkedin-in"></i></a>
         </div>
       </div>
       <div>
         <h5 class="font-bold mb-4">Subscribe</h5>
         <p class="text-sm mb-4">Get the latest updates and offers.</p>
         <form class="flex">
-          <input type="email" placeholder="Your email" class="w-full px-4 py-2 rounded-l-md border border-gray-300 dark:border-gray-700 focus:outline-none" />
-          <button type="submit" class="bg-primary-500 text-white px-4 py-2 rounded-r-md hover:bg-primary-600">Subscribe</button>
+          <input type="email" placeholder="Your email" class="w-full tap-input px-4 py-2 rounded-l-md border border-gray-300 dark:border-gray-700 focus:outline-none" />
+          <button type="submit" class="bg-primary-500 text-white tap-target px-4 py-2 rounded-r-md hover:bg-primary-600">Subscribe</button>
         </form>
       </div>
     </div>
