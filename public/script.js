@@ -10,6 +10,8 @@ const chatLog = document.getElementById('chat-log');
 const askForm = document.getElementById('ask-form');
 const askInput = document.getElementById('ask-input');
 const askFeedback = document.getElementById('ask-feedback');
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelectorAll('.nav-link');
 
 const metricTotal = document.getElementById('metric-total');
 const metricRole = document.getElementById('metric-role');
@@ -208,3 +210,19 @@ const init = async () => {
 };
 
 init();
+
+if (navToggle) {
+    navToggle.addEventListener('click', () => {
+        const isOpen = document.body.classList.toggle('nav-open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    navLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+            if (document.body.classList.contains('nav-open')) {
+                document.body.classList.remove('nav-open');
+                navToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    });
+}
