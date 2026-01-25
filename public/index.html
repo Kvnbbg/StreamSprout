@@ -7,46 +7,69 @@
     <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-    <div class="app">
-        <header class="app-header">
-            <div class="brand">
-                <div class="brand-mark">SS</div>
+    <div class="app-shell">
+        <header class="top-nav">
+            <div class="nav-left">
+                <div class="brand-mark" aria-hidden="true">SS</div>
                 <div>
                     <p class="eyebrow">VALORANT esports ops</p>
-                    <h1>StreamSprout Command Desk</h1>
+                    <p class="brand-title">StreamSprout</p>
                 </div>
             </div>
-            <nav class="status-strip" aria-live="polite">
-                <span class="status-pill" id="api-status">Checking API...</span>
-                <span class="status-pill" id="sync-status">Syncing roster...</span>
-                <span class="status-pill" id="last-updated">Last updated: --</span>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="nav-toggle-bar"></span>
+                <span class="nav-toggle-bar"></span>
+                <span class="nav-toggle-bar"></span>
+            </button>
+            <nav class="nav-center" id="primary-nav">
+                <a class="nav-link active" href="#">Dashboard</a>
+                <a class="nav-link" href="#">Roster</a>
+                <a class="nav-link" href="#">Analytics</a>
+                <a class="nav-link" href="#">Scouting</a>
+                <a class="nav-link" href="#">Settings</a>
             </nav>
+            <div class="nav-right">
+                <button class="btn btn-secondary" type="button">Theme</button>
+                <button class="btn btn-secondary" type="button">EN</button>
+                <button class="btn btn-primary" type="button">Logout</button>
+            </div>
         </header>
 
         <main class="app-main">
-            <section class="hero">
-                <div>
-                    <h2>Manage your roster, scout smarter, and ask the AI for instant strategy.</h2>
-                    <p>
-                        StreamSprout brings VALORANT esports analytics, roster management, and LLM-assisted scouting into
-                        one clean workflow. Track your players, filter by role or agent, and brief leadership with
-                        credible AI insights.
-                    </p>
-                </div>
-                <div class="hero-card">
-                    <h3>Today’s focus</h3>
-                    <ul>
-                        <li>Roster health and agent coverage</li>
-                        <li>Role balance for upcoming scrims</li>
-                        <li>AI briefs for match preparation</li>
-                    </ul>
-                </div>
+            <section class="overview-grid">
+                <article class="card hero-card">
+                    <div>
+                        <p class="eyebrow">Command center</p>
+                        <h1>StreamSprout Command Desk</h1>
+                        <p class="muted">
+                            A unified dashboard for roster management, scouting intelligence, and AI-powered match
+                            prep. Keep ops clean, fast, and executive-ready.
+                        </p>
+                    </div>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" type="button">Create report</button>
+                        <button class="btn btn-secondary" type="button">Schedule sync</button>
+                    </div>
+                </article>
+                <article class="card status-card">
+                    <header>
+                        <h2>Live ops status</h2>
+                        <p class="muted">Real-time service health and roster freshness.</p>
+                    </header>
+                    <div class="status-strip" aria-live="polite">
+                        <span class="status-pill" id="api-status">Checking API...</span>
+                        <span class="status-pill" id="sync-status">Syncing roster...</span>
+                        <span class="status-pill" id="last-updated">Last updated: --</span>
+                    </div>
+                    <p class="muted">Keep this panel visible during match days to monitor pipeline health.</p>
+                </article>
             </section>
 
-            <section class="grid">
+            <section class="dashboard-grid">
                 <article class="card">
                     <header>
-                        <h3>Roster overview</h3>
+                        <h2>Roster overview</h2>
                         <p class="muted">Search by name to pull a player profile instantly.</p>
                     </header>
                     <div class="field">
@@ -59,7 +82,7 @@
 
                 <article class="card">
                     <header>
-                        <h3>Add a player</h3>
+                        <h2>Add a player</h2>
                         <p class="muted">Keep the roster accurate with structured entries.</p>
                     </header>
                     <form id="player-form" class="form-grid">
@@ -79,48 +102,62 @@
                             <label for="player-agent">Signature agent</label>
                             <input id="player-agent" type="text" required />
                         </div>
-                        <button type="submit" class="primary">Save to roster</button>
+                        <button type="submit" class="btn btn-primary">Save to roster</button>
                         <p id="player-feedback" class="feedback" role="status"></p>
                     </form>
                 </article>
 
                 <article class="card">
                     <header>
-                        <h3>AI strategy assistant</h3>
+                        <h2>AI strategy assistant</h2>
                         <p class="muted">Ask about scouting, comps, or match prep.</p>
                     </header>
                     <div class="chat">
                         <div id="chat-log" class="chat-log" aria-live="polite"></div>
                         <form id="ask-form" class="chat-input">
                             <input id="ask-input" type="text" placeholder="Ask the assistant..." required />
-                            <button type="submit" class="primary">Ask AI</button>
+                            <button type="submit" class="btn btn-primary">Ask AI</button>
                         </form>
                         <p id="ask-feedback" class="feedback" role="status"></p>
                     </div>
                 </article>
             </section>
 
-            <section class="card analytics">
-                <header>
-                    <h3>Analytics snapshot</h3>
-                    <p class="muted">Live rollup of roster data for quick executive briefs.</p>
-                </header>
-                <div class="analytics-grid">
-                    <div>
-                        <p class="metric-label">Total players tracked</p>
-                        <p class="metric" id="metric-total">--</p>
+            <aside class="insights-grid">
+                <section class="card">
+                    <header>
+                        <h2>Today’s focus</h2>
+                        <p class="muted">Mission-ready checklist for leadership updates.</p>
+                    </header>
+                    <ul class="focus-list">
+                        <li>Roster health and agent coverage</li>
+                        <li>Role balance for upcoming scrims</li>
+                        <li>AI briefs for match preparation</li>
+                    </ul>
+                </section>
+
+                <section class="card analytics">
+                    <header>
+                        <h2>Analytics snapshot</h2>
+                        <p class="muted">Live rollup of roster data for quick executive briefs.</p>
+                    </header>
+                    <div class="analytics-grid">
+                        <div>
+                            <p class="metric-label">Total players tracked</p>
+                            <p class="metric" id="metric-total">--</p>
+                        </div>
+                        <div>
+                            <p class="metric-label">Top role</p>
+                            <p class="metric" id="metric-role">--</p>
+                        </div>
+                        <div>
+                            <p class="metric-label">Most played agent</p>
+                            <p class="metric" id="metric-agent">--</p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="metric-label">Top role</p>
-                        <p class="metric" id="metric-role">--</p>
-                    </div>
-                    <div>
-                        <p class="metric-label">Most played agent</p>
-                        <p class="metric" id="metric-agent">--</p>
-                    </div>
-                </div>
-                <p class="muted" id="analytics-footnote">Roster analytics update automatically.</p>
-            </section>
+                    <p class="muted" id="analytics-footnote">Roster analytics update automatically.</p>
+                </section>
+            </aside>
         </main>
 
         <footer class="app-footer">
