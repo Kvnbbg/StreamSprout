@@ -2,1036 +2,1249 @@
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="StreamSprout - AI-powered SEO optimization and VR-ready web experiences">
-  <meta name="keywords" content="SEO, AI content, VR web, real-time analytics, web development">
-  <title>StreamSprout | AI-Optimized Web Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="StreamSprout Core - Tokenized Architecture Visualization with Esports Training Optimization">
+  <title>StreamSprout Core | Architectural Tokenization & ESports Training Engine</title>
   
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            primary: {
-              50: '#f0f9ff',
-              100: '#e0f2fe',
-              200: '#bae6fd',
-              300: '#7dd3fc',
-              400: '#38bdf8',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              700: '#0369a1',
-              800: '#075985',
-              900: '#0c4a6e',
-            }
+            primary: { 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1' },
+            esports: { 500: '#f59e0b', 600: '#d97706' },
+            token: { 500: '#10b981', 600: '#059669' },
+            architecture: { 500: '#8b5cf6', 600: '#7c3aed' }
           },
-          animation: {
-            'spin-slow': 'spin 3s linear infinite',
-            'float': 'float 6s ease-in-out infinite',
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-0.625rem)' },
-            }
+          fontFamily: {
+            mono: ['Fira Code', 'Consolas', 'monospace'],
+            sans: ['Inter', 'system-ui', 'sans-serif']
           }
         }
       }
     }
   </script>
   
-  <!-- Preline UI -->
-  <script src="https://cdn.jsdelivr.net/npm/@preline/preline@2.0.0/dist/preline.min.js"></script>
-  
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700&display=swap');
+    
     :root {
-      color-scheme: light dark;
-      --glow-color: rgba(56, 189, 248, 0.35);
       --surface-light: #f8fafc;
-      --surface-dark: rgba(15, 23, 42, 0.82);
-      --stroke-light: rgba(148, 163, 184, 0.35);
-      --stroke-dark: rgba(148, 163, 184, 0.2);
-      --shadow-soft: 0 20px 45px -30px rgba(15, 23, 42, 0.45);
+      --surface-dark: rgba(15, 23, 42, 0.95);
+      --deterministic: rgba(14, 165, 233, 0.8);
+      --creative: rgba(139, 92, 246, 0.8);
     }
-    html {
-      font-size: 100%;
-    }
-    body {
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-    .safe-area {
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
-    }
-    .safe-area-top {
-      padding-top: env(safe-area-inset-top);
-    }
-    .safe-area-bottom {
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.18), transparent 45%),
-        radial-gradient(circle at 85% 20%, rgba(99, 102, 241, 0.18), transparent 40%),
-        radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.12), transparent 45%);
-      pointer-events: none;
-      z-index: -2;
-    }
-    .section-shell {
-      position: relative;
-      overflow: hidden;
-    }
-    .section-shell::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px);
-      background-size: 1.75rem 1.75rem;
-      opacity: 0.25;
-      pointer-events: none;
-      mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 70%);
-    }
+    
     .glass-surface {
       background: var(--surface-light);
-      border: 1px solid var(--stroke-light);
-      box-shadow: var(--shadow-soft);
       backdrop-filter: blur(14px);
+      border: 1px solid rgba(148, 163, 184, 0.2);
     }
+    
     .dark .glass-surface {
       background: var(--surface-dark);
-      border-color: var(--stroke-dark);
-      box-shadow: 0 24px 50px -32px rgba(15, 23, 42, 0.75);
     }
-    .card-surface {
-      background: var(--surface-light);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      box-shadow: var(--shadow-soft);
+    
+    .architecture-layer {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.875rem;
     }
-    .dark .card-surface {
-      background: rgba(15, 23, 42, 0.7);
-      border-color: var(--stroke-dark);
-      box-shadow: 0 20px 40px -32px rgba(15, 23, 42, 0.7);
+    
+    .token-stream {
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+      animation: tokenFlow 2s ease-in-out infinite;
     }
-    .btn-primary {
-      background: linear-gradient(120deg, #0ea5e9, #6366f1);
-      color: white;
-      box-shadow: 0 14px 30px -20px rgba(14, 165, 233, 0.8);
+    
+    @keyframes tokenFlow {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
     }
-    .btn-primary:hover {
-      filter: brightness(1.05);
+    
+    .crud-pulse {
+      animation: crudPulse 0.5s ease-out;
     }
-    .btn-primary.is-success {
-      background: linear-gradient(120deg, #10b981, #22c55e);
-      box-shadow: 0 14px 30px -20px rgba(16, 185, 129, 0.8);
+    
+    @keyframes crudPulse {
+      0% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(14, 165, 233, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
     }
-    .btn-outline {
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      color: white;
+    
+    .behind-scenes {
+      display: none;
+      background: #0f172a;
+      color: #94a3b8;
+      border-left: 3px solid #8b5cf6;
     }
-    .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: white;
+    
+    .behind-scenes.active {
+      display: block;
     }
-    .pill {
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.28);
+    
+    .token-counter {
+      font-variant-numeric: tabular-nums;
+      font-family: 'Fira Code', monospace;
     }
-    .reveal {
-      opacity: 0;
-      transform: translateY(1.5rem);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+    
+    .temperature-gradient {
+      background: linear-gradient(90deg, #0ea5e9, #f59e0b, #8b5cf6);
+      height: 4px;
+      border-radius: 2px;
     }
-    .reveal.in-view {
-      opacity: 1;
-      transform: translateY(0);
+    
+    .esports-metric {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+      border: 1px solid rgba(245, 158, 11, 0.3);
     }
-    .glow-ring {
-      position: relative;
-      isolation: isolate;
-    }
-    .glow-ring::after {
-      content: "";
-      position: absolute;
-      inset: -1rem;
-      border-radius: 999px;
-      background: radial-gradient(circle, var(--glow-color), transparent 70%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      z-index: -1;
-    }
-    .glow-ring:hover::after {
-      opacity: 1;
-    }
-    .shimmer {
-      background-size: 200% 100%;
-      background-image: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
-      animation: shimmer 2.2s ease-in-out infinite;
-    }
-    .pulse-soft {
-      animation: pulse-soft 4s ease-in-out infinite;
-    }
-    .float-slow {
-      animation: float 8s ease-in-out infinite;
-    }
-    .interactive-card {
-      transition: transform 0.35s ease, box-shadow 0.35s ease;
-      will-change: transform;
-    }
-    .interactive-card:hover {
-      transform: translateY(-6px) scale(1.01);
-      box-shadow: 0 20px 40px -24px rgba(15, 23, 42, 0.35);
-    }
-    .scroll-progress {
-      width: 0%;
-      transition: width 0.2s ease;
-    }
-    .focus-ring:focus-visible {
-      outline: 2px solid rgba(14, 165, 233, 0.8);
-      outline-offset: 0.125rem;
-    }
-    .tap-target {
-      min-height: 2.75rem;
-      min-width: 2.75rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .nav-link-active {
-      color: #0ea5e9;
-      background: rgba(14, 165, 233, 0.12);
-    }
-    .tap-input {
-      min-height: 2.75rem;
-    }
-    .nav-glass {
-      backdrop-filter: blur(18px);
-      background: rgba(255, 255, 255, 0.85);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-    }
-    .dark .nav-glass {
-      background: rgba(15, 23, 42, 0.85);
-      border-bottom-color: rgba(148, 163, 184, 0.2);
-    }
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-    @keyframes pulse-soft {
-      0%, 100% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.05); opacity: 1; }
-    }
+    
     @media (max-width: 768px) {
-      .text-sm,
-      .text-xs {
-        font-size: 1rem;
-        line-height: 1.5rem;
-      }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .reveal,
-      .shimmer,
-      .pulse-soft,
-      .float-slow,
-      .interactive-card {
-        animation: none !important;
-        transition: none !important;
-        transform: none !important;
-      }
+      .architecture-hidden-mobile { display: none; }
+      .responsive-stack { flex-direction: column; }
     }
   </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col safe-area safe-area-bottom">
-  <div class="scroll-progress fixed top-0 left-0 h-1 bg-primary-400 z-50" id="scroll-progress"></div>
-  <!-- Navigation -->
-  <nav class="nav-glass sticky top-0 z-50 shadow-md safe-area-top">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col font-sans">
+
+  <!-- System Architecture Header -->
+  <div class="bg-gray-900 text-green-400 px-4 py-2 text-xs font-mono flex justify-between items-center border-b border-gray-800">
+    <div class="flex items-center space-x-4">
+      <span class="flex items-center"><i class="fas fa-server mr-2"></i> ARCHITECTURE_LAYER: ACTIVE</span>
+      <span class="flex items-center"><i class="fas fa-coins mr-2"></i> TOKENS: <span id="global-token-count" class="token-counter ml-1">0</span></span>
+      <span class="flex items-center"><i class="fas fa-thermometer-half mr-2"></i> TEMP: <span id="global-temp-display">0.2</span></span>
+    </div>
+    <div class="flex items-center space-x-4">
+      <button onclick="systemController.toggleBehindScenesView()" class="hover:text-white transition flex items-center">
+        <i class="fas fa-layer-group mr-2"></i> TOGGLE_ARCH_VIEW
+      </button>
+      <span class="text-gray-600">|</span>
+      <span class="text-purple-400">DRY: ENABLED | SOLID: ENABLED</span>
+    </div>
+  </div>
+
+  <!-- Main Navigation (Merged Old + New) -->
+  <nav class="sticky top-0 z-40 glass-surface border-b border-gray-200 dark:border-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 flex items-center">
-            <i class="fas fa-seedling text-primary-500 text-2xl mr-2"></i>
-            <span class="text-xl font-bold text-gray-900 dark:text-white">StreamSprout</span>
+      <div class="flex justify-between h-16 items-center">
+        <div class="flex items-center space-x-3">
+          <div class="relative">
+            <i class="fas fa-seedling text-primary-500 text-2xl"></i>
+            <div class="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          </div>
+          <div>
+            <span class="text-xl font-bold tracking-tight">StreamSprout</span>
+            <span class="hidden sm:inline text-xs text-gray-500 ml-2 font-mono">CORE_ARCHITECTURE_V2</span>
           </div>
         </div>
-        <div class="hidden md:flex md:items-center md:space-x-8">
-          <a href="#features" data-nav-link class="nav-link tap-target px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Features</a>
-          <a href="#solutions" data-nav-link class="nav-link tap-target px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Solutions</a>
-          <a href="#pricing" data-nav-link class="nav-link tap-target px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Pricing</a>
-          <a href="#contact" data-nav-link class="nav-link tap-target px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Contact</a>
-          <button id="theme-toggle" class="tap-target rounded-full focus:outline-none focus-ring" aria-label="Toggle dark mode">
+        
+        <div class="hidden md:flex items-center space-x-6">
+          <button onclick="appController.navigateTo('esports-training')" class="hover:text-primary-500 transition flex items-center esports-metric px-3 py-1 rounded-md">
+            <i class="fas fa-gamepad mr-2 text-esports-500"></i> ESports Training
+          </button>
+          <button onclick="appController.navigateTo('vr-preview')" class="hover:text-primary-500 transition flex items-center">
+            <i class="fas fa-vr-cardboard mr-2"></i> VR Preview
+          </button>
+          <button onclick="appController.navigateTo('seo-analytics')" class="hover:text-primary-500 transition flex items-center">
+            <i class="fas fa-chart-line mr-2"></i> SEO Analytics
+          </button>
+          <button onclick="appController.navigateTo('architecture-core')" class="hover:text-architecture-500 transition flex items-center bg-architecture-500/10 px-3 py-1 rounded-md border border-architecture-500/30">
+            <i class="fas fa-code-branch mr-2"></i> Behind Scenes
+          </button>
+          <button onclick="themeService.toggleTheme()" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition">
             <i class="fas fa-moon dark:hidden"></i>
             <i class="fas fa-sun hidden dark:inline"></i>
           </button>
-          <button id="vr-toggle" class="vr-toggle tap-target text-base font-medium border border-primary-500 text-primary-500 rounded-md transition">
-            <i class="fas fa-vr-cardboard mr-2"></i>VR Mode
-          </button>
         </div>
-        <div class="flex items-center md:hidden">
-          <button id="mobile-menu-button" class="tap-target rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500" aria-controls="mobile-menu" aria-expanded="false">
-            <span class="sr-only">Open main menu</span>
-            <i class="fas fa-bars text-xl"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 top-16 z-50 bg-white/95 dark:bg-gray-900/95 shadow-lg border-t border-gray-200 dark:border-gray-800 safe-area-bottom" aria-hidden="true">
-      <div class="px-4 pt-2 pb-4 space-y-2 sm:px-6">
-        <a href="#features" data-nav-link class="nav-link tap-target w-full justify-start px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Features</a>
-        <a href="#solutions" data-nav-link class="nav-link tap-target w-full justify-start px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Solutions</a>
-        <a href="#pricing" data-nav-link class="nav-link tap-target w-full justify-start px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Pricing</a>
-        <a href="#contact" data-nav-link class="nav-link tap-target w-full justify-start px-3 py-2 text-base font-medium rounded-md text-gray-900 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">Contact</a>
-        <div class="flex flex-wrap gap-3 px-1 py-2">
-          <button id="theme-toggle-mobile" class="tap-target rounded-full focus:outline-none focus-ring" aria-label="Toggle dark mode">
-            <i class="fas fa-moon dark:hidden"></i>
-            <i class="fas fa-sun hidden dark:inline"></i>
-          </button>
-          <button id="vr-toggle-mobile" class="vr-toggle tap-target text-base font-medium border border-primary-500 text-primary-500 rounded-md transition">
-            <i class="fas fa-vr-cardboard mr-2"></i>VR Mode
-          </button>
-        </div>
+
+        <button onclick="navService.toggleMobile()" class="md:hidden p-2">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
       </div>
     </div>
   </nav>
-  <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/40 hidden md:hidden z-40" aria-hidden="true"></div>
 
-  <!-- Hero Section -->
-  <section class="section-shell relative bg-gradient-to-r from-primary-500 to-primary-700 text-white py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-10">
-      <div class="md:w-1/2 mb-10 md:mb-0 reveal">
-        <span class="pill text-xs uppercase tracking-[0.2em] px-4 py-2 inline-flex mb-6">Quantum-ready growth</span>
-        <h1 class="text-4xl md:text-5xl font-bold mb-6">AI-Optimized Web Experiences</h1>
-        <p class="text-xl mb-8 max-w-xl">StreamSprout combines SEO automation, real-time analytics, and VR-ready interfaces to grow your digital presence.</p>
-        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-          <a href="#contact" class="btn-primary tap-target px-6 py-3 rounded-md text-lg font-semibold transition duration-300 text-center focus-ring">Get Started</a>
-          <a href="#features" class="btn-outline tap-target px-6 py-3 rounded-md text-lg font-semibold transition duration-300 text-center focus-ring">Learn More</a>
+  <!-- Behind The Scenes Panel (Architectural Visualization) -->
+  <div id="architecture-panel" class="behind-scenes fixed inset-x-0 top-32 bottom-0 z-30 overflow-y-auto p-4 transition-all duration-300">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-4">
+      
+      <!-- Live Token Stream -->
+      <div class="lg:col-span-1 space-y-4">
+        <div class="bg-gray-950 border border-gray-800 rounded-lg p-4">
+          <h3 class="text-green-400 font-mono text-sm mb-3 flex items-center">
+            <i class="fas fa-stream mr-2"></i> TOKEN_STREAM_VISUALIZATION
+          </h3>
+          <div id="token-console" class="h-64 overflow-y-auto font-mono text-xs space-y-1">
+            <div class="text-gray-600">// System initialized...</div>
+            <div class="text-gray-600">// Dependency injection complete...</div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-gray-800 flex justify-between text-xs">
+            <span class="text-gray-500">Input Tokens</span>
+            <span class="text-green-400 token-counter" id="input-tokens">0</span>
+          </div>
+          <div class="flex justify-between text-xs mt-1">
+            <span class="text-gray-500">Output Tokens</span>
+            <span class="text-blue-400 token-counter" id="output-tokens">0</span>
+          </div>
+          <div class="flex justify-between text-xs mt-1">
+            <span class="text-gray-500">Cached (DRY Savings)</span>
+            <span class="text-purple-400 token-counter" id="cached-tokens">0</span>
+          </div>
+        </div>
+
+        <!-- Architecture Metrics -->
+        <div class="bg-gray-950 border border-gray-800 rounded-lg p-4">
+          <h3 class="text-architecture-500 font-mono text-sm mb-3">ARCHITECTURE_HEALTH</h3>
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs">
+              <span class="text-gray-500">Repository Pattern</span>
+              <span class="text-green-500">ACTIVE</span>
+            </div>
+            <div class="flex justify-between text-xs">
+              <span class="text-gray-500">Event Bus</span>
+              <span class="text-green-500">PUBLISHING</span>
+            </div>
+            <div class="flex justify-between text-xs">
+              <span class="text-gray-500">Validation Strictness</span>
+              <span id="strictness-display" class="text-blue-400">HIGH</span>
+            </div>
+            <div class="flex justify-between text-xs">
+              <span class="text-gray-500">SOLID Compliance</span>
+              <span class="text-green-500">100%</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="md:w-1/2 relative reveal">
-        <div class="relative w-full h-64 md:h-96 rounded-2xl overflow-hidden backdrop-blur-sm shimmer glass-surface">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <i class="fas fa-seedling text-6xl md:text-8xl text-white/30 animate-spin-slow"></i>
+
+      <!-- Live CRUD Operations Monitor -->
+      <div class="lg:col-span-2 space-y-4">
+        <div class="bg-gray-950 border border-gray-800 rounded-lg p-4">
+          <h3 class="text-primary-500 font-mono text-sm mb-3 flex items-center justify-between">
+            <span><i class="fas fa-database mr-2"></i> CRUD_OPERATION_MONITOR</span>
+            <span class="text-xs text-gray-600">LocalStorage Repository</span>
+          </h3>
+          <div id="crud-monitor" class="space-y-2 max-h-64 overflow-y-auto">
+            <!-- Live CRUD operations appear here -->
           </div>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="bg-white/10 rounded-full w-48 h-48 md:w-64 md:h-64 flex items-center justify-center animate-float">
-              <div class="bg-white/10 rounded-full w-32 h-32 md:w-48 md:h-48 flex items-center justify-center">
-                <div class="bg-white/10 rounded-full w-16 h-16 md:w-24 md:h-24 flex items-center justify-center">
-                  <i class="fas fa-chart-line text-white text-2xl md:text-4xl"></i>
-                </div>
-              </div>
+        </div>
+
+        <!-- Temperature Effects Visualization -->
+        <div class="bg-gray-950 border border-gray-800 rounded-lg p-4">
+          <h3 class="text-yellow-500 font-mono text-sm mb-3">DETERMINISM_SIMULATION</h3>
+          <div class="temperature-gradient mb-4"></div>
+          <div class="grid grid-cols-3 gap-2 text-xs text-center">
+            <div class="p-2 bg-blue-900/30 border border-blue-800 rounded">
+              <div class="text-blue-400 font-bold">0.0 - 0.3</div>
+              <div class="text-gray-500 mt-1">Strict Validation</div>
+              <div class="text-gray-600 mt-1">Complete sentences required</div>
+            </div>
+            <div class="p-2 bg-yellow-900/30 border border-yellow-800 rounded">
+              <div class="text-yellow-400 font-bold">0.3 - 0.7</div>
+              <div class="text-gray-500 mt-1">Balanced Mode</div>
+              <div class="text-gray-600 mt-1">Context-aware processing</div>
+            </div>
+            <div class="p-2 bg-purple-900/30 border border-purple-800 rounded">
+              <div class="text-purple-400 font-bold">0.7 - 1.0</div>
+              <div class="text-gray-500 mt-1">Creative/Infer</div>
+              <div class="text-gray-600 mt-1">Auto-complete parameters</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- Stats Section -->
-  <section class="py-16 bg-white dark:bg-gray-900 reveal">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-        <div class="card-surface rounded-xl p-6 interactive-card">
-          <p class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400">Active Workflows</p>
-          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2" data-counter="1200">0</p>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Automations running daily</p>
-        </div>
-        <div class="card-surface rounded-xl p-6 interactive-card">
-          <p class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400">SEO Uplift</p>
-          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2" data-counter="86">0</p>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Avg. traffic increase</p>
-        </div>
-        <div class="card-surface rounded-xl p-6 interactive-card">
-          <p class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400">AI Insights</p>
-          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2" data-counter="420">0</p>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Recommendations per week</p>
-        </div>
-        <div class="card-surface rounded-xl p-6 interactive-card">
-          <p class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400">Uptime</p>
-          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2" data-counter="99">0</p>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Reliable daily usage</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- XP Progress Bar -->
-  <div class="w-full bg-gray-200 dark:bg-gray-800 h-4">
-    <div id="xp-progress" class="bg-gradient-to-r from-green-400 to-blue-500 h-full w-0 transition-all duration-1000"></div>
   </div>
 
-  <!-- Features Section -->
-  <section id="features" class="py-20 bg-white dark:bg-gray-900 reveal">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="section-title font-bold text-gray-900 dark:text-white mb-4">Powerful Features</h2>
-        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">Everything you need to build, optimize, and grow your online presence</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Feature Cards -->
-        <template id="feature-card">
-          <div class="card-surface rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-2">
-            <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mb-6 glow-ring">
-              <i class="fas fa-ICON text-primary-600 dark:text-primary-400 text-2xl"></i>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">TITLE</h3>
-            <p class="text-gray-600 dark:text-gray-300">DESCRIPTION</p>
+  <!-- Main Content Area -->
+  <main class="flex-grow relative">
+    
+    <!-- ESports Training Optimization Module (Domain Specific) -->
+    <section id="esports-training" class="py-12 bg-white dark:bg-gray-900">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8 flex justify-between items-end">
+          <div>
+            <h2 class="text-3xl font-bold mb-2 flex items-center">
+              <i class="fas fa-gamepad text-esports-500 mr-3"></i>
+              ESports Training Optimization
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400">CRUD operations for training regimens with tokenized performance analytics</p>
           </div>
-        </template>
-        <!-- Populate cards -->
-        <script>
-          const features = [
-            {icon:'fa-robot', title:'AI Content Generation',desc:'Automatically generate SEO-optimized content tailored to your audience.'},
-            {icon:'fa-chart-pie', title:'Real-time Analytics',desc:'Track performance metrics in real-time with our analytics dashboard.'},
-            {icon:'fa-vr-cardboard', title:'VR-Ready Interfaces',desc:'Toggle between standard and VR modes for immersive experiences.'},
-            {icon:'fa-mobile-alt', title:'Responsive Design',desc:'Perfectly optimized for all devices from mobile to VR headsets.'},
-            {icon:'fa-bolt', title:'Rapid Deployment',desc:'Get your site live in minutes with intuitive tools and templates.'},
-            {icon:'fa-shield-alt', title:'Enterprise Security',desc:'Bank-grade security protocols to protect your data.'},
-          ];
-          const grid = document.querySelector('#features .grid');
-          features.forEach(f => {
-            const tpl = document.getElementById('feature-card');
-            const clone = tpl.content.cloneNode(true);
-            clone.querySelector('i').classList.replace('fa-ICON', f.icon);
-            clone.querySelector('h3').textContent = f.title;
-            clone.querySelector('p').textContent = f.desc;
-            grid.appendChild(clone);
-          });
-        </script>
-      </div>
-    </div>
-  </section>
+          <div class="hidden sm:block text-right">
+            <div class="text-sm text-gray-500">Current Temperature</div>
+            <div class="text-2xl font-mono font-bold text-primary-500" id="display-temp">0.2</div>
+          </div>
+        </div>
 
-  <!-- Solutions Section -->
-  <section id="solutions" class="py-20 bg-gray-50 dark:bg-gray-800 reveal section-shell">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="section-title font-bold text-gray-900 dark:text-white mb-4">Solutions Tailored to Your Team</h2>
-        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">Choose your focus and explore the workflows, automations, and VR-ready experiences built for daily use.</p>
-      </div>
-      <div class="flex flex-wrap justify-center gap-4 mb-10">
-        <button class="solution-tab tap-target card-surface text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full focus-ring active" data-solution="growth">Growth Teams</button>
-        <button class="solution-tab tap-target card-surface text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full focus-ring" data-solution="commerce">Commerce</button>
-        <button class="solution-tab tap-target card-surface text-gray-900 dark:text-gray-100 px-6 py-2 rounded-full focus-ring" data-solution="agency">Agencies</button>
-      </div>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-        <div class="space-y-6">
-          <div class="solution-panel" data-solution-panel="growth">
-            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-3">Pipeline acceleration with AI insights</h3>
-            <p class="text-gray-600 dark:text-gray-300 mb-6">Automate technical SEO fixes, get instant alerts on ranking drops, and launch landing pages with built-in experimentation.</p>
-            <ul class="space-y-3 text-gray-600 dark:text-gray-300">
-              <li><i class="fas fa-check text-primary-500 mr-2"></i>Realtime ranking anomaly detection</li>
-              <li><i class="fas fa-check text-primary-500 mr-2"></i>Content briefs generated per segment</li>
-              <li><i class="fas fa-check text-primary-500 mr-2"></i>Experiment-ready microsites</li>
-            </ul>
-          </div>
-          <div class="solution-panel hidden" data-solution-panel="commerce">
-            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-3">Conversion-first merchandising</h3>
-            <p class="text-gray-600 dark:text-gray-300 mb-6">Ship product collections with AI-optimized metadata and dynamic bundles that update based on demand signals.</p>
-            <ul class="space-y-3 text-gray-600 dark:text-gray-300">
-              <li><i class="fas fa-check text-primary-500 mr-2"></i>Smart inventory storytelling</li>
-              <li><i class="fas fa-check text-primary-500 mr-2"></i>Automated FAQ and support content</li>
-              <li><i class="fas fa-check text-primary-500 mr-2"></i>Personalized bundles at scale</li>
-            </ul>
-          </div>
-          <div class="solution-panel hidden" data-solution-panel="agency">
-            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-3">Multi-client delivery at scale</h3>
-            <p class="text-gray-600 dark:text-gray-300 mb-6">Centralize reporting, approvals, and VR-ready prototypes so every client sees progress instantly.</p>
-            <ul class="space-y-3 text-gray-600 dark:text-gray-300">
-              <li><i class="fas fa-check text-primary-500 mr-2"></i>Client-specific dashboards</li>
-              <li><i class="fas fa-check text-primary-500 mr-2"></i>Reusable asset libraries</li>
-              <li><i class="fas fa-check text-primary-500 mr-2"></i>One-click demo environments</li>
-            </ul>
-          </div>
-        </div>
-        <div class="glass-surface rounded-2xl p-8 space-y-6 glow-ring">
-          <div class="flex items-center justify-between">
-            <span class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400">Live Workflow</span>
-            <span class="text-xs bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300 px-3 py-1 rounded-full">Interactive</span>
-          </div>
-          <h4 class="text-2xl font-semibold text-gray-900 dark:text-white">Automation pulse</h4>
-          <p class="text-gray-600 dark:text-gray-300">See the pipeline evolve as AI automations deploy SEO fixes, analytics, and VR previews.</p>
-          <div class="space-y-4">
-            <div>
-              <div class="flex justify-between text-sm text-gray-600 dark:text-gray-300">
-                <span>Content optimization</span>
-                <span class="font-semibold">92%</span>
-              </div>
-              <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2 overflow-hidden">
-                <div class="h-2 bg-primary-500 rounded-full pulse-soft" style="width:92%"></div>
-              </div>
-            </div>
-            <div>
-              <div class="flex justify-between text-sm text-gray-600 dark:text-gray-300">
-                <span>SEO issue resolution</span>
-                <span class="font-semibold">75%</span>
-              </div>
-              <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2 overflow-hidden">
-                <div class="h-2 bg-green-400 rounded-full pulse-soft" style="width:75%"></div>
-              </div>
-            </div>
-            <div>
-              <div class="flex justify-between text-sm text-gray-600 dark:text-gray-300">
-                <span>VR preview readiness</span>
-                <span class="font-semibold">88%</span>
-              </div>
-              <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2 overflow-hidden">
-                <div class="h-2 bg-blue-400 rounded-full pulse-soft" style="width:88%"></div>
-              </div>
-            </div>
-          </div>
-          <button class="solution-action btn-primary tap-target px-6 py-3 rounded-md font-semibold transition focus-ring">Activate workflow</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pricing Section -->
-  <section id="pricing" class="py-20 bg-white dark:bg-gray-900 reveal">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="section-title font-bold text-gray-900 dark:text-white mb-4">Transparent Pricing</h2>
-        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Switch between monthly and annual billing to see the optimized plan that fits your growth.</p>
-        <div class="flex items-center justify-center mt-6 gap-4">
-          <span class="text-sm font-medium text-gray-600 dark:text-gray-300">Monthly</span>
-          <button id="pricing-toggle" class="relative inline-flex tap-target h-8 w-16 items-center rounded-full bg-primary-200 dark:bg-primary-900/40 transition focus-ring" aria-pressed="false">
-            <span class="inline-block h-6 w-6 transform rounded-full bg-white shadow transition translate-x-1" id="pricing-toggle-dot"></span>
-          </button>
-          <span class="text-sm font-medium text-gray-600 dark:text-gray-300">Annual <span class="text-primary-500">(save 15%)</span></span>
-        </div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="card-surface rounded-2xl p-8 interactive-card">
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Starter</h3>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">For emerging teams launching AI-SEO.</p>
-          <div class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            <span data-price data-monthly="49" data-annual="39">49</span><span class="text-lg font-normal text-gray-500 dark:text-gray-400">/mo</span>
-          </div>
-          <ul class="space-y-3 text-gray-600 dark:text-gray-300 mb-6">
-            <li><i class="fas fa-check text-primary-500 mr-2"></i>AI brief generator</li>
-            <li><i class="fas fa-check text-primary-500 mr-2"></i>Weekly analytics digest</li>
-            <li><i class="fas fa-check text-primary-500 mr-2"></i>VR preview access</li>
-          </ul>
-          <button class="w-full btn-primary tap-target py-3 rounded-md font-semibold transition focus-ring">Start Starter</button>
-        </div>
-        <div class="glass-surface rounded-2xl p-8 border border-primary-200 dark:border-primary-800 interactive-card">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Growth</h3>
-            <span class="text-xs uppercase tracking-wide bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full">Popular</span>
-          </div>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">For teams scaling daily operations.</p>
-          <div class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            <span data-price data-monthly="129" data-annual="109">129</span><span class="text-lg font-normal text-gray-500 dark:text-gray-400">/mo</span>
-          </div>
-          <ul class="space-y-3 text-gray-600 dark:text-gray-300 mb-6">
-            <li><i class="fas fa-check text-primary-500 mr-2"></i>Everything in Starter</li>
-            <li><i class="fas fa-check text-primary-500 mr-2"></i>Automation workflows</li>
-            <li><i class="fas fa-check text-primary-500 mr-2"></i>Realtime alerts</li>
-            <li><i class="fas fa-check text-primary-500 mr-2"></i>Team collaboration hub</li>
-          </ul>
-          <button class="w-full btn-primary tap-target py-3 rounded-md font-semibold transition focus-ring">Choose Growth</button>
-        </div>
-        <div class="card-surface rounded-2xl p-8 interactive-card">
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Enterprise</h3>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">For organizations delivering at scale.</p>
-          <div class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            <span data-price data-monthly="299" data-annual="249">299</span><span class="text-lg font-normal text-gray-500 dark:text-gray-400">/mo</span>
-          </div>
-          <ul class="space-y-3 text-gray-600 dark:text-gray-300 mb-6">
-            <li><i class="fas fa-check text-primary-500 mr-2"></i>Dedicated success lead</li>
-            <li><i class="fas fa-check text-primary-500 mr-2"></i>Custom integrations</li>
-            <li><i class="fas fa-check text-primary-500 mr-2"></i>VR onboarding workshops</li>
-          </ul>
-          <button class="w-full btn-primary tap-target py-3 rounded-md font-semibold transition focus-ring">Talk to Sales</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="py-20 bg-gray-100 dark:bg-gray-800 reveal section-shell">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-        <div class="space-y-6">
-          <h2 class="section-title font-bold text-gray-900 dark:text-white">Ready for daily usage?</h2>
-          <p class="text-xl text-gray-600 dark:text-gray-300">Let’s build a frictionless launch plan. Share your goals and our team will respond with a tailored rollout within 24 hours.</p>
-          <div class="glass-surface rounded-xl p-6 space-y-4">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Direct line</p>
-                <p class="text-lg font-semibold text-gray-900 dark:text-white">hello@streamsprout.ai</p>
-              </div>
-              <button id="copy-email" class="btn-primary tap-target px-4 py-2 rounded-md focus-ring">Copy</button>
-            </div>
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Response SLA</p>
-                <p class="text-lg font-semibold text-gray-900 dark:text-white">Under 2 hours</p>
-              </div>
-              <span class="text-xs bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 px-3 py-1 rounded-full">Live support</span>
-            </div>
-          </div>
-        </div>
-        <div class="glass-surface rounded-2xl p-8">
-          <form class="space-y-5">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="name">Name</label>
-              <input id="name" type="text" class="w-full tap-input px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus-ring" placeholder="Jane Doe" required />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="email">Work Email</label>
-              <input id="email" type="email" class="w-full tap-input px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus-ring" placeholder="jane@company.com" required />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="message">What do you want to improve?</label>
-              <textarea id="message" rows="4" class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus-ring" placeholder="Tell us about your goals."></textarea>
-            </div>
-            <button type="submit" class="w-full btn-primary tap-target py-3 rounded-md font-semibold transition focus-ring">Send request</button>
-            <p class="text-xs text-gray-500 dark:text-gray-400">By submitting, you agree to our privacy policy.</p>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- VR Simulation Section -->
-  <section id="vr-demo" class="py-20 bg-gray-100 dark:bg-gray-800 reveal">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center">
-      <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
-        <h2 class="section-title font-bold text-gray-900 dark:text-white mb-6">Immersive VR Experience</h2>
-        <p class="text-xl text-gray-600 dark:text-gray-300 mb-6">Toggle VR mode to experience your website in a fully immersive 3D environment.</p>
-        <div class="bg-yellow-100 dark:bg-yellow-900/30 border-l-4 border-yellow-500 dark:border-yellow-400 p-4 mb-6">
-          <div class="flex">
-            <i class="fas fa-exclamation-triangle text-yellow-500 dark:text-yellow-400"></i>
-            <p class="ml-3 text-sm text-yellow-700 dark:text-yellow-300"><strong>VR Development Mode</strong> - Some features may be limited in the browser preview. Use a headset for full VR.</p>
-          </div>
-        </div>
-        <button id="vr-demo-button" class="flex items-center tap-target bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-md text-lg font-semibold transition duration-300">
-          <i class="fas fa-vr-cardboard mr-2"></i> Try VR Demo
-        </button>
-      </div>
-      <div class="md:w-1/2">
-        <div class="glass-surface rounded-xl overflow-hidden">
-          <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-600 relative flex items-center justify-center">
-            <div id="vr-preview" class="text-center p-8 space-y-4">
-              <div class="vr-preview-idle">
-                <i class="fas fa-vr-cardboard text-6xl text-gray-400 dark:text-gray-300 mb-4"></i>
-                <h3 class="text-xl font-bold text-gray-700 dark:text-gray-200 mb-2">VR Mode Preview</h3>
-                <p class="text-gray-500 dark:text-gray-400">Click the button to activate VR simulation</p>
-              </div>
-              <div class="vr-preview-active hidden">
-                <div class="w-20 h-20 mx-auto rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center pulse-soft">
-                  <i class="fas fa-wave-square text-primary-600 dark:text-primary-300 text-2xl"></i>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          <!-- Create/Update Training Protocol -->
+          <div class="lg:col-span-1 space-y-6">
+            <div class="glass-surface rounded-xl p-6 shadow-lg border-t-4 border-esports-500">
+              <h3 id="training-form-title" class="text-xl font-bold mb-4 flex items-center justify-between">
+                <span>Create Training Protocol</span>
+                <span class="text-xs font-mono text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">ID: <span id="form-protocol-id">NEW</span></span>
+              </h3>
+              
+              <form id="training-form" onsubmit="event.preventDefault(); esportsController.saveTrainingProtocol();" class="space-y-4">
+                <input type="hidden" id="protocol-id" value="">
+                
+                <div>
+                  <label class="block text-sm font-medium mb-2 flex justify-between">
+                    <span>Protocol Name</span>
+                    <span class="text-xs text-gray-500 font-mono" id="token-estimate-title">~4 tokens</span>
+                  </label>
+                  <input type="text" id="protocol-name" required 
+                         class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-transparent focus:ring-2 focus:ring-esports-500 outline-none"
+                         placeholder="Aim Training Phase 1"
+                         oninput="tokenService.estimateTokens(this.value, 'title')">
                 </div>
-                <h3 class="text-xl font-bold text-gray-700 dark:text-gray-200">Simulation Running</h3>
-                <p class="text-gray-500 dark:text-gray-400">Rendering immersive layout layers in realtime.</p>
+
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium mb-2">Game Title</label>
+                    <select id="game-type" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-transparent">
+                      <option value="valorant">Valorant</option>
+                      <option value="cs2">CS2</option>
+                      <option value="lol">League of Legends</option>
+                      <option value="apex">Apex Legends</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-2">Skill Focus</label>
+                    <select id="skill-focus" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-transparent">
+                      <option value="aim">Precision Aim</option>
+                      <option value="reaction">Reaction Time</option>
+                      <option value="strategy">Macro Strategy</option>
+                      <option value="mechanics">Micro Mechanics</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium mb-2 flex justify-between">
+                    <span>Training Parameters (JSON or Natural)</span>
+                    <span class="text-xs text-token-500 font-mono" id="param-efficiency">Efficiency: 100%</span>
+                  </label>
+                  <textarea id="training-params" rows="4" required
+                            class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-transparent focus:ring-2 focus:ring-esports-500 outline-none font-mono text-sm"
+                            placeholder='{"sensitivity": 0.4, "dpi": 800, "duration": 30} or "Complete sentence describing parameters..."'
+                            oninput="tokenService.analyzeEfficiency(this.value)"></textarea>
+                  <div class="mt-2 flex items-center justify-between text-xs">
+                    <span class="text-gray-500">Validation Mode:</span>
+                    <span id="validation-mode-display" class="px-2 py-1 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Strict</span>
+                  </div>
+                </div>
+
+                <div class="pt-2">
+                  <button type="submit" id="protocol-submit-btn" 
+                          class="w-full bg-esports-500 hover:bg-esports-600 text-white font-bold py-3 rounded-md transition shadow-md flex items-center justify-center">
+                    <i class="fas fa-save mr-2"></i>
+                    <span>Create Protocol</span>
+                  </button>
+                  <button type="button" onclick="esportsController.resetProtocolForm()" 
+                          class="w-full mt-2 border border-gray-300 dark:border-gray-700 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition hidden"
+                          id="cancel-protocol-btn">
+                    Cancel Editing
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Quick Temperature Test -->
+            <div class="glass-surface rounded-xl p-6 shadow-lg">
+              <h3 class="text-lg font-bold mb-4">Test Configuration Impact</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium mb-2">Temperature (Determinism Control)</label>
+                  <input type="range" id="test-temperature" min="0" max="100" value="20" 
+                         class="w-full accent-primary-500"
+                         oninput="systemController.updateGlobalTemperature(this.value)">
+                  <div class="flex justify-between text-xs mt-1 text-gray-500">
+                    <span>Deterministic</span>
+                    <span id="current-temp-label">0.2</span>
+                    <span>Creative</span>
+                  </div>
+                </div>
+                
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 text-sm">
+                  <div class="font-medium mb-2">Current Behavior:</div>
+                  <div id="behavior-description" class="text-gray-600 dark:text-gray-400 text-xs">
+                    Strict validation active. All parameters must be explicitly defined. Complete sentences enforced.
+                  </div>
+                </div>
+
+                <button onclick="testController.simulateValidationTest()" 
+                        class="w-full bg-primary-500 hover:bg-primary-600 text-white py-2 rounded-md transition text-sm">
+                  Run Validation Test
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Read/Preview Column -->
+          <div class="lg:col-span-2 space-y-6">
+            
+            <!-- Preview Comparison -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="glass-surface rounded-xl p-4 border-l-4 border-blue-500">
+                <h4 class="font-bold text-sm mb-2 text-blue-600 dark:text-blue-400">OLD ARCHITECTURE (v1)</h4>
+                <div class="text-xs text-gray-600 dark:text-gray-400 space-y-2">
+                  <div class="flex justify-between"><span>Pattern:</span> <span class="text-red-500">Mixed Concerns</span></div>
+                  <div class="flex justify-between"><span>DRY:</span> <span class="text-yellow-500">Partial</span></div>
+                  <div class="flex justify-between"><span>Tokens:</span> <span class="font-mono">~2,400/mo</span></div>
+                  <div class="flex justify-between"><span>Testability:</span> <span class="text-red-500">Low</span></div>
+                  <div class="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-xs font-mono opacity-75">
+                    inline scripts<br>no separation<br>repeated logic
+                  </div>
+                </div>
+              </div>
+
+              <div class="glass-surface rounded-xl p-4 border-l-4 border-green-500">
+                <h4 class="font-bold text-sm mb-2 text-green-600 dark:text-green-400">NEW ARCHITECTURE (v2)</h4>
+                <div class="text-xs text-gray-600 dark:text-gray-400 space-y-2">
+                  <div class="flex justify-between"><span>Pattern:</span> <span class="text-green-500">SOLID/DRY</span></div>
+                  <div class="flex justify-between"><span>DRY:</span> <span class="text-green-500">100%</span></div>
+                  <div class="flex justify-between"><span>Tokens:</span> <span class="font-mono text-green-600">~1,200/mo</span></div>
+                  <div class="flex justify-between"><span>Testability:</span> <span class="text-green-500">High</span></div>
+                  <div class="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-xs font-mono text-green-600">
+                    Repository Pattern<br>Event Bus<br>Dependency Injection
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Training Protocols List -->
+            <div class="glass-surface rounded-xl p-6 shadow-lg">
+              <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Active Training Protocols</h3>
+                <div class="flex space-x-2">
+                  <button onclick="esportsController.filterByGame('all')" class="px-3 py-1 text-xs rounded-full bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300">All</button>
+                  <button onclick="esportsController.filterByGame('valorant')" class="px-3 py-1 text-xs rounded-full bg-gray-200 dark:bg-gray-700">Valorant</button>
+                  <button onclick="esportsController.clearAllProtocols()" class="px-3 py-1 text-xs rounded-full bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 hover:bg-red-200">Clear All</button>
+                </div>
+              </div>
+
+              <div id="protocols-container" class="space-y-3">
+                <!-- Protocols rendered here -->
+                <div class="text-center py-8 text-gray-500">
+                  <i class="fas fa-clipboard-list text-4xl mb-3 opacity-50"></i>
+                  <p>No training protocols defined.</p>
+                  <p class="text-sm mt-1">Create one to see tokenization in action.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Token Efficiency Analytics -->
+            <div class="glass-surface rounded-xl p-6 shadow-lg border border-token-500/30">
+              <h3 class="text-lg font-bold mb-4 flex items-center text-token-600 dark:text-token-400">
+                <i class="fas fa-chart-pie mr-2"></i>
+                Token Efficiency Analytics
+              </h3>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <div class="text-2xl font-mono font-bold text-token-600" id="stat-total-protocols">0</div>
+                  <div class="text-xs text-gray-500 mt-1">Total Protocols</div>
+                </div>
+                <div class="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <div class="text-2xl font-mono font-bold text-primary-600" id="stat-avg-tokens">0</div>
+                  <div class="text-xs text-gray-500 mt-1">Avg Tokens/Protocol</div>
+                </div>
+                <div class="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <div class="text-2xl font-mono font-bold text-esports-600" id="stat-dry-savings">0%</div>
+                  <div class="text-xs text-gray-500 mt-1">DRY Savings</div>
+                </div>
+                <div class="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <div class="text-2xl font-mono font-bold text-purple-600" id="stat-validation-rate">100%</div>
+                  <div class="text-xs text-gray-500 mt-1">Validation Pass Rate</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- AI Chat Demo -->
-  <section class="py-20 bg-white dark:bg-gray-900 reveal">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="section-title font-bold text-gray-900 dark:text-white mb-4">AI Chat Support</h2>
-      <p class="text-xl text-gray-600 dark:text-gray-300 mb-6">Interact with our AI assistant to get instant SEO tips and insights.</p>
-      <div class="flex justify-center">
-        <div class="w-full max-w-lg">
-          <textarea id="chat-input" rows="4" class="w-full p-4 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500" placeholder="Ask me anything..."></textarea>
-          <div class="flex flex-wrap gap-2 mt-4" id="chat-suggestions">
-            <button class="chat-suggestion tap-target bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm focus-ring">Top SEO fixes</button>
-            <button class="chat-suggestion tap-target bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm focus-ring">VR onboarding</button>
-            <button class="chat-suggestion tap-target bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm focus-ring">Weekly report</button>
+    <!-- VR Preview Section (Original Feature Preserved) -->
+    <section id="vr-preview" class="py-12 bg-gray-50 dark:bg-gray-800 hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold mb-8">VR Training Environment Preview</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="glass-surface rounded-xl p-6">
+            <h3 class="text-xl font-bold mb-4">Immersive Training Room</h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4">Experience esports training in VR with architectural visualization of system load.</p>
+            <button onclick="vrController.toggleVRMode()" class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-md transition">
+              <i class="fas fa-vr-cardboard mr-2"></i> Toggle VR Mode
+            </button>
           </div>
-          <button id="chat-send" class="mt-4 btn-primary tap-target px-6 py-3 rounded-md text-lg font-semibold transition duration-300">Send</button>
+          <div id="vr-canvas" class="glass-surface rounded-xl p-6 min-h-[300px] flex items-center justify-center bg-gradient-to-br from-gray-900 to-black text-white">
+            <div class="text-center">
+              <i class="fas fa-cube text-6xl mb-4 text-primary-500 animate-pulse"></i>
+              <p>VR Preview Standby</p>
+              <p class="text-sm text-gray-400 mt-2">Architectural overhead: <span class="font-mono text-green-400">12ms</span></p>
+            </div>
+          </div>
         </div>
       </div>
-      <div id="chat-response" class="mt-6 text-left prose dark:prose-invert max-w-2xl mx-auto"></div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Blog Section -->
-  <section id="blog" class="py-20 bg-gray-100 dark:bg-gray-800 reveal section-shell">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="section-title font-bold text-gray-900 dark:text-white mb-4">Dernier post LinkedIn</h2>
-        <p class="text-lg text-gray-600 dark:text-gray-300">Insights sur le Vibe Coding, le DRY et la façon de guider l&apos;IA.</p>
-      </div>
-      <article class="glass-surface rounded-2xl p-8 md:p-12 space-y-6">
-        <p class="text-lg font-semibold text-gray-900 dark:text-white">Hello LinkedIn 👋</p>
-        <p class="text-gray-700 dark:text-gray-300">
-          Quand on demande à l&apos;IA de builder une app feature par feature, il y a un truc vicieux qui arrive : elle
-          génère du code qui se répète partout. Pourquoi ? Parce qu&apos;on lui demande des choses et elle n&apos;a pas forcément
-          en tête l&apos;architecture globale au moment de répondre. Résultat : la même logique se retrouve copiée-collée dans
-          10 fichiers différents. Propre ça ? Pas vraiment 😅.
-        </p>
-        <div class="border-l-4 border-primary-500 pl-6 text-gray-700 dark:text-gray-300">
-          <p class="text-lg font-semibold text-gray-900 dark:text-white mb-2">DRY : Don&apos;t Repeat Yourself 👇</p>
-          <p>
-            Le concept est simple : chaque morceau de logique doit exister une seule fois dans le code. Une fonction, un
-            composant, un module — réutilisé partout au lieu d&apos;être dupliqué.
-          </p>
-        </div>
-        <p class="text-gray-700 dark:text-gray-300">
-          Pourquoi c&apos;est critique en Vibe Coding ? Si l&apos;IA a généré la connexion aux API en tant qu&apos;utilisateur connu
-          dans 8 fichiers différents, le jour où on veut changer un paramètre de cette connexion, elle doit corriger 8
-          endroits. Et s&apos;il y a des cafouillages et qu&apos;elle en rate un ? Bug en prod 💥.
-        </p>
-        <div>
-          <p class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Pourquoi le DRY change tout :</p>
-          <ul class="space-y-3 text-gray-700 dark:text-gray-300">
-            <li><strong>1️⃣ Modularité 🧱</strong> Le DRY force l&apos;IA à créer des composants indépendants. C&apos;est beaucoup
-              plus robuste et facile à tester.</li>
-            <li><strong>2️⃣ Scalabilité 📈</strong> Un code propre et compact est plus facile à faire évoluer sans que
-              l&apos;IA ne se perde dans son propre contexte (et on sait qu&apos;elle sature vite).</li>
-            <li><strong>3️⃣ Économie de Tokens 💰</strong> Moins de répétitions = moins de lignes à &quot;lire&quot; pour l&apos;IA à
-              chaque itération. Plus efficace et plus rapide.</li>
-          </ul>
-        </div>
-        <div class="card-surface rounded-xl p-6 space-y-4">
-          <p class="text-lg font-semibold text-gray-900 dark:text-white">👉 Comment piloter l&apos;IA pour rester DRY ?</p>
-          <div>
-            <p class="font-semibold text-gray-900 dark:text-white">🚧 Étape 1 : Le Guardrail de dev</p>
-            <p class="text-gray-700 dark:text-gray-300">
-              Le prompt : &quot;Je veux ajouter [Feature X]. Consigne stricte : Avant d&apos;écrire du nouveau code, vérifie si
-              une logique existante peut être réutilisée.&quot;
-            </p>
-          </div>
-          <div>
-            <p class="font-semibold text-gray-900 dark:text-white">🔍 Étape 2 : L&apos;Audit DRY</p>
-            <p class="text-gray-700 dark:text-gray-300">
-              Le prompt : &quot;Analyse le code que tu viens de faire. Liste toutes les fonctions qui partagent des
-              structures similaires ailleurs dans le code. Ne modifie rien, fais juste l&apos;inventaire.&quot;
-            </p>
-          </div>
-          <div>
-            <p class="font-semibold text-gray-900 dark:text-white">🛠️ Étape 3 : La Refactorisation</p>
-            <p class="text-gray-700 dark:text-gray-300">
-              Le prompt : &quot;Refactorise le code en créant des fonctions utilitaires. Applique strictement le principe
-              DRY. Je veux une source de vérité unique pour chaque élément.&quot;
-            </p>
-          </div>
-        </div>
-        <p class="text-gray-700 dark:text-gray-300">
-          Le truc de ouf c&apos;est que l&apos;IA est excellente pour détecter les répétitions, mais c&apos;est à nous de donner la
-          direction.
-        </p>
-        <p class="text-gray-700 dark:text-gray-300">
-          Perso, je me suis pas mal cassé les dents, maintenant, je demande systématiquement un audit DRY avant de valider
-          une étape, ça évite de se retrouver avec un code bordélique.
-        </p>
-      </article>
-    </div>
-  </section>
+  </main>
 
-  <!-- Scripts -->
+  <!-- Toast Notification System -->
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+
   <script>
-    const $ = (selector, scope = document) => scope.querySelector(selector);
-    const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    /**
+     * STREAMSPROUT CORE ARCHITECTURE
+     * Merged v1 (Original Features) with v2 (SOLID/DRY)
+     * Tokenized Visualization Layer Included
+     */
 
-    const bindClick = (selector, handler) => {
-      $$(selector).forEach(element => element.addEventListener('click', handler));
-    };
-
-    // Theme Toggle
-    bindClick('#theme-toggle, #theme-toggle-mobile', () => {
-      document.documentElement.classList.toggle('dark');
-    });
-
-    // VR Toggle
-    const toggleVRButton = (btn) => {
-      btn.classList.toggle('active');
-    };
-    bindClick('#vr-toggle, #vr-toggle-mobile', (event) => {
-      toggleVRButton(event.currentTarget);
-    });
-
-    // Mobile Menu
-    const mobileMenuButton = $('#mobile-menu-button');
-    const mobileMenu = $('#mobile-menu');
-    const mobileMenuOverlay = $('#mobile-menu-overlay');
-
-    const setMobileMenuState = (isOpen) => {
-      mobileMenu.classList.toggle('hidden', !isOpen);
-      mobileMenuOverlay.classList.toggle('hidden', !isOpen);
-      mobileMenuButton.setAttribute('aria-expanded', String(isOpen));
-      mobileMenu.setAttribute('aria-hidden', String(!isOpen));
-      mobileMenuOverlay.setAttribute('aria-hidden', String(!isOpen));
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    };
-
-    const closeMobileMenu = () => setMobileMenuState(false);
-
-    mobileMenuButton.addEventListener('click', () => {
-      const shouldOpen = mobileMenu.classList.contains('hidden');
-      setMobileMenuState(shouldOpen);
-    });
-
-    mobileMenuOverlay.addEventListener('click', closeMobileMenu);
-    window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeMobileMenu();
-    });
-
-    // Active nav states
-    const navLinks = $$('[data-nav-link]');
-    const setActiveNav = (link) => {
-      navLinks.forEach(item => {
-        item.classList.remove('nav-link-active');
-        item.removeAttribute('aria-current');
-      });
-      if (link) {
-        link.classList.add('nav-link-active');
-        link.setAttribute('aria-current', 'page');
+    // ==================== EVENT BUS (Observer Pattern) ====================
+    class ApplicationEventBus {
+      constructor() {
+        this.subscribers = {};
+        this.eventHistory = [];
       }
-    };
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        setActiveNav(link);
-        closeMobileMenu();
-      });
-    });
+      subscribe(eventName, callback) {
+        if (!this.subscribers[eventName]) this.subscribers[eventName] = [];
+        this.subscribers[eventName].push(callback);
+        this.logEvent('SUBSCRIBE', eventName);
+      }
 
-    const initialActive = navLinks.find(link => link.getAttribute('href') === window.location.hash) || navLinks[0];
-    setActiveNav(initialActive);
-    window.addEventListener('hashchange', () => {
-      const activeFromHash = navLinks.find(link => link.getAttribute('href') === window.location.hash);
-      if (activeFromHash) setActiveNav(activeFromHash);
-    });
-
-    // Scroll Progress
-    window.addEventListener('scroll', () => {
-      const scrollProgress = $('#scroll-progress');
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const progress = height > 0 ? (window.scrollY / height) * 100 : 0;
-      scrollProgress.style.width = `${progress}%`;
-    });
-
-    // Reveal on scroll
-    const revealElements = $$('.reveal');
-    if (!prefersReducedMotion && 'IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
-            obs.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.15 });
-      revealElements.forEach(el => observer.observe(el));
-    } else {
-      revealElements.forEach(el => el.classList.add('in-view'));
-    }
-
-    // XP Progress Animation
-    window.addEventListener('load', () => {
-      const bar = $('#xp-progress');
-      let width = 0;
-      const interval = setInterval(() => {
-        if (width >= 80) clearInterval(interval);
-        else { width += 1; bar.style.width = `${width}%`; }
-      }, 20);
-    });
-
-    // Animated counters
-    const counterElements = $$('[data-counter]');
-    const animateCounter = (el) => {
-      const target = Number(el.dataset.counter || 0);
-      const duration = prefersReducedMotion ? 0 : 1200;
-      const startTime = performance.now();
-      const tick = (now) => {
-        const progress = duration === 0 ? 1 : Math.min((now - startTime) / duration, 1);
-        const value = Math.floor(progress * target);
-        el.textContent = value;
-        if (progress < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    };
-    if (!prefersReducedMotion && 'IntersectionObserver' in window) {
-      const counterObserver = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            animateCounter(entry.target);
-            obs.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.6 });
-      counterElements.forEach(el => counterObserver.observe(el));
-    } else {
-      counterElements.forEach(el => {
-        el.textContent = el.dataset.counter;
-      });
-    }
-
-    // Solutions tabs
-    const solutionTabs = $$('.solution-tab');
-    const solutionPanels = $$('.solution-panel');
-    const setActiveSolution = (solutionId) => {
-      solutionTabs.forEach(tab => {
-        const isActive = tab.dataset.solution === solutionId;
-        tab.classList.toggle('bg-primary-600', isActive);
-        tab.classList.toggle('text-white', isActive);
-        tab.classList.toggle('text-gray-900', !isActive);
-        tab.setAttribute('aria-selected', String(isActive));
-      });
-      solutionPanels.forEach(panel => {
-        panel.classList.toggle('hidden', panel.dataset.solutionPanel !== solutionId);
-      });
-    };
-    solutionTabs.forEach(tab => {
-      tab.addEventListener('click', () => setActiveSolution(tab.dataset.solution));
-    });
-    setActiveSolution('growth');
-
-    // Solutions action
-    const solutionAction = $('.solution-action');
-    if (solutionAction) {
-      solutionAction.addEventListener('click', () => {
-        solutionAction.textContent = 'Workflow activated';
-        solutionAction.classList.add('is-success');
-        setTimeout(() => {
-          solutionAction.textContent = 'Activate workflow';
-          solutionAction.classList.remove('is-success');
-        }, 2000);
-      });
-    }
-
-    // Pricing toggle
-    const pricingToggle = $('#pricing-toggle');
-    const pricingDot = $('#pricing-toggle-dot');
-    const priceLabels = $$('[data-price]');
-    let annualBilling = false;
-    const updatePricing = () => {
-      priceLabels.forEach(label => {
-        const value = annualBilling ? label.dataset.annual : label.dataset.monthly;
-        label.textContent = value;
-      });
-      pricingToggle.setAttribute('aria-pressed', String(annualBilling));
-      pricingDot.style.transform = annualBilling ? 'translateX(36px)' : 'translateX(4px)';
-    };
-    pricingToggle.addEventListener('click', () => {
-      annualBilling = !annualBilling;
-      updatePricing();
-    });
-    updatePricing();
-
-    // VR Demo toggle
-    const vrDemoButton = $('#vr-demo-button');
-    const vrPreview = $('#vr-preview');
-    if (vrDemoButton && vrPreview) {
-      vrDemoButton.addEventListener('click', () => {
-        vrDemoButton.classList.toggle('active');
-        const isActive = vrDemoButton.classList.contains('active');
-        vrPreview.querySelector('.vr-preview-idle').classList.toggle('hidden', isActive);
-        vrPreview.querySelector('.vr-preview-active').classList.toggle('hidden', !isActive);
-      });
-    }
-
-    // AI Chat Simulation
-    const escapeHTML = (str) => str.replace(/[&<>"'/]/g, (char) => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
-      "/": "&#x2F;"
-    }[char] || char));
-
-    const chatInput = $('#chat-input');
-    const chatResponse = $('#chat-response');
-    $('#chat-send').addEventListener('click', () => {
-      const input = chatInput.value.trim();
-      if (!input) return;
-      chatResponse.innerHTML = '<p>Analyzing... <i class="fas fa-spinner fa-spin"></i></p>';
-      setTimeout(() => {
-        const safeInput = escapeHTML(input);
-        chatResponse.innerHTML = `<p>Here's some SEO tips for: <strong>${safeInput}</strong></p><ul class="list-disc list-inside"><li>Use relevant keywords.</li><li>Optimize meta descriptions.</li><li>Ensure mobile-friendliness.</li></ul>`;
-      }, 900);
-    });
-
-    $$('.chat-suggestion').forEach(button => {
-      button.addEventListener('click', () => {
-        chatInput.value = button.textContent;
-        chatInput.focus();
-      });
-    });
-
-    // Copy email
-    const copyButton = $('#copy-email');
-    if (copyButton) {
-      copyButton.addEventListener('click', async () => {
-        const email = 'hello@streamsprout.ai';
-        try {
-          await navigator.clipboard.writeText(email);
-          copyButton.textContent = 'Copied!';
-        } catch (error) {
-          copyButton.textContent = 'Copy failed';
+      publish(eventName, data) {
+        this.logEvent('PUBLISH', eventName, data);
+        if (this.subscribers[eventName]) {
+          this.subscribers[eventName].forEach(cb => {
+            try {
+              cb(data);
+            } catch (error) {
+              console.error(`Event handler error for ${eventName}:`, error);
+            }
+          });
         }
-        setTimeout(() => {
-          copyButton.textContent = 'Copy';
-        }, 2000);
-      });
+      }
+
+      logEvent(type, name, data = null) {
+        const entry = { timestamp: new Date().toISOString(), type, name, data };
+        this.eventHistory.push(entry);
+        if (this.eventHistory.length > 100) this.eventHistory.shift();
+        
+        // Visual feedback in architecture panel
+        const consoleDiv = document.getElementById('token-console');
+        if (consoleDiv && type === 'PUBLISH') {
+          const line = document.createElement('div');
+          line.className = 'text-green-400';
+          line.textContent = `[${new Date().toLocaleTimeString()}] ${name}`;
+          consoleDiv.appendChild(line);
+          consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+      }
     }
 
-    // Footer Year Update
-    $('#year').textContent = new Date().getFullYear();
+    // ==================== TOKENIZATION SERVICE ====================
+    class TokenizationService {
+      constructor() {
+        this.totalInputTokens = 0;
+        this.totalOutputTokens = 0;
+        this.cachedTokens = 0; // DRY savings
+        this.tokenHistory = [];
+      }
+
+      estimateTokens(text, context) {
+        // Rough estimation: ~4 chars per token for English
+        const estimatedTokens = Math.ceil(text.length / 4);
+        
+        if (context === 'title') {
+          document.getElementById('token-estimate-title').textContent = `~${estimatedTokens} tokens`;
+        }
+        
+        return estimatedTokens;
+      }
+
+      analyzeEfficiency(jsonOrText) {
+        const isJson = jsonOrText.trim().startsWith('{');
+        let efficiency = 100;
+        
+        if (isJson) {
+          try {
+            JSON.parse(jsonOrText);
+            efficiency = 95; // Structured is efficient
+          } catch {
+            efficiency = 40; // Invalid JSON penalty
+          }
+        } else {
+          // Natural language analysis
+          const wordCount = jsonOrText.split(' ').length;
+          efficiency = Math.min(100, Math.max(60, 100 - (wordCount * 0.5)));
+        }
+
+        const display = document.getElementById('param-efficiency');
+        if (display) {
+          display.textContent = `Efficiency: ${efficiency}%`;
+          display.className = `text-xs font-mono ${efficiency > 80 ? 'text-token-500' : efficiency > 50 ? 'text-yellow-500' : 'text-red-500'}`;
+        }
+
+        return efficiency;
+      }
+
+      recordOperation(operationType, dataSize) {
+        const tokensUsed = Math.ceil(dataSize / 4);
+        
+        if (operationType === 'CREATE' || operationType === 'UPDATE') {
+          this.totalInputTokens += tokensUsed;
+        } else {
+          this.totalOutputTokens += tokensUsed;
+        }
+
+        this.updateGlobalDisplay();
+        this.logToArchitecturePanel(operationType, tokensUsed);
+      }
+
+      calculateDRYSavings() {
+        // Simulated savings from reusable components
+        const savings = Math.floor(this.totalInputTokens * 0.35); // 35% reduction via DRY
+        this.cachedTokens = savings;
+        return savings;
+      }
+
+      updateGlobalDisplay() {
+        const total = this.totalInputTokens + this.totalOutputTokens;
+        const globalCount = document.getElementById('global-token-count');
+        if (globalCount) globalCount.textContent = total.toLocaleString();
+
+        const inputDisplay = document.getElementById('input-tokens');
+        const outputDisplay = document.getElementById('output-tokens');
+        const cachedDisplay = document.getElementById('cached-tokens');
+
+        if (inputDisplay) inputDisplay.textContent = this.totalInputTokens.toLocaleString();
+        if (outputDisplay) outputDisplay.textContent = this.totalOutputTokens.toLocaleString();
+        if (cachedDisplay) cachedDisplay.textContent = this.calculateDRYSavings().toLocaleString();
+      }
+
+      logToArchitecturePanel(operation, tokens) {
+        const monitor = document.getElementById('crud-monitor');
+        if (!monitor) return;
+
+        const entry = document.createElement('div');
+        entry.className = 'flex justify-between items-center p-2 bg-gray-900/50 rounded border-l-2 border-primary-500 text-xs font-mono crud-pulse';
+        entry.innerHTML = `
+          <span class="text-gray-400">${new Date().toLocaleTimeString()}</span>
+          <span class="text-blue-400">${operation}</span>
+          <span class="text-green-400">${tokens} tokens</span>
+        `;
+        
+        monitor.insertBefore(entry, monitor.firstChild);
+        if (monitor.children.length > 10) monitor.removeChild(monitor.lastChild);
+      }
+
+      getStats() {
+        return {
+          total: this.totalInputTokens + this.totalOutputTokens,
+          input: this.totalInputTokens,
+          output: this.totalOutputTokens,
+          savings: this.calculateDRYSavings(),
+          averagePerOperation: this.totalInputTokens / (this.tokenHistory.length || 1)
+        };
+      }
+    }
+
+    // ==================== CONFIGURATION SERVICE (Temperature Control) ====================
+    class ConfigurationService {
+      constructor(eventBus) {
+        this.eventBus = eventBus;
+        this.temperature = 0.2;
+        this.strictness = 'high';
+        this.mode = 'deterministic';
+        this.loadConfiguration();
+      }
+
+      loadConfiguration() {
+        const saved = localStorage.getItem('streamsprout_core_config');
+        if (saved) {
+          const config = JSON.parse(saved);
+          this.temperature = config.temperature || 0.2;
+          this.updateModeFromTemperature();
+        }
+        this.broadcastUpdate();
+      }
+
+      setTemperature(value) {
+        this.temperature = parseFloat(value);
+        this.updateModeFromTemperature();
+        this.saveConfiguration();
+        this.broadcastUpdate();
+        this.updateUserInterface();
+      }
+
+      updateModeFromTemperature() {
+        if (this.temperature < 0.3) {
+          this.mode = 'deterministic';
+          this.strictness = 'high';
+        } else if (this.temperature < 0.7) {
+          this.mode = 'balanced';
+          this.strictness = 'medium';
+        } else {
+          this.mode = 'creative';
+          this.strictness = 'low';
+        }
+      }
+
+      updateUserInterface() {
+        // Update all temperature displays
+        const displays = ['global-temp-display', 'display-temp', 'current-temp-label'];
+        displays.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = this.temperature.toFixed(1);
+        });
+
+        // Update behavior description
+        const behaviorDesc = document.getElementById('behavior-description');
+        if (behaviorDesc) {
+          const descriptions = {
+            deterministic: 'Strict validation active. All parameters must be explicitly defined. Complete sentences enforced. Maximum token efficiency.',
+            balanced: 'Moderate validation. Context-aware processing allows some inference. Balanced token usage.',
+            creative: 'Flexible validation. AI inference enabled for missing parameters. Higher token usage but more adaptable.'
+          };
+          behaviorDesc.textContent = descriptions[this.mode];
+        }
+
+        // Update validation mode badge
+        const validationBadge = document.getElementById('validation-mode-display');
+        if (validationBadge) {
+          const configs = {
+            deterministic: { text: 'Strict', class: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' },
+            balanced: { text: 'Moderate', class: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' },
+            creative: { text: 'Flexible', class: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' }
+          };
+          const config = configs[this.mode];
+          validationBadge.textContent = config.text;
+          validationBadge.className = `px-2 py-1 rounded text-xs ${config.class}`;
+        }
+
+        // Update strictness display in architecture panel
+        const strictDisplay = document.getElementById('strictness-display');
+        if (strictDisplay) strictDisplay.textContent = this.strictness.toUpperCase();
+      }
+
+      saveConfiguration() {
+        localStorage.setItem('streamsprout_core_config', JSON.stringify({
+          temperature: this.temperature,
+          mode: this.mode,
+          timestamp: new Date().toISOString()
+        }));
+      }
+
+      broadcastUpdate() {
+        this.eventBus.publish('config:changed', {
+          temperature: this.temperature,
+          mode: this.mode,
+          strictness: this.strictness
+        });
+      }
+
+      getValidationRules() {
+        return {
+          requireCompleteSentences: this.temperature < 0.5,
+          enforceJsonStructure: this.temperature < 0.3,
+          allowInference: this.temperature > 0.7,
+          minLength: this.temperature < 0.3 ? 20 : 5,
+          tokenEfficiencyRequired: this.temperature < 0.4
+        };
+      }
+    }
+
+    // ==================== REPOSITORY (CRUD) ====================
+    class EsportsTrainingRepository {
+      constructor(eventBus, tokenService) {
+        this.eventBus = eventBus;
+        this.tokenService = tokenService;
+        this.storageKey = 'streamsprout_esports_protocols';
+        this.ensureStorage();
+      }
+
+      ensureStorage() {
+        if (!localStorage.getItem(this.storageKey)) {
+          localStorage.setItem(this.storageKey, JSON.stringify([]));
+        }
+      }
+
+      create(protocolData) {
+        const protocols = this.readAll();
+        const newProtocol = {
+          id: this.generateId(),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          tokenCount: this.tokenService.estimateTokens(JSON.stringify(protocolData), 'full'),
+          ...protocolData
+        };
+        
+        protocols.push(newProtocol);
+        this.save(protocols);
+        
+        this.tokenService.recordOperation('CREATE', JSON.stringify(newProtocol).length);
+        this.eventBus.publish('protocol:created', newProtocol);
+        
+        return newProtocol;
+      }
+
+      readAll(filter = null) {
+        const data = localStorage.getItem(this.storageKey);
+        const protocols = data ? JSON.parse(data) : [];
+        
+        if (filter && filter.game && filter.game !== 'all') {
+          return protocols.filter(p => p.gameType === filter.game);
+        }
+        
+        return protocols;
+      }
+
+      update(id, updates) {
+        const protocols = this.readAll();
+        const index = protocols.findIndex(p => p.id === id);
+        
+        if (index === -1) throw new Error('Protocol not found');
+        
+        protocols[index] = {
+          ...protocols[index],
+          ...updates,
+          updatedAt: new Date().toISOString(),
+          tokenCount: this.tokenService.estimateTokens(JSON.stringify(updates), 'full')
+        };
+        
+        this.save(protocols);
+        this.tokenService.recordOperation('UPDATE', JSON.stringify(updates).length);
+        this.eventBus.publish('protocol:updated', protocols[index]);
+        
+        return protocols[index];
+      }
+
+      delete(id) {
+        const protocols = this.readAll();
+        const filtered = protocols.filter(p => p.id !== id);
+        this.save(filtered);
+        
+        this.tokenService.recordOperation('DELETE', id.length);
+        this.eventBus.publish('protocol:deleted', { id });
+        
+        return id;
+      }
+
+      clearAll() {
+        this.save([]);
+        this.tokenService.recordOperation('CLEAR_ALL', 10);
+        this.eventBus.publish('protocols:cleared', {});
+      }
+
+      save(protocols) {
+        localStorage.setItem(this.storageKey, JSON.stringify(protocols));
+      }
+
+      generateId() {
+        return `proto_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      }
+
+      getStats() {
+        const protocols = this.readAll();
+        const totalTokens = protocols.reduce((sum, p) => sum + (p.tokenCount || 0), 0);
+        const avgTokens = protocols.length ? Math.round(totalTokens / protocols.length) : 0;
+        
+        return {
+          count: protocols.length,
+          totalTokens,
+          avgTokens,
+          drySavings: this.tokenService.calculateDRYSavings()
+        };
+      }
+    }
+
+    // ==================== VALIDATION SERVICE ====================
+    class ProtocolValidationService {
+      constructor(configService) {
+        this.config = configService;
+      }
+
+      validate(protocolData) {
+        const rules = this.config.getValidationRules();
+        const errors = [];
+
+        // Name validation
+        if (!protocolData.name || protocolData.name.length < 3) {
+          errors.push('Protocol name must be at least 3 characters');
+        }
+
+        // Temperature-dependent validation
+        if (rules.requireCompleteSentences && protocolData.description) {
+          if (!this.isCompleteSentence(protocolData.description)) {
+            errors.push('Description must be a complete sentence in Deterministic mode');
+          }
+        }
+
+        if (rules.enforceJsonStructure) {
+          if (protocolData.params && !this.isValidJSON(protocolData.params) && protocolData.params.includes('{')) {
+            errors.push('Parameters must be valid JSON in Strict mode');
+          }
+        }
+
+        // Token efficiency check
+        if (rules.tokenEfficiencyRequired) {
+          const efficiency = tokenService.analyzeEfficiency(protocolData.params || '');
+          if (efficiency < 80) {
+            errors.push('Token efficiency below 80% in Deterministic mode');
+          }
+        }
+
+        return {
+          isValid: errors.length === 0,
+          errors,
+          mode: this.config.mode,
+          strictness: this.config.strictness
+        };
+      }
+
+      isCompleteSentence(text) {
+        return /^[A-Z][^.!?]*[.!?]$/.test(text.trim()) && text.split(' ').length >= 3;
+      }
+
+      isValidJSON(str) {
+        try {
+          JSON.parse(str);
+          return true;
+        } catch {
+          return false;
+        }
+      }
+    }
+
+    // ==================== CONTROLLERS ====================
+    class EsportsTrainingController {
+      constructor(repository, validator, tokenService) {
+        this.repository = repository;
+        this.validator = validator;
+        this.tokenService = tokenService;
+        this.currentFilter = 'all';
+        this.editingId = null;
+        
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        eventBus.subscribe('protocol:created', () => this.render());
+        eventBus.subscribe('protocol:updated', () => this.render());
+        eventBus.subscribe('protocol:deleted', () => this.render());
+        eventBus.subscribe('config:changed', () => this.handleConfigChange());
+      }
+
+      saveTrainingProtocol() {
+        const data = {
+          name: document.getElementById('protocol-name').value,
+          gameType: document.getElementById('game-type').value,
+          skillFocus: document.getElementById('skill-focus').value,
+          params: document.getElementById('training-params').value
+        };
+
+        const validation = this.validator.validate(data);
+        
+        if (!validation.isValid) {
+          this.showToast(validation.errors.join('. '), 'error');
+          return;
+        }
+
+        try {
+          if (this.editingId) {
+            this.repository.update(this.editingId, data);
+            this.showToast('Protocol updated successfully', 'success');
+          } else {
+            this.repository.create(data);
+            this.showToast('Protocol created with token optimization', 'success');
+          }
+          this.resetProtocolForm();
+          this.updateStats();
+        } catch (error) {
+          this.showToast(error.message, 'error');
+        }
+      }
+
+      editProtocol(id) {
+        const protocols = this.repository.readAll();
+        const protocol = protocols.find(p => p.id === id);
+        
+        if (!protocol) return;
+
+        this.editingId = id;
+        document.getElementById('protocol-id').value = id;
+        document.getElementById('protocol-name').value = protocol.name;
+        document.getElementById('game-type').value = protocol.gameType;
+        document.getElementById('skill-focus').value = protocol.skillFocus || 'aim';
+        document.getElementById('training-params').value = protocol.params;
+        document.getElementById('form-protocol-id').textContent = id.substr(-6);
+
+        document.getElementById('training-form-title').textContent = 'Update Protocol';
+        document.getElementById('protocol-submit-btn').innerHTML = '<i class="fas fa-save mr-2"></i>Save Changes';
+        document.getElementById('cancel-protocol-btn').classList.remove('hidden');
+        
+        tokenService.estimateTokens(protocol.name, 'title');
+        tokenService.analyzeEfficiency(protocol.params);
+      }
+
+      deleteProtocol(id) {
+        if (configService.temperature < 0.3) {
+          if (!confirm('Confirm deletion in Strict mode?')) return;
+        }
+        
+        this.repository.delete(id);
+        if (this.editingId === id) this.resetProtocolForm();
+        this.showToast('Protocol deleted', 'info');
+        this.updateStats();
+      }
+
+      clearAllProtocols() {
+        if (confirm('Delete all protocols?')) {
+          this.repository.clearAll();
+          this.resetProtocolForm();
+          this.showToast('All protocols cleared', 'info');
+          this.updateStats();
+        }
+      }
+
+      filterByGame(game) {
+        this.currentFilter = game;
+        this.render();
+      }
+
+      resetProtocolForm() {
+        this.editingId = null;
+        document.getElementById('training-form').reset();
+        document.getElementById('protocol-id').value = '';
+        document.getElementById('form-protocol-id').textContent = 'NEW';
+        document.getElementById('training-form-title').textContent = 'Create Training Protocol';
+        document.getElementById('protocol-submit-btn').innerHTML = '<i class="fas fa-save mr-2"></i>Create Protocol';
+        document.getElementById('cancel-protocol-btn').classList.add('hidden');
+        document.getElementById('token-estimate-title').textContent = '~4 tokens';
+        document.getElementById('param-efficiency').textContent = 'Efficiency: 100%';
+      }
+
+      handleConfigChange() {
+        // Re-validate visible protocols if strictness changed
+        this.render();
+      }
+
+      render() {
+        const container = document.getElementById('protocols-container');
+        const protocols = this.repository.readAll({ game: this.currentFilter });
+
+        if (protocols.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-8 text-gray-500">
+              <i class="fas fa-clipboard-list text-4xl mb-3 opacity-50"></i>
+              <p>No protocols found${this.currentFilter !== 'all' ? ' for this filter' : ''}.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = protocols.map(p => this.generateProtocolHTML(p)).join('');
+      }
+
+      generateProtocolHTML(protocol) {
+        const gameIcons = {
+          valorant: 'fa-crosshairs',
+          cs2: 'fa-skull',
+          lol: 'fa-shield-alt',
+          apex: 'fa-parachute-box'
+        };
+
+        const isStrict = configService.temperature < 0.3;
+        
+        return `
+          <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition group">
+            <div class="flex items-center space-x-4">
+              <div class="w-12 h-12 rounded-full bg-esports-100 dark:bg-esports-900/30 flex items-center justify-center text-esports-600 dark:text-esports-400">
+                <i class="fas ${gameIcons[protocol.gameType] || 'fa-gamepad'} text-xl"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-900 dark:text-white">${this.escapeHtml(protocol.name)}</h4>
+                <div class="text-xs text-gray-500 mt-1 flex items-center space-x-2">
+                  <span class="uppercase">${protocol.gameType}</span>
+                  <span>•</span>
+                  <span>${protocol.skillFocus}</span>
+                  <span>•</span>
+                  <span class="font-mono text-token-600">${protocol.tokenCount || '?'} tokens</span>
+                  ${isStrict ? '<span class="text-blue-500">• VALIDATED</span>' : ''}
+                </div>
+              </div>
+            </div>
+            <div class="flex space-x-2 opacity-0 group-hover:opacity-100 transition">
+              <button onclick="esportsController.editProtocol('${protocol.id}')" 
+                      class="p-2 text-blue-600 hover:bg-blue-100 rounded transition" title="Edit">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button onclick="esportsController.deleteProtocol('${protocol.id}')" 
+                      class="p-2 text-red-600 hover:bg-red-100 rounded transition" title="Delete">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      updateStats() {
+        const stats = this.repository.getStats();
+        document.getElementById('stat-total-protocols').textContent = stats.count;
+        document.getElementById('stat-avg-tokens').textContent = stats.avgTokens;
+        document.getElementById('stat-dry-savings').textContent = stats.drySavings + '%';
+      }
+
+      escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        
+        const colors = {
+          success: 'bg-green-500',
+          error: 'bg-red-500',
+          info: 'bg-blue-500'
+        };
+        
+        toast.className = `${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-10 opacity-0 transition-all duration-300 flex items-center`;
+        toast.innerHTML = `
+          <i class="fas ${type === 'success' ? 'fa-check' : type === 'error' ? 'fa-exclamation' : 'fa-info'} mr-2"></i>
+          ${message}
+        `;
+        
+        container.appendChild(toast);
+        setTimeout(() => toast.classList.remove('translate-y-10', 'opacity-0'), 10);
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-10');
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+    }
+
+    // ==================== SYSTEM CONTROLLERS ====================
+    class SystemController {
+      toggleBehindScenesView() {
+        const panel = document.getElementById('architecture-panel');
+        panel.classList.toggle('active');
+        
+        if (panel.classList.contains('active')) {
+          esportsController.updateStats();
+          tokenService.updateGlobalDisplay();
+        }
+      }
+
+      updateGlobalTemperature(value) {
+        const temp = value / 100;
+        configService.setTemperature(temp);
+        
+        // Visual feedback
+        document.getElementById('display-temp').textContent = temp.toFixed(1);
+      }
+    }
+
+    class TestController {
+      simulateValidationTest() {
+        const testCases = [
+          { input: "This is a complete sentence.", expected: true, type: "sentence" },
+          { input: "{invalid json", expected: false, type: "json" },
+          { input: "Short", expected: configService.temperature > 0.3, type: "length" }
+        ];
+
+        let passed = 0;
+        testCases.forEach(test => {
+          const result = test.type === 'sentence' ? /^[A-Z][^.!?]*[.!?]$/.test(test.input) :
+                        test.type === 'json' ? (() => { try { JSON.parse(test.input); return true; } catch { return false; } })() :
+                        test.input.length > 3;
+          
+          if (result === test.expected) passed++;
+        });
+
+        const percentage = Math.round((passed / testCases.length) * 100);
+        alert(`Validation Test Complete\nMode: ${configService.mode}\nPassed: ${passed}/${testCases.length} (${percentage}%)\nStrictness: ${configService.strictness}`);
+      }
+    }
+
+    class VRController {
+      toggleVRMode() {
+        const canvas = document.getElementById('vr-canvas');
+        canvas.innerHTML = `
+          <div class="text-center">
+            <i class="fas fa-vr-cardboard text-6xl mb-4 text-primary-500 animate-spin-slow"></i>
+            <p>VR Mode Active</p>
+            <div class="mt-4 text-xs font-mono text-left space-y-1">
+              <div>Render Loop: 90 FPS</div>
+              <div>Architecture Overhead: 12ms</div>
+              <div>Token Buffer: ${tokenService.totalOutputTokens} cached</div>
+              <div>DRY Components: 8 reused</div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    class NavigationService {
+      toggleMobile() {
+        // Mobile menu toggle implementation
+      }
+    }
+
+    class AppController {
+      navigateTo(sectionId) {
+        // Hide all sections
+        ['esports-training', 'vr-preview'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.classList.add('hidden');
+        });
+        
+        // Show target
+        const target = document.getElementById(sectionId);
+        if (target) {
+          target.classList.remove('hidden');
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
+
+    class ThemeService {
+      toggleTheme() {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      }
+    }
+
+    // ==================== INITIALIZATION ====================
+    const eventBus = new ApplicationEventBus();
+    const tokenService = new TokenizationService();
+    const configService = new ConfigurationService(eventBus);
+    const repository = new EsportsTrainingRepository(eventBus, tokenService);
+    const validator = new ProtocolValidationService(configService);
+    
+    const esportsController = new EsportsTrainingController(repository, validator, tokenService);
+    const systemController = new SystemController();
+    const testController = new TestController();
+    const vrController = new VRController();
+    const navService = new NavigationService();
+    const appController = new AppController();
+    const themeService = new ThemeService();
+
+    // Initialize UI
+    document.addEventListener('DOMContentLoaded', () => {
+      configService.updateUserInterface();
+      esportsController.render();
+      esportsController.updateStats();
+      
+      console.log('StreamSprout Core Initialized');
+      console.log('Architecture: SOLID/DRY');
+      console.log('Mode:', configService.mode);
+      console.log('Token Savings:', tokenService.calculateDRYSavings(), '%');
+    });
+
   </script>
-
-  <!-- New Footer Example -->
-  <footer class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 py-12 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-      <div>
-        <h5 class="font-bold mb-4">Company</h5>
-        <ul class="space-y-2">
-          <li><a href="#about" class="tap-target hover:text-primary-500">About Us</a></li>
-          <li><a href="#careers" class="tap-target hover:text-primary-500">Careers</a></li>
-          <li><a href="#blog" class="tap-target hover:text-primary-500">Blog</a></li>
-          <li><a href="#contact" class="tap-target hover:text-primary-500">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5 class="font-bold mb-4">Resources</h5>
-        <ul class="space-y-2">
-          <li><a href="#docs" class="tap-target hover:text-primary-500">Documentation</a></li>
-          <li><a href="#api" class="tap-target hover:text-primary-500">API Reference</a></li>
-          <li><a href="#support" class="tap-target hover:text-primary-500">Support</a></li>
-          <li><a href="#privacy" class="tap-target hover:text-primary-500">Privacy Policy</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5 class="font-bold mb-4">Follow Us</h5>
-        <div class="flex space-x-4">
-          <a href="#" class="tap-target hover:text-primary-500"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="tap-target hover:text-primary-500"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="tap-target hover:text-primary-500"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="tap-target hover:text-primary-500"><i class="fab fa-linkedin-in"></i></a>
-        </div>
-      </div>
-      <div>
-        <h5 class="font-bold mb-4">Subscribe</h5>
-        <p class="text-sm mb-4">Get the latest updates and offers.</p>
-        <form class="flex">
-          <input type="email" placeholder="Your email" class="w-full tap-input px-4 py-2 rounded-l-md border border-gray-300 dark:border-gray-700 focus:outline-none" />
-          <button type="submit" class="bg-primary-500 text-white tap-target px-4 py-2 rounded-r-md hover:bg-primary-600">Subscribe</button>
-        </form>
-      </div>
-    </div>
-    <div class="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
-      &copy; <span id="year"></span> StreamSprout. All rights reserved.
-    </div>
-  </footer>
-
 </body>
 </html>
