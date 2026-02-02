@@ -20,8 +20,22 @@ const metricAgent = document.getElementById('metric-agent');
 let rosterCache = [];
 let searchTimeout;
 
-const updateStatus = (element, message, tone = 'neutral') => {
+const setStatusText = (element, message) => {
+    const icon = element.dataset.icon;
+    const anim = element.dataset.anim;
+    if (icon) {
+        const animClass = anim ? ` ${anim}` : '';
+        element.innerHTML = `<i data-lucide="${icon}" class="lucide-icon${animClass}"></i>${message}`;
+        if (window.lucide?.icons?.[icon]) {
+            window.lucide.createIcons({ icons: { [icon]: window.lucide.icons[icon] } });
+        }
+        return;
+    }
     element.textContent = message;
+};
+
+const updateStatus = (element, message, tone = 'neutral') => {
+    setStatusText(element, message);
     element.dataset.tone = tone;
     element.className = `status-pill ${tone}`;
 };
@@ -72,13 +86,13 @@ const renderAnalytics = (players) => {
 
 const updateTimestamp = () => {
     const timestamp = new Date().toLocaleTimeString();
-    lastUpdated.textContent = `Last updated: ${timestamp}`;
+    setStatusText(lastUpdated, `Last updated: ${timestamp}`);
 };
 
 const fetchRoster = async (query = '') => {
     rosterState.style.display = 'block';
     rosterState.textContent = 'Loading roster...';
-    syncStatus.textContent = 'Syncing roster...';
+    setStatusText(syncStatus, 'Syncing roster...');
 
     const endpoint = query ? `/search-players?name=${encodeURIComponent(query)}` : '/players';
 
@@ -91,12 +105,12 @@ const fetchRoster = async (query = '') => {
         rosterCache = data;
         renderRoster(data);
         renderAnalytics(data);
-        syncStatus.textContent = 'Roster synced';
+        setStatusText(syncStatus, 'Roster synced');
         updateTimestamp();
     } catch (error) {
         rosterState.textContent = 'Roster is unavailable. Check your server connection.';
         rosterList.innerHTML = '';
-        syncStatus.textContent = 'Roster sync failed';
+        setStatusText(syncStatus, 'Roster sync failed');
     }
 };
 
@@ -210,6 +224,10 @@ const init = async () => {
 };
 
 init();
+
+if (window.lucide) {
+    window.lucide.createIcons();
+}
 
 if (navToggle) {
     navToggle.addEventListener('click', () => {
