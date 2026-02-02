@@ -30,9 +30,18 @@
                 <a class="nav-link" href="#">Settings</a>
             </nav>
             <div class="nav-right">
-                <button class="btn btn-secondary" type="button">Theme</button>
-                <button class="btn btn-secondary" type="button">EN</button>
-                <button class="btn btn-primary" type="button">Logout</button>
+                <button class="btn btn-secondary" type="button">
+                    <i data-lucide="palette" class="lucide-icon pulse"></i>
+                    Theme
+                </button>
+                <button class="btn btn-secondary" type="button">
+                    <i data-lucide="globe-2" class="lucide-icon float"></i>
+                    EN
+                </button>
+                <button class="btn btn-primary" type="button">
+                    <i data-lucide="log-out" class="lucide-icon swing"></i>
+                    Logout
+                </button>
             </div>
         </header>
 
@@ -48,8 +57,14 @@
                         </p>
                     </div>
                     <div class="hero-actions">
-                        <button class="btn btn-primary" type="button">Create report</button>
-                        <button class="btn btn-secondary" type="button">Schedule sync</button>
+                        <button class="btn btn-primary" type="button">
+                            <i data-lucide="sparkles" class="lucide-icon pulse"></i>
+                            Create report
+                        </button>
+                        <button class="btn btn-secondary" type="button">
+                            <i data-lucide="calendar-clock" class="lucide-icon float"></i>
+                            Schedule sync
+                        </button>
                     </div>
                 </article>
                 <article class="card status-card">
@@ -58,9 +73,18 @@
                         <p class="muted">Real-time service health and roster freshness.</p>
                     </header>
                     <div class="status-strip" aria-live="polite">
-                        <span class="status-pill" id="api-status">Checking API...</span>
-                        <span class="status-pill" id="sync-status">Syncing roster...</span>
-                        <span class="status-pill" id="last-updated">Last updated: --</span>
+                        <span class="status-pill" id="api-status" data-icon="activity" data-anim="spin">
+                            <i data-lucide="activity" class="lucide-icon spin"></i>
+                            Checking API...
+                        </span>
+                        <span class="status-pill" id="sync-status" data-icon="refresh-ccw" data-anim="spin-slow">
+                            <i data-lucide="refresh-ccw" class="lucide-icon spin-slow"></i>
+                            Syncing roster...
+                        </span>
+                        <span class="status-pill" id="last-updated" data-icon="timer" data-anim="pulse">
+                            <i data-lucide="timer" class="lucide-icon pulse"></i>
+                            Last updated: --
+                        </span>
                     </div>
                     <p class="muted">Keep this panel visible during match days to monitor pipeline health.</p>
                 </article>
@@ -116,7 +140,10 @@
                         <div id="chat-log" class="chat-log" aria-live="polite"></div>
                         <form id="ask-form" class="chat-input">
                             <input id="ask-input" type="text" placeholder="Ask the assistant..." required />
-                            <button type="submit" class="btn btn-primary">Ask AI</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i data-lucide="wand-2" class="lucide-icon pulse"></i>
+                                Ask AI
+                            </button>
                         </form>
                         <p id="ask-feedback" class="feedback" role="status"></p>
                     </div>
@@ -166,6 +193,7 @@
         </footer>
     </div>
 
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="/script.js"></script>
 </body>
 </html>
