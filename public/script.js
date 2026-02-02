@@ -59,11 +59,16 @@ const renderRoster = (players) => {
     players.forEach((player) => {
         const item = document.createElement('li');
         item.className = 'roster-item';
-        item.innerHTML = `
-            <strong>${player.name}</strong>
-            <span>Role: ${player.role} · Rank: ${player.rank}</span>
-            <span>Signature agent: ${player.agent}</span>
-        `;
+        const name = document.createElement('strong');
+        name.textContent = player.name;
+
+        const details = document.createElement('span');
+        details.textContent = `Role: ${player.role} · Rank: ${player.rank}`;
+
+        const signature = document.createElement('span');
+        signature.textContent = `Signature agent: ${player.agent}`;
+
+        item.append(name, details, signature);
         rosterList.appendChild(item);
     });
 };
@@ -139,7 +144,11 @@ const sendPlayer = async (payload) => {
 const appendChatMessage = (label, message) => {
     const div = document.createElement('div');
     div.className = 'chat-message';
-    div.innerHTML = `<strong>${label}</strong><p>${message}</p>`;
+    const title = document.createElement('strong');
+    title.textContent = label;
+    const body = document.createElement('p');
+    body.textContent = message;
+    div.append(title, body);
     chatLog.appendChild(div);
     chatLog.scrollTop = chatLog.scrollHeight;
 };
