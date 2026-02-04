@@ -84,7 +84,7 @@ const computeTop = (items, key) => {
 };
 
 const renderAnalytics = (players) => {
-    metricTotal.textContent = players.length || '--';
+    metricTotal.textContent = Number.isInteger(players.length) ? players.length : 0;
     metricRole.textContent = computeTop(players, 'role');
     metricAgent.textContent = computeTop(players, 'agent');
 };
@@ -97,7 +97,7 @@ const updateTimestamp = () => {
 const fetchRoster = async (query = '') => {
     rosterState.style.display = 'block';
     rosterState.textContent = 'Loading roster...';
-    setStatusText(syncStatus, 'Syncing roster...');
+    updateStatus(syncStatus, 'Syncing roster...', 'neutral');
 
     const endpoint = query ? `/search-players?name=${encodeURIComponent(query)}` : '/players';
 
@@ -110,12 +110,13 @@ const fetchRoster = async (query = '') => {
         rosterCache = data;
         renderRoster(data);
         renderAnalytics(data);
-        setStatusText(syncStatus, 'Roster synced');
+        updateStatus(syncStatus, 'Roster synced', 'success');
         updateTimestamp();
     } catch (error) {
         rosterState.textContent = 'Roster is unavailable. Check your server connection.';
         rosterList.innerHTML = '';
-        setStatusText(syncStatus, 'Roster sync failed');
+        updateStatus(syncStatus, 'Roster sync failed', 'error');
+        renderAnalytics([]);
     }
 };
 
