@@ -63,20 +63,34 @@ const renderRoster = (players) => {
         name.textContent = player.name;
 
         const details = document.createElement('span');
-        details.textContent = `Role: ${player.role} · Rank: ${player.rank}`;
+        const roleText = getSafeText(player.role, 'Unassigned');
+        const rankText = getSafeText(player.rank, 'Unranked');
+        details.textContent = `Role: ${roleText} · Rank: ${rankText}`;
 
         const signature = document.createElement('span');
-        signature.textContent = `Signature agent: ${player.agent}`;
+        const agentText = getSafeText(player.agent, 'Unknown');
+        signature.textContent = `Signature agent: ${agentText}`;
 
         item.append(name, details, signature);
         rosterList.appendChild(item);
     });
 };
 
+const getSafeText = (value, fallback) => {
+    if (typeof value === 'string' && value.trim()) {
+        return value.trim();
+    }
+    return fallback;
+};
+
 const computeTop = (items, key) => {
     if (!items.length) return '--';
     const tally = items.reduce((acc, item) => {
-        acc[item[key]] = (acc[item[key]] || 0) + 1;
+        const entry = getSafeText(item[key], '');
+        if (!entry) {
+            return acc;
+        }
+        acc[entry] = (acc[entry] || 0) + 1;
         return acc;
     }, {});
     const sorted = Object.entries(tally).sort((a, b) => b[1] - a[1]);
