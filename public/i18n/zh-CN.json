@@ -1,0 +1,12 @@
+{
+  "app.title": "StreamSprout 现代版",
+  "hud.health": "生命值",
+  "hud.latency": "延迟",
+  "event.spring": "春节限定模式",
+  "event.midautumn": "中秋主题皮肤",
+  "element.fire": "火",
+  "element.water": "水",
+  "element.wood": "木",
+  "element.metal": "金",
+  "element.earth": "土"
+}
