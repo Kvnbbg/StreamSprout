@@ -3,6 +3,12 @@ const cors = require('cors');
 const path = require('path');
 const { AppError, errorHandler } = require('./errors');
 
+const { GameEngine } = require('./game/GameEngine');
+const { GameStateStore } = require('./game/GameStateStore');
+const { AIDecisionGateway } = require('./game/AIDecisionGateway');
+const { RenderAdapter } = require('./game/RenderAdapter');
+const { Telemetry } = require('./game/Telemetry');
+
 const asyncHandler = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 
 const requestLogger = (logger) => (req, res, next) => {
@@ -63,6 +69,20 @@ const createSimpleLimiter = ({ windowMs, max }) => {
 
 const createApp = ({ playerRepository, llmClient, logger }) => {
     const app = express();
+    const gameStateStore = new GameStateStore();
+    const telemetry = new Telemetry();
+    const gameEngine = new GameEngine({ detectionRadius: 72 });
+    const renderAdapter = new RenderAdapter();
+    const aiGateway = new AIDecisionGateway({
+        telemetry,
+        policyClient: async (input) => {
+            const answer = await llmClient.ask(`Return JSON only for game policy. Input: ${JSON.stringify(input)}`);
+            if (answer && answer.answer) {
+                return JSON.parse(answer.answer);
+            }
+            return JSON.parse(answer);
+        },
+    });
 
     app.use(requestLogger(logger));
     app.use(cors());
@@ -164,6 +184,49 @@ const createApp = ({ playerRepository, llmClient, logger }) => {
         })
     );
 
+
+    app.post(
+        '/v1/simulation/tick',
+        asyncHandler(async (req, res) => {
+            const sessionId = getRequiredString(req.body.session_id, 'session_id');
+            const dtMs = parsePositiveInt(req.body.dt_ms, 'dt_ms');
+            if (dtMs < 8 || dtMs > 100) {
+                throw new AppError('dt_ms must be between 8 and 100.', 400);
+            }
+
+            const state = gameStateStore.getOrCreate(sessionId);
+            if (Array.isArray(req.body.entities) && req.body.entities.length > 0) {
+                state.entities = req.body.entities;
+            }
+            const next = gameEngine.tick(state, dtMs);
+            gameStateStore.save(sessionId, next);
+            telemetry.inc('ticks');
+            res.status(200).json({
+                state: renderAdapter.toClientState(next),
+                events: [],
+                server_time_ms: Date.now(),
+            });
+        })
+    );
+
+    app.post(
+        '/v1/ai/decision',
+        asyncHandler(async (req, res) => {
+            const body = req.body || {};
+            const required = ['player_state', 'nearby_entities_summary', 'difficulty', 'latency_budget_ms'];
+            for (const k of required) {
+                if (body[k] === undefined) {
+                    throw new AppError(`Missing field: ${k}`, 400);
+                }
+            }
+            const decision = await aiGateway.decide(body);
+            res.status(200).json(decision);
+        })
+    );
+
+    app.get('/v1/telemetry', (req, res) => {
+        res.status(200).json(telemetry.counters);
+    });
     app.use((req, res, next) => next(new AppError('Route not found.', 404)));
     app.use(errorHandler(logger));
 

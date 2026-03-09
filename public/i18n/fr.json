@@ -1,0 +1,12 @@
+{
+  "app.title": "StreamSprout Moderne",
+  "hud.health": "Santé",
+  "hud.latency": "Latence",
+  "event.spring": "Mode Festival du Printemps",
+  "event.midautumn": "Habillage Fête de la Mi-Automne",
+  "element.fire": "Feu",
+  "element.water": "Eau",
+  "element.wood": "Bois",
+  "element.metal": "Métal",
+  "element.earth": "Terre"
+}
