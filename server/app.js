@@ -43,6 +43,14 @@ const parsePositiveInt = (value, field) => {
     return parsed;
 };
 
+const parseEnum = (value, field, allowedValues) => {
+    const normalized = getRequiredString(value, field);
+    if (!allowedValues.includes(normalized)) {
+        throw new AppError(`${field} must be one of: ${allowedValues.join(', ')}.`, 400);
+    }
+    return normalized;
+};
+
 const extractLlmAnswer = (result) => {
     if (typeof result === 'string') {
         return result;
@@ -232,6 +240,17 @@ const createApp = ({ playerRepository, llmClient, logger }) => {
                     throw new AppError(`Missing field: ${k}`, 400);
                 }
             }
+
+            if (typeof body.player_state !== 'object' || body.player_state === null || Array.isArray(body.player_state)) {
+                throw new AppError('player_state must be an object.', 400);
+            }
+
+            if (!Array.isArray(body.nearby_entities_summary)) {
+                throw new AppError('nearby_entities_summary must be an array.', 400);
+            }
+
+            body.difficulty = parseEnum(body.difficulty, 'difficulty', ['easy', 'normal', 'hard']);
+            body.latency_budget_ms = parsePositiveInt(body.latency_budget_ms, 'latency_budget_ms');
             const decision = await aiGateway.decide(body);
             res.status(200).json(decision);
         })
