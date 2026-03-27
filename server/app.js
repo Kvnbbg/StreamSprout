@@ -43,6 +43,18 @@ const parsePositiveInt = (value, field) => {
     return parsed;
 };
 
+const extractLlmAnswer = (result) => {
+    if (typeof result === 'string') {
+        return result;
+    }
+
+    if (result && typeof result.answer === 'string' && result.answer.trim()) {
+        return result.answer;
+    }
+
+    throw new AppError('LLM response format is invalid.', 502);
+};
+
 const createSimpleLimiter = ({ windowMs, max }) => {
     const hits = new Map();
 
@@ -161,8 +173,9 @@ const createApp = ({ playerRepository, llmClient, logger }) => {
         '/ask',
         asyncHandler(async (req, res) => {
             const question = getRequiredString(req.body.question, 'Question');
-            const answer = await llmClient.ask(question);
-            res.status(200).json({ answer: answer.answer });
+            const llmResult = await llmClient.ask(question);
+            const answer = extractLlmAnswer(llmResult);
+            res.status(200).json({ answer });
         })
     );
 
