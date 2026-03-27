@@ -136,3 +136,38 @@ test('returns 502 when /ask receives an invalid LLM payload', async () => {
     assert.equal(response.status, 502);
     assert.equal(body.error, 'LLM response format is invalid.');
 });
+
+test('rejects invalid ai decision input payloads', async () => {
+    const response = await fetch(`${baseUrl}/v1/ai/decision`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            player_state: {},
+            nearby_entities_summary: [],
+            difficulty: 'nightmare',
+            latency_budget_ms: -10,
+        }),
+    });
+    const body = await response.json();
+
+    assert.equal(response.status, 400);
+    assert.equal(body.error, 'difficulty must be one of: easy, normal, hard.');
+});
+
+test('accepts valid ai decision input payloads', async () => {
+    const response = await fetch(`${baseUrl}/v1/ai/decision`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            player_state: { id: 'player-1' },
+            nearby_entities_summary: [],
+            difficulty: 'normal',
+            latency_budget_ms: 120,
+        }),
+    });
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(typeof body.speed, 'number');
+    assert.equal(typeof body.behavior, 'string');
+});
