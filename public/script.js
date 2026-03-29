@@ -19,6 +19,9 @@ const metricAgent = document.getElementById('metric-agent');
 
 let rosterCache = [];
 let searchTimeout;
+let rosterRequestId = 0;
+let isSavingPlayer = false;
+let isAskingAssistant = false;
 
 const setStatusText = (element, message) => {
     const icon = element.dataset.icon;
@@ -109,6 +112,7 @@ const updateTimestamp = () => {
 };
 
 const fetchRoster = async (query = '') => {
+    const requestId = ++rosterRequestId;
     rosterState.style.display = 'block';
     rosterState.textContent = 'Loading roster...';
     updateStatus(syncStatus, 'Syncing roster...', 'neutral');
@@ -121,12 +125,20 @@ const fetchRoster = async (query = '') => {
             throw new Error('Unable to fetch roster data.');
         }
         const data = await response.json();
+
+        if (requestId !== rosterRequestId) {
+            return;
+        }
+
         rosterCache = data;
         renderRoster(data);
         renderAnalytics(data);
         updateStatus(syncStatus, 'Roster synced', 'success');
         updateTimestamp();
     } catch (error) {
+        if (requestId !== rosterRequestId) {
+            return;
+        }
         rosterState.textContent = 'Roster is unavailable. Check your server connection.';
         rosterList.innerHTML = '';
         updateStatus(syncStatus, 'Roster sync failed', 'error');
@@ -135,6 +147,10 @@ const fetchRoster = async (query = '') => {
 };
 
 const sendPlayer = async (payload) => {
+    if (isSavingPlayer) {
+        return;
+    }
+    isSavingPlayer = true;
     setFeedback(playerFeedback, 'Saving player...');
     try {
         const response = await fetch('/players', {
@@ -144,8 +160,14 @@ const sendPlayer = async (payload) => {
         });
 
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Unable to save player.');
+            let message = 'Unable to save player.';
+            try {
+                const error = await response.json();
+                message = error.error || message;
+            } catch (_) {
+                // Keep default message when response is not valid JSON.
+            }
+            throw new Error(message);
         }
 
         setFeedback(playerFeedback, 'Player saved successfully.');
@@ -153,6 +175,8 @@ const sendPlayer = async (payload) => {
         playerForm.reset();
     } catch (error) {
         setFeedback(playerFeedback, error.message, 'error');
+    } finally {
+        isSavingPlayer = false;
     }
 };
 
@@ -169,6 +193,11 @@ const appendChatMessage = (label, message) => {
 };
 
 const askAssistant = async (question) => {
+    if (isAskingAssistant) {
+        setFeedback(askFeedback, 'Please wait for the current response to finish.');
+        return;
+    }
+    isAskingAssistant = true;
     appendChatMessage('You', question);
     appendChatMessage('AI', 'Thinking through roster data and current meta...');
 
@@ -182,8 +211,14 @@ const askAssistant = async (question) => {
         });
 
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Assistant is unavailable right now.');
+            let message = 'Assistant is unavailable right now.';
+            try {
+                const error = await response.json();
+                message = error.error || message;
+            } catch (_) {
+                // Keep default message when response is not valid JSON.
+            }
+            throw new Error(message);
         }
 
         const data = await response.json();
@@ -193,6 +228,8 @@ const askAssistant = async (question) => {
         loadingNode.querySelector('p').textContent =
             'Unable to reach the assistant. Confirm your LLM credentials and try again.';
         setFeedback(askFeedback, error.message, 'error');
+    } finally {
+        isAskingAssistant = false;
     }
 };
 
