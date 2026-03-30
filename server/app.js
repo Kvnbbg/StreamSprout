@@ -52,7 +52,7 @@ const parseEnum = (value, field, allowedValues) => {
 };
 
 const extractLlmAnswer = (result) => {
-    if (typeof result === 'string') {
+    if (typeof result === 'string' && result.trim()) {
         return result;
     }
 
