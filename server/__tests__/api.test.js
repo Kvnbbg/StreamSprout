@@ -113,6 +113,30 @@ test('accepts string-shaped LLM responses in /ask', async () => {
     assert.equal(body.answer, 'Plain text answer');
 });
 
+test('returns 502 when /ask receives a blank string LLM payload', async () => {
+    const logger = createLogger({ level: 'error' });
+    const playerRepository = createInMemoryPlayerRepository();
+    const llmClient = {
+        ask: async () => '   ',
+    };
+    const app = createApp({ playerRepository, llmClient, logger });
+
+    const started = await startServer(app);
+    server.close();
+    server = started.instance;
+    baseUrl = started.url;
+
+    const response = await fetch(`${baseUrl}/ask`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: 'Any advice?' }),
+    });
+    const body = await response.json();
+
+    assert.equal(response.status, 502);
+    assert.equal(body.error, 'LLM response format is invalid.');
+});
+
 test('returns 502 when /ask receives an invalid LLM payload', async () => {
     const logger = createLogger({ level: 'error' });
     const playerRepository = createInMemoryPlayerRepository();
