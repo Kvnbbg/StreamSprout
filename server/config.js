@@ -30,13 +30,18 @@ const env = {
     LOG_LEVEL: process.env.LOG_LEVEL || 'info',
 };
 
-if (!env.USE_IN_MEMORY_DB && !env.DATABASE_URL) {
-    const missing = ['DB_USER', 'DB_PASSWORD', 'DB_NAME'].filter((key) => !env[key]);
-    if (missing.length) {
+const hasExplicitDatabaseConfig =
+    Boolean(env.DATABASE_URL) ||
+    (Boolean(env.DB_USER) && Boolean(env.DB_PASSWORD) && Boolean(env.DB_NAME));
+
+if (!env.USE_IN_MEMORY_DB && !hasExplicitDatabaseConfig) {
+    if (env.NODE_ENV === 'production') {
         throw new Error(
-            `Missing database configuration. Provide DATABASE_URL or ${missing.join(', ')} in .env.`
+            'Missing database configuration. Provide DATABASE_URL or DB_USER, DB_PASSWORD, DB_NAME in .env.'
         );
     }
+
+    env.USE_IN_MEMORY_DB = true;
 }
 
 module.exports = { env };
