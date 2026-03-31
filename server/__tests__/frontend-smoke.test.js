@@ -23,6 +23,17 @@ test('public dashboard mobile menu can open and close through nav toggle script'
   assert.match(script, /navToggle\.setAttribute\('aria-expanded', String\(isOpen\)\)/);
   assert.match(script, /navLinks\.forEach\(/);
   assert.match(script, /document\.body\.classList\.remove\('nav-open'\)/);
+  assert.match(script, /event\.key === 'Escape'/);
+  assert.match(script, /navToggle\.focus\(\)/);
+});
+
+test('public dashboard forms expose busy states while async requests are in progress', () => {
+  const script = readFile('public/script.js');
+
+  assert.match(script, /setButtonBusyState/);
+  assert.match(script, /button\.disabled = isBusy/);
+  assert.match(script, /setButtonBusyState\(submitButton, true, 'Saving\.\.\.'\)/);
+  assert.match(script, /setButtonBusyState\(askButton, true, 'Thinking\.\.\.'\)/);
 });
 
 test('legacy page keeps popup entry point and associated trigger interactions', () => {

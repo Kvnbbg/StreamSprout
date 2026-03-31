@@ -78,6 +78,35 @@ test('searches players by name', async () => {
     assert.equal(results[0].name, 'Sage Support');
 });
 
+test('returns all players when search term is missing or blank', async () => {
+    await fetch(`${baseUrl}/players`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            name: 'Alpha',
+            role: 'Initiator',
+            rank: 'Ascendant',
+            agent: 'Sova',
+        }),
+    });
+    await fetch(`${baseUrl}/players`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            name: 'Bravo',
+            role: 'Controller',
+            rank: 'Immortal',
+            agent: 'Omen',
+        }),
+    });
+
+    const response = await fetch(`${baseUrl}/search-players?name=   `);
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.length, 2);
+});
+
 test('returns a mocked LLM response', async () => {
     const response = await fetch(`${baseUrl}/ask`, {
         method: 'POST',

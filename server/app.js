@@ -159,7 +159,11 @@ const createApp = ({ playerRepository, llmClient, logger }) => {
     app.get(
         '/search-players',
         asyncHandler(async (req, res) => {
-            const name = getRequiredString(req.query.name, 'Search term');
+            const name = typeof req.query.name === 'string' ? req.query.name.trim() : '';
+            if (!name) {
+                const allPlayers = await playerRepository.getAll();
+                return res.status(200).json(allPlayers);
+            }
             const players = await playerRepository.searchByName(name);
             res.status(200).json(players);
         })

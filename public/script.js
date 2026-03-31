@@ -23,6 +23,22 @@ let rosterRequestId = 0;
 let isSavingPlayer = false;
 let isAskingAssistant = false;
 
+const setButtonBusyState = (button, isBusy, busyLabel) => {
+    if (!button) {
+        return;
+    }
+    if (!button.dataset.defaultLabel) {
+        button.dataset.defaultLabel = button.innerHTML;
+    }
+    button.disabled = isBusy;
+    button.setAttribute('aria-busy', String(isBusy));
+    if (isBusy && busyLabel) {
+        button.textContent = busyLabel;
+        return;
+    }
+    button.innerHTML = button.dataset.defaultLabel;
+};
+
 const setStatusText = (element, message) => {
     const icon = element.dataset.icon;
     const anim = element.dataset.anim;
@@ -151,6 +167,8 @@ const sendPlayer = async (payload) => {
         return;
     }
     isSavingPlayer = true;
+    const submitButton = playerForm.querySelector('button[type="submit"]');
+    setButtonBusyState(submitButton, true, 'Saving...');
     setFeedback(playerFeedback, 'Saving player...');
     try {
         const response = await fetch('/players', {
@@ -177,6 +195,7 @@ const sendPlayer = async (payload) => {
         setFeedback(playerFeedback, error.message, 'error');
     } finally {
         isSavingPlayer = false;
+        setButtonBusyState(submitButton, false);
     }
 };
 
@@ -198,6 +217,8 @@ const askAssistant = async (question) => {
         return;
     }
     isAskingAssistant = true;
+    const askButton = askForm.querySelector('button[type="submit"]');
+    setButtonBusyState(askButton, true, 'Thinking...');
     appendChatMessage('You', question);
     appendChatMessage('AI', 'Thinking through roster data and current meta...');
 
@@ -230,6 +251,7 @@ const askAssistant = async (question) => {
         setFeedback(askFeedback, error.message, 'error');
     } finally {
         isAskingAssistant = false;
+        setButtonBusyState(askButton, false);
     }
 };
 
@@ -303,5 +325,13 @@ if (navToggle) {
                 navToggle.setAttribute('aria-expanded', 'false');
             }
         });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && document.body.classList.contains('nav-open')) {
+            document.body.classList.remove('nav-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.focus();
+        }
     });
 }
