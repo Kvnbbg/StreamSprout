@@ -64,6 +64,8 @@ const setFeedback = (element, message, tone = 'neutral') => {
     element.style.color = tone === 'error' ? '#ff8a8a' : '#ffb347';
 };
 
+const toPlayerList = (value) => (Array.isArray(value) ? value : []);
+
 const renderRoster = (players) => {
     rosterList.innerHTML = '';
 
@@ -140,7 +142,7 @@ const fetchRoster = async (query = '') => {
         if (!response.ok) {
             throw new Error('Unable to fetch roster data.');
         }
-        const data = await response.json();
+        const data = toPlayerList(await response.json());
 
         if (requestId !== rosterRequestId) {
             return;
@@ -219,6 +221,8 @@ const askAssistant = async (question) => {
     isAskingAssistant = true;
     const askButton = askForm.querySelector('button[type="submit"]');
     setButtonBusyState(askButton, true, 'Thinking...');
+    askInput.disabled = true;
+    askInput.setAttribute('aria-busy', 'true');
     appendChatMessage('You', question);
     appendChatMessage('AI', 'Thinking through roster data and current meta...');
 
@@ -245,13 +249,18 @@ const askAssistant = async (question) => {
         const data = await response.json();
         loadingNode.querySelector('p').textContent = data.answer;
         askFeedback.textContent = '';
+        askInput.value = '';
     } catch (error) {
         loadingNode.querySelector('p').textContent =
             'Unable to reach the assistant. Confirm your LLM credentials and try again.';
         setFeedback(askFeedback, error.message, 'error');
+        askInput.value = question;
     } finally {
         isAskingAssistant = false;
         setButtonBusyState(askButton, false);
+        askInput.disabled = false;
+        askInput.removeAttribute('aria-busy');
+        askInput.focus();
     }
 };
 
@@ -296,7 +305,6 @@ askForm.addEventListener('submit', (event) => {
         setFeedback(askFeedback, 'Type a question for the assistant.', 'error');
         return;
     }
-    askInput.value = '';
     askAssistant(question);
 });
 
