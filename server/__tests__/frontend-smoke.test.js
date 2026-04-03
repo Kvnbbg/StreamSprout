@@ -34,6 +34,22 @@ test('public dashboard forms expose busy states while async requests are in prog
   assert.match(script, /button\.disabled = isBusy/);
   assert.match(script, /setButtonBusyState\(submitButton, true, 'Saving\.\.\.'\)/);
   assert.match(script, /setButtonBusyState\(askButton, true, 'Thinking\.\.\.'\)/);
+  assert.match(script, /askInput\.disabled = true/);
+  assert.match(script, /askInput\.removeAttribute\('aria-busy'\)/);
+});
+
+test('assistant journey preserves user prompt after request failures', () => {
+  const script = readFile('public/script.js');
+
+  assert.match(script, /askInput\.value = question/);
+  assert.match(script, /askInput\.focus\(\)/);
+});
+
+test('roster journey tolerates malformed payloads from API responses', () => {
+  const script = readFile('public/script.js');
+
+  assert.match(script, /const toPlayerList = \(value\) => \(Array\.isArray\(value\) \? value : \[\]\)/);
+  assert.match(script, /const data = toPlayerList\(await response\.json\(\)\)/);
 });
 
 test('legacy page keeps popup entry point and associated trigger interactions', () => {
